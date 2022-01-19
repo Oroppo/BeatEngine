@@ -5,6 +5,6 @@ A short proposal video for Amnesia Interactive's Computer Graphics Integration o
 [Link here](Put the URL in here)
 
 ## Here's our Project Timeline where we plan and iterate on our Project Ideas
-![An Image](Put the IMAGE URL in here)
+![An Image](https://imgur.com/a/DPVhWVA)
 
 
