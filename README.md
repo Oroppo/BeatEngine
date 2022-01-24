@@ -1,6 +1,5 @@
 # CG_Proposal
 ![An Image](https://i.imgur.com/ERp7DVl.png)
-going to delete in a sec
 
 A short proposal video for Amnesia Interactive's Computer Graphics Integration of our Indie Game
 ![An Image](https://i.imgur.com/eY76u4u.png)
