@@ -1,6 +1,5 @@
 # CG_Proposal
 A short proposal video for Amnesia Interactive's Computer Graphics Integration of our Indie Game
-Courtesy of Amnesia Interactive
 ![An Image](https://i.imgur.com/eY76u4u.png)
 
 ## Check Out Our Short Introduction Video!
