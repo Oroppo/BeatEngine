@@ -21,6 +21,10 @@
 #include "Graphics/GuiBatcher.h"
 #include "Graphics/Framebuffer.h"
 
+// Animations
+#include "Gameplay/Animation/MorphAnimator.h"
+#include "Gameplay/Animation/MorphMeshRenderer.h"
+
 // Utilities
 #include "Utils/MeshBuilder.h"
 #include "Utils/MeshFactory.h"
@@ -96,556 +100,6 @@ DefaultSceneLayer::~DefaultSceneLayer() = default;
 
 // Object Spawning Functions lines 99-623 CTRL + M, CTRL + O to collapse functions
 
-// For spawning general objects
-void DefaultSceneLayer::SpawnObj(Gameplay::Scene::Sptr scene, Gameplay::MeshResource::Sptr Mesh, Gameplay::Material::Sptr Material, std::string ObjName = "DeezNuts",
-	glm::vec3 pos = glm::vec3(-10.900f, 5.610f, -4.920f), glm::vec3 rot = glm::vec3(180.0f, 0.0f, 180.0f), 
-	glm::vec3 scale = glm::vec3(0.350f, 0.350f, 0.350f)) {
-
-	// Tutorial Stuff
-	using namespace Gameplay;
-	using namespace Gameplay::Physics;
-	GameObject::Sptr Startplatform = scene->CreateGameObject(ObjName);
-	{
-		// Set position in the scene
-		Startplatform->SetPostion(pos);
-		Startplatform->SetRotation(rot);
-		Startplatform->SetScale(scale);
-
-		Startplatform->Add<LevelMover>();
-
-		// Create and attach a renderer for the monkey
-		RenderComponent::Sptr renderer = Startplatform->Add<RenderComponent>();
-		renderer->SetMesh(Mesh);
-		renderer->SetMaterial(Material);
-
-		// Add a dynamic rigid body to this monkey
-		RigidBody::Sptr physics = Startplatform->Add<RigidBody>(RigidBodyType::Kinematic);
-		//physics->AddCollider(BoxCollider::Create(glm::vec3(1.0f, 1.0f, 1.0f)));
-
-
-		// FIX THIS //
-		ICollider::Sptr Box1 = physics->AddCollider(BoxCollider::Create(glm::vec3(0.87f, 0.5f, 0.4f)));
-		Box1->SetPosition(glm::vec3(0.f, 0.f, 0.f));
-		Box1->SetScale(glm::vec3(1, 1, 1));
-
-		//if (parent != nullptr) {
-		//	parent->AddChild(Startplatform);
-		//}
-	}
-}
-// For spawning start/end platforms
-void DefaultSceneLayer::SpawnStartPlat(Gameplay::Scene::Sptr scene, Gameplay::MeshResource::Sptr Mesh, Gameplay::Material::Sptr Material, std::string ObjName = "DeezNuts",
-	glm::vec3 pos = glm::vec3(-10.900f, 5.610f, -4.920f), glm::vec3 rot = glm::vec3(180.0f, 0.0f, 180.0f),
-	glm::vec3 scale = glm::vec3(0.350f, 0.350f, 0.350f)) {
-	// Tutorial Stuff
-	using namespace Gameplay;
-	using namespace Gameplay::Physics;
-	GameObject::Sptr Startplatform = scene->CreateGameObject(ObjName);
-	{
-		// Set position in the scene
-		Startplatform->SetPostion(pos);
-		Startplatform->SetRotation(rot);
-		Startplatform->SetScale(scale);
-
-		Startplatform->Add<LevelMover>();
-
-		// Create and attach a renderer for the Object
-		RenderComponent::Sptr renderer = Startplatform->Add<RenderComponent>();
-		renderer->SetMesh(Mesh);
-		renderer->SetMaterial(Material);
-
-		// Add a dynamic rigid body to this object
-		RigidBody::Sptr physics = Startplatform->Add<RigidBody>(RigidBodyType::Kinematic);
-		physics->AddCollider(BoxCollider::Create(glm::vec3(1.8f, 5.2f, 1.0f)));
-	}
-}
-// For spawning beat gems
-void DefaultSceneLayer::SpawnGem(Gameplay::Scene::Sptr scene, Gameplay::MeshResource::Sptr Mesh, Gameplay::Material::Sptr MaterialOn, Gameplay::Material::Sptr MaterialOff, std::string ObjName = "DeezNuts",
-	glm::vec3 pos = glm::vec3(-10.900f, 5.610f, -4.920f), glm::vec3 rot = glm::vec3(180.0f, 0.0f, 180.0f),
-	glm::vec3 scale = glm::vec3(0.350f, 0.350f, 0.350f)) {
-	// Tutorial Stuff
-	using namespace Gameplay;
-	using namespace Gameplay::Physics;
-	GameObject::Sptr Gem = scene->CreateGameObject(ObjName);
-	{
-		// Set position in the scene
-		Gem->SetPostion(pos);
-		Gem->SetRotation(rot);
-		Gem->SetScale(scale);
-
-		//Add Components
-		Gem->Add<LevelMover>();
-		Gem->Add<RotatingBehaviour>();
-		Gem->Add<MaterialSwap>();
-
-		// Create and attach a renderer for the Object
-		RenderComponent::Sptr renderer = Gem->Add<RenderComponent>();
-		renderer->SetMesh(Mesh);
-		renderer->SetMaterial(MaterialOff);
-
-		TriggerVolume::Sptr volume = Gem->Add<TriggerVolume>();
-		volume->AddCollider(BoxCollider::Create(glm::vec3(0.5f, 0.5f, 0.5f)));
-		//volume->SetFlags(TriggerTypeFlags::Statics | TriggerTypeFlags::Kinematics);
-
-		// Add a dynamic rigid body to this object
-		//RigidBody::Sptr physics = Startplatform->Add<RigidBody>(RigidBodyType::Kinematic);
-		//physics->AddCollider(BoxCollider::Create(glm::vec3(0.5f, 0.5f, 0.5f)));
-		// For Gem Colliders X = left/right Y = Up/Down Z = Towards/Away
-	}
-}
-// For spawning Vinyls
-void DefaultSceneLayer::SpawnCollectable(Gameplay::Scene::Sptr scene, Gameplay::MeshResource::Sptr Mesh, Gameplay::Material::Sptr Material, std::string ObjName = "DeezNuts",
-	glm::vec3 pos = glm::vec3(-10.900f, 5.610f, -4.920f), glm::vec3 rot = glm::vec3(180.0f, 0.0f, 180.0f),
-	glm::vec3 scale = glm::vec3(0.350f, 0.350f, 0.350f)) {
-	// Tutorial Stuff
-	using namespace Gameplay;
-	using namespace Gameplay::Physics;
-	GameObject::Sptr Collectable = scene->CreateGameObject(ObjName);
-	{
-		// Set position in the scene
-		Collectable->SetPostion(pos);
-		Collectable->SetRotation(rot);
-		Collectable->SetScale(scale);
-
-		//Add Components
-		Collectable->Add<LevelMover>();
-		Collectable->Add<VinylAnim>();
-		Collectable->Add<RotatingBehaviour>();
-
-		// Create and attach a renderer for the Object
-		RenderComponent::Sptr renderer = Collectable->Add<RenderComponent>();
-		renderer->SetMesh(Mesh);
-		renderer->SetMaterial(Material);
-
-		// Add a dynamic rigid body to this object
-		//RigidBody::Sptr physics = Startplatform->Add<RigidBody>(RigidBodyType::Kinematic);
-		// For Colliders X is towards Cam, Y is up/down , Z is Left and Right
-		//ICollider::Sptr CollectCollider = physics->AddCollider(BoxCollider::Create(glm::vec3(0.5f, 0.5f, 0.5f)));
-
-		TriggerVolume::Sptr volume = Collectable->Add<TriggerVolume>();
-		volume->AddCollider(BoxCollider::Create(glm::vec3(0.5f, 0.5f, 0.5f)));
-		//volume->SetPostion(glm::vec3(0.0f, 0.5f, 0.0f));
-	}
-}
-// For spawning CD Collectables
-void DefaultSceneLayer::SpawnCD(Gameplay::Scene::Sptr scene, Gameplay::MeshResource::Sptr Mesh, Gameplay::Material::Sptr Material, std::string ObjName = "DeezNuts",
-	glm::vec3 pos = glm::vec3(-10.900f, 5.610f, -4.920f), glm::vec3 rot = glm::vec3(180.0f, 0.0f, 180.0f),
-	glm::vec3 scale = glm::vec3(0.350f, 0.350f, 0.350f)) {
-	// Tutorial Stuff
-	using namespace Gameplay;
-	using namespace Gameplay::Physics;
-	GameObject::Sptr CD = scene->CreateGameObject(ObjName);
-	{
-		// Set position in the scene
-		CD->SetPostion(pos);
-		CD->SetRotation(rot);
-		CD->SetScale(scale);
-
-		//Add Components
-		CD->Add<LevelMover>();
-		CD->Add<RotatingBehaviourCD>();
-
-		// Create and attach a renderer for the Object
-		RenderComponent::Sptr renderer = CD->Add<RenderComponent>();
-		renderer->SetMesh(Mesh);
-		renderer->SetMaterial(Material);
-
-		//RigidBody::Sptr physics = Startplatform->Add<RigidBody>(RigidBodyType::Kinematic);
-		//physics->AddCollider(BoxCollider::Create(glm::vec3(0.5f, 0.5f, 0.5f)));
-
-		TriggerVolume::Sptr volume = CD->Add<TriggerVolume>();
-		volume->AddCollider(BoxCollider::Create(glm::vec3(0.5f, 0.5f, 0.5f)));
-	}
-}
-// For spawning Wall Jump Platforms
-void DefaultSceneLayer::SpawnWallJump(Gameplay::Scene::Sptr scene, Gameplay::MeshResource::Sptr Mesh, Gameplay::Material::Sptr Material, std::string ObjName = "DeezNuts",
-	glm::vec3 pos = glm::vec3(-10.900f, 5.610f, -4.920f), glm::vec3 rot = glm::vec3(180.0f, 0.0f, 180.0f),
-	glm::vec3 scale = glm::vec3(0.350f, 0.350f, 0.350f)) {
-	// Tutorial Stuff
-	using namespace Gameplay;
-	using namespace Gameplay::Physics;
-	GameObject::Sptr WallJump = scene->CreateGameObject(ObjName);
-	{
-		// Set position in the scene
-		WallJump->SetPostion(pos);
-		WallJump->SetRotation(rot);
-		WallJump->SetScale(scale);
-
-		WallJump->Add<LevelMover>();
-
-		// Create and attach a renderer for the Object
-		RenderComponent::Sptr renderer = WallJump->Add<RenderComponent>();
-		renderer->SetMesh(Mesh);
-		renderer->SetMaterial(Material);
-
-		// Add a dynamic rigid body to this object
-		RigidBody::Sptr physics = WallJump->Add<RigidBody>(RigidBodyType::Kinematic);
-		// For Wall Jump Colliders, X = Left/Right Y = towards/away, z = Up/Down
-		ICollider::Sptr CollectCollider = physics->AddCollider(BoxCollider::Create(glm::vec3(0.3f, 0.5f, 3.2f)));
-		CollectCollider->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-	}
-}
-// For spawning building1 object
-void DefaultSceneLayer::SpawnBuilding(Gameplay::Scene::Sptr scene, Gameplay::MeshResource::Sptr Mesh, Gameplay::Material::Sptr Material, std::string ObjName = "DeezNuts",
-	glm::vec3 pos = glm::vec3(-10.900f, 5.610f, -4.920f), glm::vec3 rot = glm::vec3(180.0f, 0.0f, 180.0f),
-	glm::vec3 scale = glm::vec3(0.350f, 0.350f, 0.350f)) {
-	// Tutorial Stuff
-	using namespace Gameplay;
-	using namespace Gameplay::Physics;
-	GameObject::Sptr Building = scene->CreateGameObject(ObjName);
-	{
-		// Set position in the scene
-		Building->SetPostion(pos);
-		Building->SetRotation(rot);
-		Building->SetScale(scale);
-
-		Building->Add<LevelMover>();
-
-		// Create and attach a renderer for the Object
-		RenderComponent::Sptr renderer = Building->Add<RenderComponent>();
-		renderer->SetMesh(Mesh);
-		renderer->SetMaterial(Material);
-
-		// Add a dynamic rigid body to this object
-		RigidBody::Sptr physics = Building->Add<RigidBody>(RigidBodyType::Kinematic);
-		// For Wall Jump Colliders, X = Left/Right Y = towards/away, z = Up/Down
-		ICollider::Sptr CollectCollider = physics->AddCollider(BoxCollider::Create(glm::vec3(1.590f, 5.000f, 2.000f)));
-		CollectCollider->SetPosition(glm::vec3(-0.190f, 1.280f, -0.080f));
-	}
-}
-// For spawning building2 object
-void DefaultSceneLayer::SpawnBuilding2(Gameplay::Scene::Sptr scene, Gameplay::MeshResource::Sptr Mesh, Gameplay::Material::Sptr Material, std::string ObjName = "DeezNuts",
-	glm::vec3 pos = glm::vec3(-10.900f, 5.610f, -4.920f), glm::vec3 rot = glm::vec3(180.0f, 0.0f, 180.0f),
-	glm::vec3 scale = glm::vec3(0.350f, 0.350f, 0.350f)) {
-	// Tutorial Stuff
-	using namespace Gameplay;
-	using namespace Gameplay::Physics;
-	GameObject::Sptr Building2 = scene->CreateGameObject(ObjName);
-	{
-		// Set position in the scene
-		Building2->SetPostion(pos);
-		Building2->SetRotation(rot);
-		Building2->SetScale(scale);
-
-		Building2->Add<LevelMover>();
-
-		// Create and attach a renderer for the Object
-		RenderComponent::Sptr renderer = Building2->Add<RenderComponent>();
-		renderer->SetMesh(Mesh);
-		renderer->SetMaterial(Material);
-
-		// Add a dynamic rigid body to this object
-		RigidBody::Sptr physics = Building2->Add<RigidBody>(RigidBodyType::Kinematic);
-		// For Wall Jump Colliders, X = Left/Right Y = towards/away, z = Up/Down
-		ICollider::Sptr CollectCollider = physics->AddCollider(BoxCollider::Create(glm::vec3(1.700f, 3.500f, 2.000f)));
-		CollectCollider->SetPosition(glm::vec3(0.570f, -3.230f, 1.150f));
-	}
-}
-// For spawning building3 object
-void DefaultSceneLayer::SpawnBuilding3(Gameplay::Scene::Sptr scene, Gameplay::MeshResource::Sptr Mesh, Gameplay::Material::Sptr Material, std::string ObjName = "DeezNuts",
-	glm::vec3 pos = glm::vec3(-10.900f, 5.610f, -4.920f), glm::vec3 rot = glm::vec3(180.0f, 0.0f, 180.0f),
-	glm::vec3 scale = glm::vec3(0.350f, 0.350f, 0.350f)) {
-	// Tutorial Stuff
-	using namespace Gameplay;
-	using namespace Gameplay::Physics;
-	GameObject::Sptr Building3 = scene->CreateGameObject(ObjName);
-	{
-		// Set position in the scene
-		Building3->SetPostion(pos);
-		Building3->SetRotation(rot);
-		Building3->SetScale(scale);
-
-		Building3->Add<LevelMover>();
-
-		// Create and attach a renderer for the Object
-		RenderComponent::Sptr renderer = Building3->Add<RenderComponent>();
-		renderer->SetMesh(Mesh);
-		renderer->SetMaterial(Material);
-
-		// Add a dynamic rigid body to this object
-		RigidBody::Sptr physics = Building3->Add<RigidBody>(RigidBodyType::Kinematic);
-		// For Wall Jump Colliders, X = Left/Right Y = towards/away, z = Up/Down
-		ICollider::Sptr CollectCollider = physics->AddCollider(BoxCollider::Create(glm::vec3(1.500f, 4.800f, 1.700f)));
-		CollectCollider->SetPosition(glm::vec3(-0.040f, -0.990f, 0.000f));
-	}
-}
-// For spawning Small Wall Jump Platforms
-void DefaultSceneLayer::SpawnSmallWallJump(Gameplay::Scene::Sptr scene, Gameplay::MeshResource::Sptr Mesh, Gameplay::Material::Sptr Material, std::string ObjName = "DeezNuts",
-	glm::vec3 pos = glm::vec3(-10.900f, 5.610f, -4.920f), glm::vec3 rot = glm::vec3(180.0f, 0.0f, 180.0f),
-	glm::vec3 scale = glm::vec3(0.350f, 0.350f, 0.350f)) {
-	// Tutorial Stuff
-	using namespace Gameplay;
-	using namespace Gameplay::Physics;
-	GameObject::Sptr SmallWallJump = scene->CreateGameObject(ObjName);
-	{
-		// Set position in the scene
-		SmallWallJump->SetPostion(pos);
-		SmallWallJump->SetRotation(rot);
-		SmallWallJump->SetScale(scale);
-
-		SmallWallJump->Add<LevelMover>();
-
-		// Create and attach a renderer for the Object
-		RenderComponent::Sptr renderer = SmallWallJump->Add<RenderComponent>();
-		renderer->SetMesh(Mesh);
-		renderer->SetMaterial(Material);
-
-		// Add a dynamic rigid body to this object
-		RigidBody::Sptr physics = SmallWallJump->Add<RigidBody>(RigidBodyType::Kinematic);
-		// For Wall Jump Colliders, X = Left/Right Y = towards/away, z = Up/Down
-		ICollider::Sptr CollectCollider = physics->AddCollider(BoxCollider::Create(glm::vec3(0.3f, 0.5f, 2.5f)));
-		CollectCollider->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-	}
-}
-// For spawning very small wall jumps
-void DefaultSceneLayer::SpawnSuperSmallWallJump(Gameplay::Scene::Sptr scene, Gameplay::MeshResource::Sptr Mesh, Gameplay::Material::Sptr Material, std::string ObjName = "DeezNuts",
-	glm::vec3 pos = glm::vec3(-10.900f, 5.610f, -4.920f), glm::vec3 rot = glm::vec3(180.0f, 0.0f, 180.0f),
-	glm::vec3 scale = glm::vec3(0.350f, 0.350f, 0.350f)) {
-	// Tutorial Stuff
-	using namespace Gameplay;
-	using namespace Gameplay::Physics;
-	GameObject::Sptr SuperSmallWallJump = scene->CreateGameObject(ObjName);
-	{
-		// Set position in the scene
-		SuperSmallWallJump->SetPostion(pos);
-		SuperSmallWallJump->SetRotation(rot);
-		SuperSmallWallJump->SetScale(scale);
-
-		SuperSmallWallJump->Add<LevelMover>();
-
-		// Create and attach a renderer for the Object
-		RenderComponent::Sptr renderer = SuperSmallWallJump->Add<RenderComponent>();
-		renderer->SetMesh(Mesh);
-		renderer->SetMaterial(Material);
-
-		// Add a dynamic rigid body to this object
-		RigidBody::Sptr physics = SuperSmallWallJump->Add<RigidBody>(RigidBodyType::Kinematic);
-		// For Wall Jump Colliders, X = Left/Right Y = towards/away, z = Up/Down
-		ICollider::Sptr CollectCollider = physics->AddCollider(BoxCollider::Create(glm::vec3(0.100f, 0.200f, 0.800f)));
-		CollectCollider->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-	}
-}
-// For spawning right facing stairs
-void DefaultSceneLayer::SpawnStairsRight(Gameplay::Scene::Sptr scene, Gameplay::MeshResource::Sptr Mesh, Gameplay::Material::Sptr Material, std::string ObjName = "DeezNuts",
-	glm::vec3 pos = glm::vec3(-10.900f, 5.610f, -4.920f), glm::vec3 rot = glm::vec3(180.0f, 0.0f, 180.0f),
-	glm::vec3 scale = glm::vec3(0.350f, 0.350f, 0.350f)) {
-	// Tutorial Stuff
-	using namespace Gameplay;
-	using namespace Gameplay::Physics;
-	GameObject::Sptr StairsRight = scene->CreateGameObject(ObjName);
-	{
-		// Set position in the scene
-		StairsRight->SetPostion(pos);
-		StairsRight->SetRotation(rot);
-		StairsRight->SetScale(scale);
-
-		StairsRight->Add<LevelMover>();
-
-		// Create and attach a renderer for the Object
-		RenderComponent::Sptr renderer = StairsRight->Add<RenderComponent>();
-		renderer->SetMesh(Mesh);
-		renderer->SetMaterial(Material);
-
-		// Add a dynamic rigid body to this object
-		RigidBody::Sptr physics = StairsRight->Add<RigidBody>(RigidBodyType::Kinematic);
-		// For Wall Jump Colliders, X = Left/Right Y = towards/away, z = Up/Down
-		ICollider::Sptr CollectCollider = physics->AddCollider(BoxCollider::Create(glm::vec3(0.100f, 0.200f, 0.800f)));
-		CollectCollider->SetPosition(glm::vec3(-0.120f, 0.460f, 1.030f));
-		CollectCollider->SetScale(glm::vec3(13.138, 7.218, 0.5));
-		CollectCollider->SetRotation(glm::vec3(68.0f, 0.000f, 0.00f));
-	}
-}
-// For spawning Left facing stairs
-void DefaultSceneLayer::SpawnStairsLeft(Gameplay::Scene::Sptr scene, Gameplay::MeshResource::Sptr Mesh, Gameplay::Material::Sptr Material, std::string ObjName = "DeezNuts",
-	glm::vec3 pos = glm::vec3(-10.900f, 5.610f, -4.920f), glm::vec3 rot = glm::vec3(180.0f, 0.0f, 180.0f),
-	glm::vec3 scale = glm::vec3(0.350f, 0.350f, 0.350f)) {
-	// Tutorial Stuff
-	using namespace Gameplay;
-	using namespace Gameplay::Physics;
-	GameObject::Sptr StairsLeft = scene->CreateGameObject(ObjName);
-	{
-		// Set position in the scene
-		StairsLeft->SetPostion(pos);
-		StairsLeft->SetRotation(rot);
-		StairsLeft->SetScale(scale);
-
-		StairsLeft->Add<LevelMover>();
-
-		// Create and attach a renderer for the Object
-		RenderComponent::Sptr renderer = StairsLeft->Add<RenderComponent>();
-		renderer->SetMesh(Mesh);
-		renderer->SetMaterial(Material);
-
-		// Add a dynamic rigid body to this object
-		RigidBody::Sptr physics = StairsLeft->Add<RigidBody>(RigidBodyType::Kinematic);
-		// For Wall Jump Colliders, X = Left/Right Y = towards/away, z = Up/Down
-		ICollider::Sptr CollectCollider = physics->AddCollider(BoxCollider::Create(glm::vec3(0.100f, 0.200f, 0.800f)));
-		CollectCollider->SetPosition(glm::vec3(-0.120f, 0.460f, 1.030f));
-		CollectCollider->SetScale(glm::vec3(13.138, 7.218, 0.5));
-		CollectCollider->SetRotation(glm::vec3(68.0f, 0.000f, 0.00f));
-	}
-}
-// For spawning small speakers
-void DefaultSceneLayer::SpawnSpeaker(Gameplay::Scene::Sptr scene, Gameplay::MeshResource::Sptr Mesh, Gameplay::Material::Sptr Material, std::string ObjName = "DeezNuts",
-	glm::vec3 pos = glm::vec3(-10.900f, 5.610f, -4.920f), glm::vec3 rot = glm::vec3(180.0f, 0.0f, 180.0f),
-	glm::vec3 scale = glm::vec3(0.350f, 0.350f, 0.350f)) {
-	// Tutorial Stuff
-	using namespace Gameplay;
-	using namespace Gameplay::Physics;
-	GameObject::Sptr Speaker = scene->CreateGameObject(ObjName);
-	{
-		// Set position in the scene
-		Speaker->SetPostion(pos);
-		Speaker->SetRotation(rot);
-		Speaker->SetScale(scale);
-
-		Speaker->Add<LevelMover>();
-
-		// Create and attach a renderer for the Object
-		RenderComponent::Sptr renderer = Speaker->Add<RenderComponent>();
-		renderer->SetMesh(Mesh);
-		renderer->SetMaterial(Material);
-	}
-}
-// For spawning Square platforms
-void DefaultSceneLayer::SpawnSquarePlat(Gameplay::Scene::Sptr scene, Gameplay::MeshResource::Sptr Mesh, Gameplay::Material::Sptr Material, std::string ObjName = "DeezNuts",
-	glm::vec3 pos = glm::vec3(-10.900f, 5.610f, -4.920f), glm::vec3 rot = glm::vec3(180.0f, 0.0f, 180.0f),
-	glm::vec3 scale = glm::vec3(0.350f, 0.350f, 0.350f)) {
-	// Tutorial Stuff
-	using namespace Gameplay;
-	using namespace Gameplay::Physics;
-	GameObject::Sptr SquarePlat = scene->CreateGameObject(ObjName);
-	{
-		// Set position in the scene
-		SquarePlat->SetPostion(pos);
-		SquarePlat->SetRotation(rot);
-		SquarePlat->SetScale(scale);
-
-		SquarePlat->Add<LevelMover>();
-
-		// Create and attach a renderer for the Object
-		RenderComponent::Sptr renderer = SquarePlat->Add<RenderComponent>();
-		renderer->SetMesh(Mesh);
-		renderer->SetMaterial(Material);
-
-		// Add a dynamic rigid body to this object
-		RigidBody::Sptr physics = SquarePlat->Add<RigidBody>(RigidBodyType::Kinematic);
-		// For Wall Jump Colliders, X = Left/Right Y = towards/away, z = Up/Down
-		ICollider::Sptr CollectCollider = physics->AddCollider(BoxCollider::Create(glm::vec3(0.100f, 0.200f, 0.800f)));
-		CollectCollider->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-	}
-}
-// For spawning Floating Street Lights
-void DefaultSceneLayer::SpawnFloatingLights(Gameplay::Scene::Sptr scene, Gameplay::MeshResource::Sptr Mesh, Gameplay::Material::Sptr Material, std::string ObjName = "DeezNuts",
-	glm::vec3 pos = glm::vec3(-10.900f, 5.610f, -4.920f), glm::vec3 rot = glm::vec3(180.0f, 0.0f, 180.0f),
-	glm::vec3 scale = glm::vec3(0.350f, 0.350f, 0.350f)) {
-	// Tutorial Stuff
-	using namespace Gameplay;
-	using namespace Gameplay::Physics;
-	GameObject::Sptr FloatingLights = scene->CreateGameObject(ObjName);
-	{
-		// Set position in the scene
-		FloatingLights->SetPostion(pos);
-		FloatingLights->SetRotation(rot);
-		FloatingLights->SetScale(scale);
-
-		FloatingLights->Add<LevelMover>();
-
-		// Create and attach a renderer for the Object
-		RenderComponent::Sptr renderer = FloatingLights->Add<RenderComponent>();
-		renderer->SetMesh(Mesh);
-		renderer->SetMaterial(Material);
-
-		// Add a dynamic rigid body to this object
-		RigidBody::Sptr physics = FloatingLights->Add<RigidBody>(RigidBodyType::Kinematic);
-		// For Wall Jump Colliders, X = Left/Right Y = towards/away, z = Up/Down
-		ICollider::Sptr CollectCollider = physics->AddCollider(BoxCollider::Create(glm::vec3(0.100f, 0.200f, 0.800f)));
-		CollectCollider->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-	}
-}
-// For spawning background cars
-void DefaultSceneLayer::SpawnBackGroundCar(Gameplay::Scene::Sptr scene, Gameplay::MeshResource::Sptr Mesh, Gameplay::Material::Sptr Material, std::string ObjName = "DeezNuts",
-	glm::vec3 pos = glm::vec3(-10.900f, 5.610f, -4.920f), glm::vec3 rot = glm::vec3(180.0f, 0.0f, 180.0f),
-	glm::vec3 scale = glm::vec3(0.350f, 0.350f, 0.350f)) {
-	// Tutorial Stuff
-	using namespace Gameplay;
-	using namespace Gameplay::Physics;
-	GameObject::Sptr Car1 = scene->CreateGameObject(ObjName);
-	{
-		// Set position in the scene
-		Car1->SetPostion(pos);
-		Car1->SetRotation(rot);
-		Car1->SetScale(scale);
-
-		//Add Components
-		Car1->Add<BackgroundMover>();
-
-		// Create and attach a renderer for the Object
-		RenderComponent::Sptr renderer = Car1->Add<RenderComponent>();
-		renderer->SetMesh(Mesh);
-		renderer->SetMaterial(Material);
-
-		// Is background Object and therefore has no colliders
-		// Add a dynamic rigid body to this object
-		RigidBody::Sptr physics = Car1->Add<RigidBody>(RigidBodyType::Kinematic);
-	}
-}
-// For spawning Foreground cars
-void DefaultSceneLayer::SpawnForeGroundCar(Gameplay::Scene::Sptr scene, Gameplay::MeshResource::Sptr Mesh, Gameplay::Material::Sptr Material, std::string ObjName = "DeezNuts",
-	glm::vec3 pos = glm::vec3(-10.900f, 5.610f, -4.920f), glm::vec3 rot = glm::vec3(180.0f, 0.0f, 180.0f),
-	glm::vec3 scale = glm::vec3(0.350f, 0.350f, 0.350f)) {
-	// Tutorial Stuff
-	using namespace Gameplay;
-	using namespace Gameplay::Physics;
-	GameObject::Sptr Car1 = scene->CreateGameObject(ObjName);
-	{
-		// Set position in the scene
-		Car1->SetPostion(pos);
-		Car1->SetRotation(rot);
-		Car1->SetScale(scale);
-
-		//Add Components
-		Car1->Add<ForeGroundMover>();
-
-		// Create and attach a renderer for the Object
-		RenderComponent::Sptr renderer = Car1->Add<RenderComponent>();
-		renderer->SetMesh(Mesh);
-		renderer->SetMaterial(Material);
-
-		// Is background Object and therefore has no colliders
-		// Add a dynamic rigid body to this object
-		RigidBody::Sptr physics = Car1->Add<RigidBody>(RigidBodyType::Kinematic);
-	}
-}
-// For spawning Background Buildings
-void DefaultSceneLayer::SpawnBackGroundBuilding(Gameplay::Scene::Sptr scene, Gameplay::MeshResource::Sptr Mesh, Gameplay::Material::Sptr Material, std::string ObjName = "DeezNuts",
-	glm::vec3 pos = glm::vec3(-10.900f, 5.610f, -4.920f), glm::vec3 rot = glm::vec3(180.0f, 0.0f, 180.0f),
-	glm::vec3 scale = glm::vec3(0.350f, 0.350f, 0.350f)) {
-	// Tutorial Stuff
-	using namespace Gameplay;
-	using namespace Gameplay::Physics;
-	GameObject::Sptr KBuilding = scene->CreateGameObject(ObjName);
-	{
-		// Set position in the scene
-		KBuilding->SetPostion(pos);
-		KBuilding->SetRotation(rot);
-		KBuilding->SetScale(scale);
-
-		//Add Components
-		// Background mover ment for cars
-		KBuilding->Add<BackgroundBuildingMover>();
-		KBuilding->Add<BuildingAnim>();
-
-		// Create and attach a renderer for the Object
-		RenderComponent::Sptr renderer = KBuilding->Add<RenderComponent>();
-		renderer->SetMesh(Mesh);
-		renderer->SetMaterial(Material);
-
-		// Is background Object and therefore has no colliders
-		// Add a dynamic rigid body to this object
-		RigidBody::Sptr physics = KBuilding->Add<RigidBody>(RigidBodyType::Kinematic);
-	}
-}
 
 
 
@@ -670,7 +124,7 @@ void DefaultSceneLayer::_CreateScene()
 		// This shader will handle reflective materials 
 
 		//Meshes
-		//MeshResource::Sptr SmallPlatform = ResourceManager::CreateAsset<MeshResource>("SmallSpeakerPlatformV5.obj");
+		MeshResource::Sptr SmallPlatform = ResourceManager::CreateAsset<MeshResource>("SmallSpeakerPlatformV5.obj");
 		MeshResource::Sptr WallJump = ResourceManager::CreateAsset<MeshResource>("WallJumpV6.obj");
 		MeshResource::Sptr BeatGem = ResourceManager::CreateAsset<MeshResource>("Gem.obj");
 		MeshResource::Sptr Vinyl = ResourceManager::CreateAsset<MeshResource>("VinylV2.obj");
@@ -1077,15 +531,710 @@ void DefaultSceneLayer::_CreateScene()
 		// Set up the scene's camera
 		GameObject::Sptr camera = scene->MainCamera->GetGameObject()->SelfRef();
 		{
-			camera->SetPostion({ -9, -6, 15 });
+			camera->SetPostion({ -1.410, -3.500, 2.450 });
 			camera->LookAt(glm::vec3(0.0f));
+			camera->SetRotation(glm::vec3(-103, 180, -180));
 
-			camera->Add<SimpleCameraControl>();
+			//camera->Add<SimpleCameraControl>();
 
 			//Camera::Sptr cam = camera->Add<Camera>();
 			// Make sure that the camera is set as the scene's main camera!
 			//scene->MainCamera = cam;
 		}
+
+		SpawnFunctions Spawner;
+
+		// Background and forground vehicles\\
+		Give these Parents for Foreground/Background Blocks if we have enough objects to do that with!
+		Spawner.SpawnBackGroundCar(scene, Car1Mesh, Car1Material, "Car1", glm::vec3(14.870f, 7.80f, 2.7f), glm::vec3(90.0f, 0.0f, -90.0f), glm::vec3(0.250f, 0.250f, 0.250f));
+		Spawner.SpawnBackGroundCar(scene, SemiTruckMesh, SemiTruckMaterial, "Semi1", glm::vec3(28.870f, 7.80f, 2.7f), glm::vec3(90.0f, 0.0f, -90.0f), glm::vec3(0.250f, 0.250f, 0.250f));
+		Spawner.SpawnForeGroundCar(scene, Car1Mesh, Car1Material, "Car2", glm::vec3(-9.970f, 0.470f, -1.90f), glm::vec3(90.0f, 0.0f, 90.0f), glm::vec3(0.250f, 0.250f, 0.250f));
+		Spawner.SpawnForeGroundCar(scene, PickupTruckMesh, PickupTruckMaterial, "Pickup1", glm::vec3(-18.970f, 0.470f, -1.90f), glm::vec3(90.0f, 0.0f, 90.0f), glm::vec3(0.250f, 0.250f, 0.250f));
+		Spawner.SpawnBackGroundBuilding(scene, KBuilding1Mesh, KBuildingMaterial, "KBuilding1", glm::vec3(-1.0f, 21.880f, -46.040f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.780f, 1.470f, 1.0f));
+		Spawner.SpawnBackGroundBuilding(scene, KBuilding2Mesh, KBuilding2Material, "KBuilding2", glm::vec3(25.670, 21.880f, -46.040f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.780f, 1.470f, 1.0f));
+		Spawner.SpawnBackGroundBuilding(scene, KBuilding3Mesh, KBuilding3Material, "KBuilding3", glm::vec3(-30.530f, 21.880f, -46.040f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.780f, 1.470f, 1.0f));
+		Spawner.SpawnBackGroundBuilding(scene, OvalBuilding, OvalBuildingMaterial, "OvalBuilding", glm::vec3(13.730f, 27.510f, -46.040f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.720f, 3.500f, 1.0f));
+
+		// Tutorial
+
+		Spawner.SpawnStartPlat(scene, StartPlatform, StartPlatformMaterial, "StartPlatform", glm::vec3(-9.820f, 5.610f, -9.10f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.350f, 0.350f, 0.350f));
+		Spawner.SpawnObj(scene, SmallPlatform, SmallPlatformMaterial, "Small Platform", glm::vec3(-6.070f, 5.610f, -4.150f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.350f, 0.350f, 0.350f));
+		Spawner.SpawnObj(scene, SmallPlatform, SmallPlatformMaterial, "Small Platform", glm::vec3(-3.320f, 5.610f, -2.200f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.350f, 0.350f, 0.350f));
+		Spawner.SpawnObj(scene, SmallPlatform, SmallPlatformMaterial, "Small Platform", glm::vec3(-0.400f, 5.610f, -4.040f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.350f, 0.350f, 0.350f));
+		Spawner.SpawnObj(scene, SmallPlatform, SmallPlatformMaterial, "Small Platform", glm::vec3(-2.110f, 5.610f, 5.440f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.350f, 0.350f, 0.350f));
+		Spawner.SpawnWallJump(scene, WallJump, WallJumpMaterial, "Wall Jump", glm::vec3(-0.350f, 5.610f, 3.070f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.210f, 1.500f));
+		Spawner.SpawnWallJump(scene, WallJump, WallJumpMaterial, "Wall Jump", glm::vec3(2.430f, 5.610f, 3.930f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.210f, 1.500f));
+		Spawner.SpawnGem(scene, BeatGem, BeatGemMaterial, BeatGemOffMaterial, "BeatGem", glm::vec3(2.020f, 5.610f, -1.910f), glm::vec3(90.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.500f, 0.500f));
+		Spawner.SpawnCollectable(scene, Vinyl, VinylMaterial, "Vinyl", glm::vec3(-2.110f, 5.610f, 6.010f), glm::vec3(90.000f, 0.0f, 90.000f), glm::vec3(1.000f, 1.000f, 1.000f));
+		Spawner.SpawnStartPlat(scene, StartPlatform, StartPlatformMaterial, "EndPlatform", glm::vec3(6.360f, 5.610f, -9.10f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.350f, 0.350f, 0.350f));
+		Spawner.SpawnBackGroundCar(scene, Car1Mesh, Car1Material, "Car1", glm::vec3(14.870f, 9.80f, 2.7f), glm::vec3(90.0f, 0.0f, -90.0f), glm::vec3(0.250f, 0.250f, 0.250f));
+		Spawner.SpawnBackGroundCar(scene, SemiTruckMesh, SemiTruckMaterial, "Semi1", glm::vec3(28.870f, 9.80f, 2.7f), glm::vec3(90.0f, 0.0f, -90.0f), glm::vec3(0.250f, 0.250f, 0.250f));
+		Spawner.SpawnForeGroundCar(scene, Car1Mesh, Car1Material, "Car2", glm::vec3(-9.970f, 0.470f, -1.90f), glm::vec3(90.0f, 0.0f, 90.0f), glm::vec3(0.250f, 0.250f, 0.250f));
+		Spawner.SpawnForeGroundCar(scene, PickupTruckMesh, PickupTruckMaterial, "Pickup1", glm::vec3(-18.970f, 0.470f, -1.90f), glm::vec3(90.0f, 0.0f, 90.0f), glm::vec3(0.250f, 0.250f, 0.250f));
+
+
+		// 1st Block		
+		Spawner.SpawnStartPlat(scene, StartPlatform, StartPlatformMaterial, "StartPlatform", glm::vec3(-9.820f + 22, 5.610f, -9.10f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.350f, 0.350f, 0.350f));
+		Spawner.SpawnObj(scene, SmallPlatform, SmallPlatformMaterial, "Small Platform", glm::vec3(-6.070f + 22, 5.610f, -4.150f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.350f, 0.350f, 0.350f));
+		Spawner.SpawnObj(scene, SmallPlatform, SmallPlatformMaterial, "Small Platform", glm::vec3(-2.840f + 22, 5.610f, -4.150f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.350f, 0.350f, 0.350f));
+		Spawner.SpawnObj(scene, SmallPlatform, SmallPlatformMaterial, "Small Platform", glm::vec3(2.760f + 22, 5.610f, -1.770f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.350f, 0.350f, 0.350f));
+		Spawner.SpawnGem(scene, BeatGem, BeatGemMaterial, BeatGemOffMaterial, "BeatGem", glm::vec3(0.120f + 22, 5.610f, -3.160f), glm::vec3(90.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.500f, 0.500f));
+		Spawner.SpawnCollectable(scene, Vinyl, VinylMaterial, "Vinyl", glm::vec3(5.640f + 22, 5.610f, 0.080f), glm::vec3(90.000f, 0.0f, 90.000f), glm::vec3(1.000f, 1.000f, 1.000f));
+		Spawner.SpawnStartPlat(scene, StartPlatform, StartPlatformMaterial, "EndPlatform", glm::vec3(6.360f + 22, 5.610f, -9.10f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.350f, 0.350f, 0.350f));
+
+		// CDs for Block 1
+		Spawner.SpawnCD(scene, CD, CDMaterial, "CD", glm::vec3(-6.030f + 22, 5.610f, -3.220f), glm::vec3(90.000f, 0.0f, 90.000f), glm::vec3(1.000f, 1.000f, 1.000f));
+		Spawner.SpawnCD(scene, CD, CDMaterial, "CD", glm::vec3(-2.710f + 22, 5.610f, -3.190f), glm::vec3(90.000f, 0.0f, 90.000f), glm::vec3(1.000f, 1.000f, 1.000f));
+		Spawner.SpawnCD(scene, CD, CDMaterial, "CD", glm::vec3(0.170f + 22, 5.610f, -2.380f), glm::vec3(90.000f, 0.0f, 90.000f), glm::vec3(1.000f, 1.000f, 1.000f));
+		Spawner.SpawnCD(scene, CD, CDMaterial, "CD", glm::vec3(2.640f + 22, 5.610f, -0.770f), glm::vec3(90.000f, 0.0f, 90.000f), glm::vec3(1.000f, 1.000f, 1.000f));
+
+		//trust me if I could find a better way i'd have done it but rn we can't pass materials to 
+		//the Material Swap Component so we instead add Dummy Children Objects to hold the Materials instead.
+		{
+			GameObject::Sptr MaterialDummyOn = scene->CreateGameObject("Material Dummy On");
+			RenderComponent::Sptr renderer = MaterialDummyOn->Add<RenderComponent>();
+			renderer->SetMesh(BeatGem);
+			renderer->SetMaterial(BeatGemMaterial);
+			renderer->IsEnabled = false;
+		}
+		{
+			GameObject::Sptr MaterialDummyOff = scene->CreateGameObject("Material Dummy Off");
+			RenderComponent::Sptr renderer = MaterialDummyOff->Add<RenderComponent>();
+			renderer->SetMesh(BeatGem);
+			renderer->SetMaterial(BeatGemOffMaterial);
+			renderer->IsEnabled = false;
+		}
+
+		GameObject::Sptr GameManager = scene->CreateGameObject("GameManager");
+		{
+			RigidBody::Sptr physics = GameManager->Add<RigidBody>(RigidBodyType::Kinematic);
+			GameManager->Add <BeatTimer>();
+		}
+
+		// Player:
+		GameObject::Sptr character = scene->CreateGameObject("Character/Player");
+		{
+			// Set position in the scene
+			character->SetPostion(glm::vec3(-10.270f, 5.710f, -3.800f));
+			character->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
+			character->SetScale(glm::vec3(0.7f, 0.7f, 0.7f));
+
+			// Add some behaviour that relies on the physics body
+			//character->Add<JumpBehaviour>();
+			character->Add<CharacterController>();
+
+			// Create and attach a renderer for the paddle
+			RenderComponent::Sptr renderer = character->Add<RenderComponent>();
+			renderer->SetMesh(CharacterMesh);
+			renderer->SetMaterial(CharacterMaterial);
+
+			// Add a kinematic rigid body to the paddle
+			RigidBody::Sptr physics = character->Add<RigidBody>(RigidBodyType::Dynamic);
+			auto rb = physics->AddCollider(BoxCollider::Create(glm::vec3(0.2, 0.85, 0.15)));
+			rb->SetPosition(glm::vec3(0.0, 0.75, 0.0));
+
+			TriggerVolume::Sptr volume = character->Add<TriggerVolume>();
+			volume->SetFlags(TriggerTypeFlags::Statics | TriggerTypeFlags::Kinematics);
+
+			BoxCollider::Sptr collider = BoxCollider::Create(glm::vec3(0.3f, 0.3f, 0.3f));
+			collider->SetPosition(glm::vec3(0.f, 0.25f, 0.f));
+			volume->AddCollider(collider);
+
+
+			
+			MorphMeshRenderer::Sptr morph1 = character->Add<MorphMeshRenderer>();
+			morph1->SetMorphMeshRenderer(DiscoBotMesh1, CharacterMaterial);
+			Morphanimator::Sptr RunAnim = character->Add<Morphanimator>();
+
+			std::vector<MeshResource::Sptr> KeyFrames;
+			std::vector<MeshResource::Sptr> KeyFrames2;
+			KeyFrames.push_back(DiscoBotMesh2);
+			KeyFrames.push_back(DiscoBotMesh3);
+			KeyFrames.push_back(DiscoBotMesh4);
+			KeyFrames.push_back(DiscoBotMesh5);
+			KeyFrames.push_back(DiscoBotMesh6);
+			KeyFrames.push_back(DiscoBotMesh7);
+			KeyFrames.push_back(DiscoBotMesh8);
+			KeyFrames.push_back(DiscoBotMesh9);
+			
+			KeyFrames2.push_back(DiscoBotMesh2);
+			KeyFrames2.push_back(DiscoBotMesh3);
+			KeyFrames2.push_back(DiscoBotMesh4);
+			KeyFrames2.push_back(DiscoBotMesh5);
+			KeyFrames2.push_back(DiscoBotMesh6);
+			KeyFrames2.push_back(DiscoBotMesh7);
+
+
+			RunAnim->SetInitial();
+			RunAnim->SetFrameTime(0.1f);
+			RunAnim->SetFrames(KeyFrames);
+		}
+
+		GameObject::Sptr DiscoBall = scene->CreateGameObject("DiscoBall");
+		{
+			DiscoBall->SetPostion(glm::vec3(-10.270f, 5.710f, -1.0f));
+			DiscoBall->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
+			DiscoBall->SetScale(glm::vec3(0.2f, 0.2f, 0.2f));
+
+			RenderComponent::Sptr renderer = DiscoBall->Add<RenderComponent>();
+			renderer->SetMesh(DiscoBallMesh);
+			renderer->SetMaterial(DiscoBallMaterial);
+
+			SeekBehaviour::Sptr seeking = DiscoBall->Add<SeekBehaviour>();
+			seeking->seekTo(character);
+
+			RigidBody::Sptr ballphysics = DiscoBall->Add<RigidBody>(RigidBodyType::Dynamic);
+		}
+
+		/////////////////////////// UI //////////////////////////////
+		/*
+		{//Main Menu Block
+
+			{//Logo
+				GameObject::Sptr logo = scene->CreateGameObject("MainMenu Logo");
+
+				RectTransform::Sptr transform = logo->Add<RectTransform>();
+				transform->SetPosition({ 0, 0 });
+				transform->SetRotationDeg(0);
+				transform->SetSize({ 750, 750 });
+				transform->SetMin({ 0, 0 });
+				transform->SetMax({ 750, 750 });
+
+				GuiPanel::Sptr logoPanel = logo->Add<GuiPanel>();
+				logoPanel->SetTexture(TexBeatLogo);
+				logoPanel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				logoPanel->SetBorderRadius(0);
+				logoPanel->IsEnabled = false;
+
+
+
+				transform->SetPosition({app.GetWindowSize().x * 0.5, 300 });
+
+			}
+
+			{//Play Button
+				GameObject::Sptr button = scene->CreateGameObject("MainMenu Play Button");
+
+				RectTransform::Sptr transform = button->Add<RectTransform>();
+				transform->SetPosition({ 0, 0 });
+				transform->SetRotationDeg(0);
+				transform->SetSize({ 200, 100 });
+				transform->SetMin({ 0, 0 });
+				transform->SetMax({ 200, 100 });
+
+				GuiPanel::Sptr panel = button->Add<GuiPanel>();
+				panel->SetTexture(TexPlayButton);
+				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				panel->SetBorderRadius(0);
+				panel->IsEnabled = false;
+
+
+				transform->SetPosition({ app.GetWindowSize().x * 0.20, app.GetWindowSize().y * 0.8 });
+
+			}
+
+			{//Options Button
+				GameObject::Sptr button = scene->CreateGameObject("MainMenu Options Button");
+
+				RectTransform::Sptr transform = button->Add<RectTransform>();
+				transform->SetPosition({ 0, 0 });
+				transform->SetRotationDeg(0);
+				transform->SetSize({ 200, 100 });
+				transform->SetMin({ 0, 0 });
+				transform->SetMax({ 200, 100 });
+
+				GuiPanel::Sptr panel = button->Add<GuiPanel>();
+				panel->SetTexture(TexOptionsButton);
+				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 0.6f));
+				panel->SetBorderRadius(0);
+				panel->IsEnabled = false;
+
+
+				transform->SetPosition({ app.GetWindowSize().x * 0.35, app.GetWindowSize().y * 0.8 });
+
+			}
+
+			{//Music Button
+				GameObject::Sptr button = scene->CreateGameObject("MainMenu Music Button");
+
+				RectTransform::Sptr transform = button->Add<RectTransform>();
+				transform->SetPosition({ 0, 0 });
+				transform->SetRotationDeg(0);
+				transform->SetSize({ 200, 100 });
+				transform->SetMin({ 0, 0 });
+				transform->SetMax({ 200, 100 });
+
+				GuiPanel::Sptr panel = button->Add<GuiPanel>();
+				panel->SetTexture(TexMusicButton);
+				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 0.6f));
+				panel->SetBorderRadius(0);
+				panel->IsEnabled = false;
+
+
+				transform->SetPosition({ app.GetWindowSize().x * 0.5, app.GetWindowSize().y * 0.8 });
+
+			}
+
+			{//Credits Button
+				GameObject::Sptr button = scene->CreateGameObject("MainMenu Credits Button");
+
+				RectTransform::Sptr transform = button->Add<RectTransform>();
+				transform->SetPosition({ 0, 0 });
+				transform->SetRotationDeg(0);
+				transform->SetSize({ 200, 100 });
+				transform->SetMin({ 0, 0 });
+				transform->SetMax({ 200, 100 });
+
+				GuiPanel::Sptr panel = button->Add<GuiPanel>();
+				panel->SetTexture(TexCreditsButton);
+				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 0.6f));
+				panel->SetBorderRadius(0);
+				panel->IsEnabled = false;
+
+
+
+				transform->SetPosition({ app.GetWindowSize().x * 0.65, app.GetWindowSize().y * 0.8 });
+
+			}
+
+			{//Quit Button
+				GameObject::Sptr button = scene->CreateGameObject("MainMenu Quit Button");
+
+				RectTransform::Sptr transform = button->Add<RectTransform>();
+				transform->SetPosition({ 0, 0 });
+				transform->SetRotationDeg(0);
+				transform->SetSize({ 200, 100 });
+				transform->SetMin({ 0, 0 });
+				transform->SetMax({ 200, 100 });
+
+				GuiPanel::Sptr panel = button->Add<GuiPanel>();
+				panel->SetTexture(TexQuitButton);
+				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				panel->SetBorderRadius(0);
+				panel->IsEnabled = false;
+
+
+
+				transform->SetPosition({ app.GetWindowSize().x * 0.8, app.GetWindowSize().y * 0.8 });
+
+			}
+
+		}
+
+
+		{//Pause Menu Block
+
+			{//Dim BG
+				GameObject::Sptr background = scene->CreateGameObject("PauseMenu Dimmed Background");
+
+				RectTransform::Sptr transform = background->Add<RectTransform>();
+				transform->SetPosition({ 0, 0 });
+				transform->SetRotationDeg(0);
+				transform->SetSize({ 1920, 1080 });
+				transform->SetMin({ 0, 0 });
+				transform->SetMax({ 1920, 1080 });
+
+				GuiPanel::Sptr panel = background->Add<GuiPanel>();
+				panel->SetTexture(TexDimmedBG);
+				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				panel->SetBorderRadius(0);
+				panel->IsEnabled = false;
+
+
+				transform->SetPosition({ app.GetWindowSize().x * 0.5, app.GetWindowSize().y * 0.5 });
+
+			}
+
+			{//Background
+				GameObject::Sptr background = scene->CreateGameObject("PauseMenu Background");
+
+				RectTransform::Sptr transform = background->Add<RectTransform>();
+				transform->SetPosition({ 0, 0 });
+				transform->SetRotationDeg(0);
+				transform->SetSize({ 400, 750 });
+				transform->SetMin({ 0, 0 });
+				transform->SetMax({ 400, 750 });
+
+				GuiPanel::Sptr panel = background->Add<GuiPanel>();
+				panel->SetTexture(TexPauseMenu);
+				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				panel->SetBorderRadius(0);
+				panel->IsEnabled = false;
+
+
+				transform->SetPosition({ app.GetWindowSize().x * 0.5, app.GetWindowSize().y * 0.5 });
+
+			}
+
+			{//Resume Button
+				GameObject::Sptr button = scene->CreateGameObject("PauseMenu Resume Button");
+
+				RectTransform::Sptr transform = button->Add<RectTransform>();
+				transform->SetPosition({ 0, 0 });
+				transform->SetRotationDeg(0);
+				transform->SetSize({ 300, 150 });
+				transform->SetMin({ 0, 0 });
+				transform->SetMax({ 300, 150 });
+
+				GuiPanel::Sptr panel = button->Add<GuiPanel>();
+				panel->SetTexture(TexResumeButton);
+				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				panel->SetBorderRadius(0);
+				panel->IsEnabled = false;
+
+
+				transform->SetPosition({ app.GetWindowSize().x * 0.5, app.GetWindowSize().y * 0.28 });
+
+			}
+
+			{//Options Button
+				GameObject::Sptr button = scene->CreateGameObject("PauseMenu Options Button");
+
+				RectTransform::Sptr transform = button->Add<RectTransform>();
+				transform->SetPosition({ 0, 0 });
+				transform->SetRotationDeg(0);
+				transform->SetSize({ 300, 150 });
+				transform->SetMin({ 0, 0 });
+				transform->SetMax({ 300, 150 });
+
+				GuiPanel::Sptr panel = button->Add<GuiPanel>();
+				panel->SetTexture(TexOptionsButton);
+				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 0.6f));
+				panel->SetBorderRadius(0);
+				panel->IsEnabled = false;
+
+				transform->SetPosition({ app.GetWindowSize().x * 0.5, app.GetWindowSize().y * 0.43 });
+
+			}
+
+			{//Resync Button
+				GameObject::Sptr button = scene->CreateGameObject("PauseMenu Resync Button");
+
+				RectTransform::Sptr transform = button->Add<RectTransform>();
+				transform->SetPosition({ 0, 0 });
+				transform->SetRotationDeg(0);
+				transform->SetSize({ 300, 150 });
+				transform->SetMin({ 0, 0 });
+				transform->SetMax({ 300, 150 });
+
+				GuiPanel::Sptr panel = button->Add<GuiPanel>();
+				panel->SetTexture(TexResyncButton);
+				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 0.6f));
+				panel->SetBorderRadius(0);
+				panel->IsEnabled = false;
+
+				transform->SetPosition({ app.GetWindowSize().x * 0.5, app.GetWindowSize().y * 0.58 });
+
+			}
+
+			{//Quit Button
+				GameObject::Sptr button = scene->CreateGameObject("PauseMenu Quit Button");
+
+				RectTransform::Sptr transform = button->Add<RectTransform>();
+				transform->SetPosition({ 0, 0 });
+				transform->SetRotationDeg(0);
+				transform->SetSize({ 300, 150 });
+				transform->SetMin({ 0, 0 });
+				transform->SetMax({ 300, 150 });
+
+				GuiPanel::Sptr panel = button->Add<GuiPanel>();
+				panel->SetTexture(TexQuitButton);
+				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				panel->SetBorderRadius(0);
+				panel->IsEnabled = false;
+
+
+				transform->SetPosition({ app.GetWindowSize().x * 0.5, app.GetWindowSize().y * 0.73 });
+
+			}
+		}
+
+		{//Game Over Block
+
+			{//Dim BG
+				GameObject::Sptr background = scene->CreateGameObject("GameOver Dimmed Background");
+
+				RectTransform::Sptr transform = background->Add<RectTransform>();
+				transform->SetPosition({ 0, 0 });
+				transform->SetRotationDeg(0);
+				transform->SetSize({ 1920, 1080 });
+				transform->SetMin({ 0, 0 });
+				transform->SetMax({ 1920, 1080 });
+
+				GuiPanel::Sptr panel = background->Add<GuiPanel>();
+				panel->SetTexture(TexDimmedBG);
+				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				panel->SetBorderRadius(0);
+				panel->IsEnabled = false;
+
+
+				transform->SetPosition({ app.GetWindowSize().x * 0.5, app.GetWindowSize().y * 0.5 });
+
+			}
+
+			{//Game Over Text
+				GameObject::Sptr button = scene->CreateGameObject("GameOver Text");
+
+				RectTransform::Sptr transform = button->Add<RectTransform>();
+				transform->SetPosition({ 0, 0 });
+				transform->SetRotationDeg(0);
+				transform->SetSize({ 809, 249 });
+				transform->SetMin({ 0, 0 });
+				transform->SetMax({ 809, 249 });
+
+				GuiPanel::Sptr panel = button->Add<GuiPanel>();
+				panel->SetTexture(TexGameOverText);
+				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				panel->SetBorderRadius(0);
+				panel->IsEnabled = false;
+
+
+				transform->SetPosition({ app.GetWindowSize().x * 0.5, app.GetWindowSize().y * 0.2 });
+
+			}
+
+			{//Score breakdown
+				GameObject::Sptr button = scene->CreateGameObject("GameOver Score Breakdown");
+
+				RectTransform::Sptr transform = button->Add<RectTransform>();
+				transform->SetPosition({ 0, 0 });
+				transform->SetRotationDeg(0);
+				transform->SetSize({ 504 * 0.75, 475 * 0.75 });
+				transform->SetMin({ 0, 0 });
+				transform->SetMax({ 504 * 0.75, 475 * 0.75 });
+
+				GuiPanel::Sptr panel = button->Add<GuiPanel>();
+				panel->SetTexture(TexScoreBreakdown);
+				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				panel->SetBorderRadius(0);
+				panel->IsEnabled = false;
+
+
+				transform->SetPosition({ app.GetWindowSize().x * 0.4, app.GetWindowSize().y * 0.5 });
+
+			}
+
+
+			{//Quit
+				GameObject::Sptr button = scene->CreateGameObject("GameOver Quit Button");
+
+				RectTransform::Sptr transform = button->Add<RectTransform>();
+				transform->SetPosition({ 0, 0 });
+				transform->SetRotationDeg(0);
+				transform->SetSize({ 300, 150 });
+				transform->SetMin({ 0, 0 });
+				transform->SetMax({ 300, 150 });
+
+				GuiPanel::Sptr panel = button->Add<GuiPanel>();
+				panel->SetTexture(TexQuitButton);
+				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				panel->SetBorderRadius(0);
+				panel->IsEnabled = false;
+
+				transform->SetPosition({ app.GetWindowSize().x * 0.35, app.GetWindowSize().y * 0.8 });
+
+			}
+
+			{//Continue Button
+				GameObject::Sptr button = scene->CreateGameObject("GameOver Continue Button");
+
+				RectTransform::Sptr transform = button->Add<RectTransform>();
+				transform->SetPosition({ 0, 0 });
+				transform->SetRotationDeg(0);
+				transform->SetSize({ 300, 150 });
+				transform->SetMin({ 0, 0 });
+				transform->SetMax({ 300, 150 });
+
+				GuiPanel::Sptr panel = button->Add<GuiPanel>();
+				panel->SetTexture(TexContinueButton);
+				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				panel->SetBorderRadius(0);
+				panel->IsEnabled = false;
+
+
+				transform->SetPosition({ app.GetWindowSize().x * 0.65, app.GetWindowSize().y * 0.8 });
+
+			}
+		}
+
+		{//Tutorial Blocks
+
+			{//Movement
+				GameObject::Sptr button = scene->CreateGameObject("Movement Tutorial");
+
+				RectTransform::Sptr transform = button->Add<RectTransform>();
+				transform->SetPosition({ 0, 0 });
+				transform->SetRotationDeg(0);
+				transform->SetSize({ 700 * 0.75, 500 * 0.75 });
+				transform->SetMin({ 0, 0 });
+				transform->SetMax({ 700 * 0.75, 500 * 0.75 });
+
+				GuiPanel::Sptr panel = button->Add<GuiPanel>();
+				panel->SetTexture(TexMovementTutorial);
+				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				panel->SetBorderRadius(0);
+
+
+				transform->SetPosition({ app.GetWindowSize().x * 0.2, app.GetWindowSize().y * 0.2 });
+
+			}
+
+			{//Wall Jump
+				GameObject::Sptr button = scene->CreateGameObject("Wall Jump Tutorial");
+
+				RectTransform::Sptr transform = button->Add<RectTransform>();
+				transform->SetPosition({ 0, 0 });
+				transform->SetRotationDeg(0);
+				transform->SetSize({ 700 * 0.75, 500 * 0.75 });
+				transform->SetMin({ 0, 0 });
+				transform->SetMax({ 700 * 0.75, 500 * 0.75 });
+
+				GuiPanel::Sptr panel = button->Add<GuiPanel>();
+				panel->SetTexture(TexWallJumpTutorial);
+				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				panel->SetBorderRadius(0);
+
+
+				transform->SetPosition({ app.GetWindowSize().x * 0.2, app.GetWindowSize().y * 0.6 });
+
+			}
+
+			{//Beat Gem
+				GameObject::Sptr button = scene->CreateGameObject("Beat Gem Tutorial");
+
+				RectTransform::Sptr transform = button->Add<RectTransform>();
+				transform->SetPosition({ 0, 0 });
+				transform->SetRotationDeg(0);
+				transform->SetSize({ 700 * 0.75, 500 * 0.75 });
+				transform->SetMin({ 0, 0 });
+				transform->SetMax({ 700 * 0.75, 500 * 0.75 });
+
+				GuiPanel::Sptr panel = button->Add<GuiPanel>();
+				panel->SetTexture(TexBeatGemTutorial);
+				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				panel->SetBorderRadius(0);
+
+
+				transform->SetPosition({ app.GetWindowSize().x * 0.6, app.GetWindowSize().y * 0.2 });
+
+			}
+
+			{//Vinyls
+				GameObject::Sptr button = scene->CreateGameObject("Vinyl Tutorial");
+
+				RectTransform::Sptr transform = button->Add<RectTransform>();
+				transform->SetPosition({ 0, 0 });
+				transform->SetRotationDeg(0);
+				transform->SetSize({ 700 * 0.75, 500 * 0.75 });
+				transform->SetMin({ 0, 0 });
+				transform->SetMax({ 700 * 0.75, 500 * 0.75 });
+
+				GuiPanel::Sptr panel = button->Add<GuiPanel>();
+				panel->SetTexture(TexVinylsTutorial);
+				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				panel->SetBorderRadius(0);
+
+
+				transform->SetPosition({ app.GetWindowSize().x * 0.6, app.GetWindowSize().y * 0.6 });
+
+			}
+		}
+
+
+		{//HUD
+			{//Beat Bar
+				GameObject::Sptr button = scene->CreateGameObject("HUD Score Display");
+
+				RectTransform::Sptr transform = button->Add<RectTransform>();
+				transform->SetPosition({ 0, 0 });
+				transform->SetRotationDeg(0);
+				transform->SetSize({ 500, 100 });
+				transform->SetMin({ 0, 0 });
+				transform->SetMax({ 500, 100 });
+
+				GuiPanel::Sptr panel = button->Add<GuiPanel>();
+				panel->SetTexture(TexScoreDisplay);
+				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				panel->SetBorderRadius(0);
+				panel->IsEnabled = false;
+
+
+
+				transform->SetPosition({ 250, 50 });
+
+			}
+
+			{//Score Text
+				GameObject::Sptr button = scene->CreateGameObject("GameOver Score Text");
+
+				RectTransform::Sptr transform = button->Add<RectTransform>();
+				transform->SetPosition({ 0,0 });
+				transform->SetRotationDeg(0);
+				transform->SetSize({ 504, 475 });
+				transform->SetMin({ 0, 0 });
+				transform->SetMax({ 504, 475 });
+
+				transform->SetPosition({ 450 , 80 });
+
+
+				GuiPanel::Sptr panel = button->Add<GuiPanel>();
+				panel->SetTexture(TexScoreBreakdown);
+				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 0.0f));
+				panel->SetBorderRadius(0);
+				panel->IsEnabled = false;
+
+				GuiText::Sptr text = button->Add<GuiText>();
+				text->SetColor(glm::vec4(0.f));
+				text->SetFont(FontVCR);
+				text->SetText("0");
+				text->IsEnabled = false;
+
+				text->SetTextScale(4.0f);
+
+			}
+		*/
+			/*
+				{//Beat Bar
+					GameObject::Sptr button = scene->CreateGameObject("HUD Beat Bar");
+
+					RectTransform::Sptr transform = button->Add<RectTransform>();
+					transform->SetPosition({ 0, 0 });
+					transform->SetRotationDeg(0);
+					transform->SetSize({ 800 * 0.75, 300 * 0.75 });
+					transform->SetMin({ 0, 0 });
+					transform->SetMax({ 800 * 0.75, 300 * 0.75 });
+
+					GuiPanel::Sptr panel = button->Add<GuiPanel>();
+					panel->SetTexture(TexBeatBar);
+					panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+					panel->SetBorderRadius(0);
+
+
+					transform->SetPosition({ app.GetWindowSize().x * 0.5, app.GetWindowSize().y * 0.9 });
+
+				}
+
+				{//Beat Tick
+					GameObject::Sptr button = scene->CreateGameObject("HUD Beat Tick");
+
+					RectTransform::Sptr transform = button->Add<RectTransform>();
+					transform->SetPosition({ 0, 0 });
+					transform->SetRotationDeg(0);
+					transform->SetSize({ 50 * 0.75, 170 * 0.75 });
+					transform->SetMin({ 0, 0 });
+					transform->SetMax({ 50 * 0.75, 170 * 0.75 });
+
+					GuiPanel::Sptr panel = button->Add<GuiPanel>();
+					panel->SetTexture(TexBeatBarTick);
+					panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+					panel->SetBorderRadius(0);
+
+
+					transform->SetPosition({ app.GetWindowSize().x * 0.4, app.GetWindowSize().y * 0.9 });
+
+				}
+		}
+			*/
 
 
 		/////////////////////////// UI //////////////////////////////

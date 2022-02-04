@@ -30,6 +30,10 @@
 #include "Gameplay/GameObject.h"
 #include "Gameplay/Scene.h"
 
+// Animations
+#include "Gameplay/Animation/MorphAnimator.h"
+#include "Gameplay/Animation/MorphMeshRenderer.h"
+
 // Components
 #include "Gameplay/Components/IComponent.h"
 #include "Gameplay/Components/Camera.h"
@@ -159,7 +163,7 @@ void Application::_Run()
 	_layers.push_back(std::make_shared<LogicUpdateLayer>());
 	_layers.push_back(std::make_shared<RenderLayer>());
 	_layers.push_back(std::make_shared<ParticleLayer>());
-	_layers.push_back(std::make_shared<InstancedRenderingTestLayer>());
+	//_layers.push_back(std::make_shared<InstancedRenderingTestLayer>());
 	_layers.push_back(std::make_shared<InterfaceLayer>());
 
 	// If we're in editor mode, we add all the editor layers
@@ -277,6 +281,7 @@ void Application::_RegisterClasses()
 	ComponentManager::RegisterType<GuiPanel>();
 	ComponentManager::RegisterType<GuiText>();
 	ComponentManager::RegisterType<ParticleSystem>();
+	
 
 
 
@@ -292,6 +297,9 @@ void Application::_RegisterClasses()
 	ComponentManager::RegisterType<ForeGroundMover>();
 	ComponentManager::RegisterType<BuildingAnim>();
 	ComponentManager::RegisterType<MaterialSwap>();
+	ComponentManager::RegisterType<RotatingBehaviourCD>();
+	ComponentManager::RegisterType<Morphanimator>();
+	ComponentManager::RegisterType<MorphMeshRenderer>();
 }
 
 void Application::_Load() {

@@ -1447,13 +1447,8 @@ int main() {
 		//Level Spawning, Score Counting, and a few miscellaneous systems
 		GameObject::Sptr GameManager = scene->CreateGameObject("GameManager");
 		{
-			//Pos-Rot-Scale Doesn't matter
 			RigidBody::Sptr physics = GameManager->Add<RigidBody>(RigidBodyType::Kinematic);
 			GameManager->Add <BeatTimer>();
-			//ScoreComponent
-			//LevelSpawningComponent
-			//Scene Swapper
-
 		}
 
 
@@ -1596,7 +1591,7 @@ int main() {
 		}
 
 		/////////////////////////// UI //////////////////////////////
-
+	/*
 		{//Main Menu Block
 
 				{//Logo
@@ -2101,6 +2096,7 @@ int main() {
 				text->SetTextScale(4.0f);
 
 			}
+			*/
 		/*
 			{//Beat Bar
 				GameObject::Sptr button = scene->CreateGameObject("HUD Beat Bar");
