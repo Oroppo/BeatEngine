@@ -61,6 +61,7 @@
 #include "Gameplay/Components/MaterialSwap.h"
 #include "Gameplay/Components/SimpleCameraControl.h"
 #include "Gameplay/Components/TriggerVolumeEnterBehaviour.h"
+#include "Gameplay/Components/SpawnLoop.h"
 
 
 // Physics
@@ -607,7 +608,7 @@ void DefaultSceneLayer::_CreateScene()
 
 		GameObject::Sptr GameManager = scene->CreateGameObject("GameManager");
 		{
-			RigidBody::Sptr physics = GameManager->Add<RigidBody>(RigidBodyType::Kinematic);
+			GameManager->Add <SpawnLoop>();
 			GameManager->Add <BeatTimer>();
 		}
 
@@ -633,12 +634,12 @@ void DefaultSceneLayer::_CreateScene()
 			auto rb = physics->AddCollider(BoxCollider::Create(glm::vec3(0.2, 0.85, 0.15)));
 			rb->SetPosition(glm::vec3(0.0, 0.75, 0.0));
 
-			TriggerVolume::Sptr volume = character->Add<TriggerVolume>();
-			volume->SetFlags(TriggerTypeFlags::Statics | TriggerTypeFlags::Kinematics);
+			//TriggerVolume::Sptr volume = character->Add<TriggerVolume>();
+			//volume->SetFlags(TriggerTypeFlags::Statics | TriggerTypeFlags::Kinematics);
 
-			BoxCollider::Sptr collider = BoxCollider::Create(glm::vec3(0.3f, 0.3f, 0.3f));
-			collider->SetPosition(glm::vec3(0.f, 0.25f, 0.f));
-			volume->AddCollider(collider);
+			//BoxCollider::Sptr collider = BoxCollider::Create(glm::vec3(0.3f, 0.3f, 0.3f));
+			//collider->SetPosition(glm::vec3(0.f, 0.25f, 0.f));
+			//volume->AddCollider(collider);
 
 
 			

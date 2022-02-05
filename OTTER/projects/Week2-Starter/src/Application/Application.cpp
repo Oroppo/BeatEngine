@@ -55,6 +55,7 @@
 #include "Gameplay/Components/SimpleCameraControl.h"
 #include "Gameplay/Components/TriggerVolumeEnterBehaviour.h"
 #include "Gameplay/Components/ParticleSystem.h"
+#include "Gameplay/Components/SpawnLoop.h"
 
 // GUI
 #include "Gameplay/Components/GUI/RectTransform.h"
@@ -300,6 +301,7 @@ void Application::_RegisterClasses()
 	ComponentManager::RegisterType<RotatingBehaviourCD>();
 	ComponentManager::RegisterType<Morphanimator>();
 	ComponentManager::RegisterType<MorphMeshRenderer>();
+	ComponentManager::RegisterType<SpawnLoop>();
 }
 
 void Application::_Load() {

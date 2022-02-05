@@ -24,6 +24,7 @@ out vec4 out_Metadata;
 
 // Uniforms
 uniform vec3  u_Gravity;
+uniform float u_DeltaTime;
 
 #define TYPE_EMITTER 0
 #define TYPE_PARTICLE 1
