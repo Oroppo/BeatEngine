@@ -489,12 +489,12 @@ void Level1Scene::_CreateScene()
 		}
 
 	
-		// Create some lights for our scene
-		scene->Lights.resize(2);
-		scene->Lights[0].Position = glm::vec3(0.0f, 1.0f, 3.0f);
-		scene->Lights[0].Color = glm::vec3(1.0f, 1.0f, 1.0f);
-		scene->Lights[0].Range = 50.0f;
-		/*
+		//// Create some lights for our scene
+		//scene->Lights.resize(2);
+		//scene->Lights[0].Position = glm::vec3(0.0f, 1.0f, 3.0f);
+		//scene->Lights[0].Color = glm::vec3(1.0f, 1.0f, 1.0f);
+		//scene->Lights[0].Range = 50.0f;
+		
 			// Create some lights for our scene
 			scene->Lights.resize(6);
 			//scene->Lights[0].Position = glm::vec3(0.0f, 1.0f, 3.0f);
@@ -515,7 +515,7 @@ void Level1Scene::_CreateScene()
 
 			scene->Lights[5].Color = glm::vec3(1.0f, 1.0f, 1.0f);
 
-			*/
+			
 			// Red/Green light
 		scene->Lights[1].Position = glm::vec3(6.840f, 5.610f, 3.0f);
 		scene->Lights[1].Color = glm::vec3((1.0f, 0.99f, 0.99f));
