@@ -12,7 +12,7 @@
 #include "Gameplay/MeshResource.h"
 
 #include "Graphics/DebugDraw.h"
-#include "Graphics/TextureCube.h"
+#include "Graphics/Textures/TextureCube.h"
 #include "Graphics/VertexArrayObject.h"
 #include "Application/Application.h"
 

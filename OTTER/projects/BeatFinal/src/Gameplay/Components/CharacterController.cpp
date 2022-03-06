@@ -155,8 +155,8 @@ void CharacterController::Update(float deltaTime) {
         GetGameObject()->GetScene()->Scene::Load("scene.json");
 
         // Call scene awake to start up all of our components
-        GetGameObject()->GetScene()->Window = window;
-        GetGameObject()->GetScene()->Awake();
+        //GetGameObject()->GetScene()->Window = Window;
+        //GetGameObject()->GetScene()->Awake();
     }
 }
     

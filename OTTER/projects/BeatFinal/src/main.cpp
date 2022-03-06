@@ -934,6 +934,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 }
 
 int main() {	
+
 	Logger::Init(); // We'll borrow the logger from the toolkit, but we need to initialize it
 
 	//Initialize GLFW
