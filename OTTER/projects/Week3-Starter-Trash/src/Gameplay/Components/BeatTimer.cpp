@@ -3,6 +3,7 @@
 #include "Gameplay/GameObject.h"
 #include "Gameplay/Scene.h"
 #include "Utils/ImGuiHelper.h"
+#include "FMOD/AudioEngine.h"
 
 void BeatTimer::Awake()
 {
@@ -41,6 +42,13 @@ float BeatTimer::GetBeatTime() {
 }
 
 void BeatTimer::Update(float deltaTime) {
+	auto Banks = AudioEngine::GetContextBanks();
+
+	//Idk wtf is going on here it shouldn't be checking if not true but it DOES work so I'm leaving it alone
+	if (!GetGameObject()->GetScene()->IsPlaying) {
+		std::cout << "AYo the pizza's here";
+		//Banks->PlayEvent("event:/Music");
+	}
 	_BeatTime += deltaTime;
 	//since music is in 100 bpm, there are 60 seconds in a munute so 100/60 is 1.666666 so bar resets once every 1.6666 seconds
 	//reseting timer so that it may be  passed to character controller and used for the beat gem logic

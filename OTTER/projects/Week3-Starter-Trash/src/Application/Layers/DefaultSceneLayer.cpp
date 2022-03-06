@@ -68,8 +68,6 @@
 #include "Graphics/Textures/Texture3D.h"
 #include "Graphics/Textures/Texture1D.h"
 
-#include "Resource Definitions.h"
-
 DefaultSceneLayer::DefaultSceneLayer() :
 	ApplicationLayer()
 {

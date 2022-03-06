@@ -85,7 +85,6 @@
 
 //Testing...
 #include "SpawnFunctions.h"
-#include "Resource Definitions.h"
 
 
 Level1Scene::Level1Scene() :
@@ -543,7 +542,7 @@ void Level1Scene::_CreateScene()
 		GameObject::Sptr GameManager = scene->CreateGameObject("GameManager");
 		{
 			//Pos-Rot-Scale Doesn't matter
-			RigidBody::Sptr physics = GameManager->Add<RigidBody>(RigidBodyType::Kinematic);
+			//RigidBody::Sptr physics = GameManager->Add<RigidBody>(RigidBodyType::Kinematic);
 			GameManager->Add<BeatTimer>();
 			GameManager->Add<SpawnLoop>();
 			//ScoreComponent

@@ -74,8 +74,11 @@
 #include "Layers/ParticleLayer.h"
 #include "Layers/Level1Scene.h"
 
+//Sound
+#include "FMOD/AudioEngine.h"
+
 Application* Application::_singleton = nullptr;
-std::string Application::_applicationName = "INFR-2350U - DEMO";
+std::string Application::_applicationName = "Beat!";
 
 #define DEFAULT_WINDOW_WIDTH 1280
 #define DEFAULT_WINDOW_HEIGHT 720
@@ -85,7 +88,7 @@ Application::Application() :
 	_windowSize({DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT}),
 	_isRunning(false),
 	_isEditor(true),
-	_windowTitle("INFR - 2350U"),
+	_windowTitle("Beat - Amnesia Interactive"),
 	_currentScene(nullptr),
 	_targetScene(nullptr),
 	_renderOutput(nullptr)
@@ -197,6 +200,17 @@ void Application::_Run()
 
 	// Done loading, app is now running!
 	_isRunning = true;
+	
+	//Audio Engine Init
+	AudioEngine::init();
+
+	ToneFire::FMODStudio* Studio = AudioEngine::GetContext();
+	ToneFire::StudioSound* Banks = AudioEngine::GetContextBanks();
+
+	Banks->LoadEvent("event:/Music");
+	Banks->SetEventPosition("event:/Music", FMOD_VECTOR{ -10.270f, 5.710f, -3.800f });
+	Banks->SetVolume("event:/Music", 1.0f);
+	Banks->PlayEvent("event:/Music");
 
 	// Infinite loop as long as the application is running
 	while (_isRunning) {
@@ -212,6 +226,9 @@ void Application::_Run()
 		if (glfwWindowShouldClose(_window)) {
 			_isRunning = false;
 		}
+
+
+
 
 		// Grab the timing singleton instance as a reference
 		Timing& timing = Timing::_singleton;
@@ -239,7 +256,8 @@ void Application::_Run()
 			_RenderScene(); 
 			_PostRender();
 		}
-
+		//Update Our Audio Engine
+		Studio->Update();
 		// Store timing for next loop
 		lastFrame = thisFrame;
 

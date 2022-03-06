@@ -23,6 +23,7 @@ void SpawnLoop::Awake() {
 	nlohmann::ordered_json data = ResourceManager::GetManifest();
 
 	CreateList(data);
+	using namespace Gameplay;
 	
 	Scene::Sptr scene = Application::Get().CurrentScene();
 	
@@ -106,7 +107,7 @@ void SpawnLoop::Awake() {
 
 
 void SpawnLoop::CreateList(const nlohmann::json& blob) {
-
+	using namespace Gameplay;
 	//It's probably more efficient to grab these values Directly form the manifest since
 	//they're already loaded there but iterating through JSON's is Icky....
 
@@ -351,12 +352,10 @@ int SpawnLoop::ToSpawn() {
 }
 
 void SpawnLoop::RenderImGui(){
-	ImGui::Text("Difficulty:   %s", GetDifficulty());
-	ImGui::Separator();
-	ImGui::Text("Currently Spawning:	%s", ToSpawn());
-	ImGui::Text("Time to Next Spawn:	%s", _SpawnTimer, _isDirty=true);
-
-	
+	//ImGui::Text("Difficulty:   %s", "Easy");
+	//ImGui::Separator();
+	//ImGui::Text("Currently Spawning:	%s", _BlockToSpawn);
+	//ImGui::Text("Time to Next Spawn:	%s", _SpawnTimer);
 
 }
 float SpawnLoop::GetSpawnTimer() {

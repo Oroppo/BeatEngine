@@ -5,7 +5,6 @@
 #include "../../Gameplay/MeshResource.h"
 #include "../../Gameplay/Material.h"
 #include "../../Gameplay/GameObject.h"
-#include "Resource Definitions.h"
 
 class SpawnFunctions {
 
