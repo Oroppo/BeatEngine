@@ -55,6 +55,7 @@
 #include "Gameplay/Components/ForegroundMover.h"
 #include "Gameplay/Components/BuildingAnim.h"
 #include "Gameplay/Components/MaterialSwap.h"
+#include "Gameplay/Components/SpawnLoop.h"
 
 
 // GUI
@@ -302,6 +303,7 @@ void Application::_RegisterClasses()
 	//ComponentManager::RegisterType<Morphanimator>();
 	//ComponentManager::RegisterType<MorphMeshRenderer>();
 	ComponentManager::RegisterType<ParticleSystem>();
+	ComponentManager::RegisterType<SpawnLoop>();
 }
 
 void Application::_Load() {

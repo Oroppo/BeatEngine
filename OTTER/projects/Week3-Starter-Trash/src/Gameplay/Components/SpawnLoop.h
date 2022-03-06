@@ -33,7 +33,7 @@ public:
 	int ToSpawn();
 	float GetSpawnTimer();
 	void SpawnBlock();
-	SpawnLoop::Sptr CreateList(const nlohmann::json&);
+	void CreateList(const nlohmann::json&);
 
 	virtual void RenderImGui() override;
 	MAKE_TYPENAME(SpawnLoop);

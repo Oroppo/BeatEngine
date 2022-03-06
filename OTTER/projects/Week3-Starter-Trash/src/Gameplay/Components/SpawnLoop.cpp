@@ -11,7 +11,6 @@
 #include "Gameplay/Material.h"
 #include "Gameplay/GameObject.h"
 #include "Utils/ResourceManager/ResourceManager.h"
-#include "SpawnLoop.h"
 #include "Utils/FileHelpers.h"
 
 
@@ -26,90 +25,87 @@ void SpawnLoop::Awake() {
 	CreateList(data);
 	
 	Scene::Sptr scene = Application::Get().CurrentScene();
-
-	//So Gross. These Are already loaded in Memory and I simply don't know how to access them.
 	
 	//Loads The Resource From the Manifest using the human-readable names
+	
 	//Meshes
-	GameObject::Sptr testing = scene->FindObjectByGUID(MeshList.find("Monkey.obj")->second);
-	testing->Get<MeshResource>()->Mesh;
-	monkeyMesh				= scene->FindObjectByGUID(MeshList.find("Monkey.obj")->second).Get<MeshResource>()->Mesh;
-	SmallPlatform			= scene->FindObjectByGUID(MeshList.find("SmallSpeakerPlatformV5.obj")->second);
-	WallJump				= scene->FindObjectByGUID(MeshList.find("WallJumpV6.obj")->second);
-	BeatGem					= scene->FindObjectByGUID(MeshList.find("Gem.obj")->second);
-	Vinyl					= scene->FindObjectByGUID(MeshList.find("VinylV2.obj")->second);
-	CD						= scene->FindObjectByGUID(MeshList.find("CDwithUnwrap.obj")->second);
-	Building				= scene->FindObjectByGUID(MeshList.find("RBuilding.obj")->second);
-	KBuilding1Mesh			= scene->FindObjectByGUID(MeshList.find("KBuilding.obj")->second);
-	KBuilding2Mesh			= scene->FindObjectByGUID(MeshList.find("KBuilding2.obj")->second);
-	KBuilding3Mesh			= scene->FindObjectByGUID(MeshList.find("KBuilding3.obj")->second);
-	OvalBuilding			= scene->FindObjectByGUID(MeshList.find("OvalBuilding.obj")->second);
-	CharacterMesh			= scene->FindObjectByGUID(MeshList.find("discobot.obj")->second);
-	DiscoBallMesh			= scene->FindObjectByGUID(MeshList.find("DiscoBall2.obj")->second);
-	StartPlatform			= scene->FindObjectByGUID(MeshList.find("LStartPlatform.obj")->second);
-	Car1Mesh				= scene->FindObjectByGUID(MeshList.find("FutureCar1.obj")->second);
-	SemiTruckMesh			= scene->FindObjectByGUID(MeshList.find("Semitruck.obj")->second);
-	PickupTruckMesh			= scene->FindObjectByGUID(MeshList.find("FuturePickup.obj")->second);
-	SmallWallJump			= scene->FindObjectByGUID(MeshList.find("SmallWallJump.obj")->second);
-	SuperSmallWallJump		= scene->FindObjectByGUID(MeshList.find("SuperSmallWallJump.obj")->second);
-	FallingPlat				= scene->FindObjectByGUID(MeshList.find("pianoplatform.obj")->second);
-	HalfCirclePlat			= scene->FindObjectByGUID(MeshList.find("HalfCriclePlat.obj")->second);
-	StairsRight				= scene->FindObjectByGUID(MeshList.find("StairCaseR.obj")->second);
-	StairsLeft				= scene->FindObjectByGUID(MeshList.find("StairCaseL.obj")->second);
-	Speaker					= scene->FindObjectByGUID(MeshList.find("speaker.obj")->second);
-	SquarePlat				= scene->FindObjectByGUID(MeshList.find("SquarePlatform.obj")->second);
-	FloatingLight			= scene->FindObjectByGUID(MeshList.find("FloatingStreetLight.obj")->second);
-	DiscoBotMesh1			= scene->FindObjectByGUID(MeshList.find("CharacterAnims/run1.obj")->second);
-	DiscoBotMesh2			= scene->FindObjectByGUID(MeshList.find("CharacterAnims/run2.obj")->second);
-	DiscoBotMesh3			= scene->FindObjectByGUID(MeshList.find("CharacterAnims/run3.obj")->second);
-	DiscoBotMesh4			= scene->FindObjectByGUID(MeshList.find("CharacterAnims/run4.obj")->second);
-	DiscoBotMesh5			= scene->FindObjectByGUID(MeshList.find("CharacterAnims/run5.obj")->second);
-	DiscoBotMesh6			= scene->FindObjectByGUID(MeshList.find("CharacterAnims/run6.obj")->second);
-	DiscoBotMesh7			= scene->FindObjectByGUID(MeshList.find("CharacterAnims/run7.obj")->second);
-	DiscoBotMesh8			= scene->FindObjectByGUID(MeshList.find("CharacterAnims/run8.obj")->second);
-	DiscoBotMesh9			= scene->FindObjectByGUID(MeshList.find("CharacterAnims/run9.obj")->second);
-	BotJump1				= scene->FindObjectByGUID(MeshList.find("CharacterAnims/jump1.obj")->second);
-	BotJump2				= scene->FindObjectByGUID(MeshList.find("CharacterAnims/jump2.obj")->second);
-	BotJump3				= scene->FindObjectByGUID(MeshList.find("CharacterAnims/jump3.obj")->second);
-	BotJump4				= scene->FindObjectByGUID(MeshList.find("CharacterAnims/jump4.obj")->second);
-	BotJump5				= scene->FindObjectByGUID(MeshList.find("CharacterAnims/jump5.obj")->second);
-	BotJump6				= scene->FindObjectByGUID(MeshList.find("CharacterAnims/jump6.obj")->second);
-	BotJump7				= scene->FindObjectByGUID(MeshList.find("CharacterAnims/jump7.obj")->second);
+	monkeyMesh				= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
+	SmallPlatform			= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
+	WallJump				= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
+	BeatGem					= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
+	Vinyl					= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
+	CD						= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
+	Building				= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
+	KBuilding1Mesh			= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
+	KBuilding2Mesh			= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
+	KBuilding3Mesh			= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
+	OvalBuilding			= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
+	CharacterMesh			= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
+	DiscoBallMesh			= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
+	StartPlatform			= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
+	Car1Mesh				= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
+	SemiTruckMesh			= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
+	PickupTruckMesh			= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
+	SmallWallJump			= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
+	SuperSmallWallJump		= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
+	FallingPlat				= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
+	HalfCirclePlat			= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
+	StairsRight				= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
+	StairsLeft				= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
+	Speaker					= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
+	SquarePlat				= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
+	FloatingLight			= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
+	DiscoBotMesh1			= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
+	DiscoBotMesh2			= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
+	DiscoBotMesh3			= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
+	DiscoBotMesh4			= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
+	DiscoBotMesh5			= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
+	DiscoBotMesh6			= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
+	DiscoBotMesh7			= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
+	DiscoBotMesh8			= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
+	DiscoBotMesh9			= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
+	BotJump1				= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
+	BotJump2				= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
+	BotJump3				= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
+	BotJump4				= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
+	BotJump5				= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
+	BotJump6				= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
+	BotJump7				= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
 
 	//Materials
-	StartPlatformMaterial		= scene->FindObjectByGUID(MaterialList.find("StartPlatform")->second);
-	UIMat						= scene->FindObjectByGUID(MaterialList.find("UIButton")->second);
-	SmallPlatformMaterial		= scene->FindObjectByGUID(MaterialList.find("SmallPlatform")->second);
-	WallJumpMaterial			= scene->FindObjectByGUID(MaterialList.find("WallJump")->second);
-	BeatGemMaterial				= scene->FindObjectByGUID(MaterialList.find("BeatGem")->second);
-	BeatGemOffMaterial			= scene->FindObjectByGUID(MaterialList.find("BeatGemOff")->second);
-	VinylMaterial				= scene->FindObjectByGUID(MaterialList.find("Vinyl")->second);
-	CDMaterial					= scene->FindObjectByGUID(MaterialList.find("CD")->second);
-	CharacterMaterial			= scene->FindObjectByGUID(MaterialList.find("Character")->second);
-	DiscoBallMaterial			= scene->FindObjectByGUID(MaterialList.find("DiscoBall")->second);
-	LoseScreenMaterial			= scene->FindObjectByGUID(MaterialList.find("Lose Screen")->second);
-	Car1Material				= scene->FindObjectByGUID(MaterialList.find("Car1")->second);
-	SemiTruckMaterial			= scene->FindObjectByGUID(MaterialList.find("Semi1")->second);
-	PickupTruckMaterial			= scene->FindObjectByGUID(MaterialList.find("Pickup1")->second);
-	BuildingMaterial			= scene->FindObjectByGUID(MaterialList.find("Building")->second);
-	KBuildingMaterial			= scene->FindObjectByGUID(MaterialList.find("KBuilding")->second);
-	KBuilding2Material			= scene->FindObjectByGUID(MaterialList.find("KBuilding2")->second);
-	KBuilding3Material			= scene->FindObjectByGUID(MaterialList.find("KBuilding3")->second);
-	SmallWallJumpMaterial		= scene->FindObjectByGUID(MaterialList.find("Small Wall Jump")->second);
-	SuperSmallWallJumpMaterial	= scene->FindObjectByGUID(MaterialList.find("Super Small Wall Jump")->second);
-	PianoMaterial				= scene->FindObjectByGUID(MaterialList.find("Piano")->second);
-	HalfCirclePlatMaterial		= scene->FindObjectByGUID(MaterialList.find("Half Circle Plat")->second);
-	StairsRightMaterial			= scene->FindObjectByGUID(MaterialList.find("Stairs Right")->second);
-	StairsLeftMaterial			= scene->FindObjectByGUID(MaterialList.find("Stairs Left")->second);
-	SpeakerMaterial				= scene->FindObjectByGUID(MaterialList.find("Speaker Material")->second);
-	SquarePlatMaterial			= scene->FindObjectByGUID(MaterialList.find("Square Platform")->second);
-	FloatingLightMaterial		= scene->FindObjectByGUID(MaterialList.find("FLoating Light")->second);
-	OvalBuildingMaterial		= scene->FindObjectByGUID(MaterialList.find("Oval Building")->second);
+	StartPlatformMaterial			= ResourceManager::Get<Material>((MaterialList.find("SmallPlatform")->second));
+	UIMat							= ResourceManager::Get<Material>((MaterialList.find("SmallPlatform")->second));
+	SmallPlatformMaterial			= ResourceManager::Get<Material>((MaterialList.find("SmallPlatform")->second));
+	WallJumpMaterial				= ResourceManager::Get<Material>((MaterialList.find("SmallPlatform")->second));
+	BeatGemMaterial					= ResourceManager::Get<Material>((MaterialList.find("SmallPlatform")->second));
+	BeatGemOffMaterial				= ResourceManager::Get<Material>((MaterialList.find("SmallPlatform")->second));
+	VinylMaterial					= ResourceManager::Get<Material>((MaterialList.find("SmallPlatform")->second));
+	CDMaterial						= ResourceManager::Get<Material>((MaterialList.find("SmallPlatform")->second));
+	CharacterMaterial				= ResourceManager::Get<Material>((MaterialList.find("SmallPlatform")->second));
+	DiscoBallMaterial				= ResourceManager::Get<Material>((MaterialList.find("SmallPlatform")->second));
+	LoseScreenMaterial				= ResourceManager::Get<Material>((MaterialList.find("SmallPlatform")->second));
+	Car1Material					= ResourceManager::Get<Material>((MaterialList.find("SmallPlatform")->second));
+	SemiTruckMaterial				= ResourceManager::Get<Material>((MaterialList.find("SmallPlatform")->second));
+	PickupTruckMaterial				= ResourceManager::Get<Material>((MaterialList.find("SmallPlatform")->second));
+	BuildingMaterial				= ResourceManager::Get<Material>((MaterialList.find("SmallPlatform")->second));
+	KBuildingMaterial				= ResourceManager::Get<Material>((MaterialList.find("SmallPlatform")->second));
+	KBuilding2Material				= ResourceManager::Get<Material>((MaterialList.find("SmallPlatform")->second));
+	KBuilding3Material				= ResourceManager::Get<Material>((MaterialList.find("SmallPlatform")->second));
+	SmallWallJumpMaterial			= ResourceManager::Get<Material>((MaterialList.find("SmallPlatform")->second));
+	SuperSmallWallJumpMaterial		= ResourceManager::Get<Material>((MaterialList.find("SmallPlatform")->second));
+	PianoMaterial					= ResourceManager::Get<Material>((MaterialList.find("SmallPlatform")->second));
+	HalfCirclePlatMaterial			= ResourceManager::Get<Material>((MaterialList.find("SmallPlatform")->second));
+	StairsRightMaterial				= ResourceManager::Get<Material>((MaterialList.find("SmallPlatform")->second));
+	StairsLeftMaterial				= ResourceManager::Get<Material>((MaterialList.find("SmallPlatform")->second));
+	SpeakerMaterial					= ResourceManager::Get<Material>((MaterialList.find("SmallPlatform")->second));
+	SquarePlatMaterial				= ResourceManager::Get<Material>((MaterialList.find("SmallPlatform")->second));
+	FloatingLightMaterial			= ResourceManager::Get<Material>((MaterialList.find("SmallPlatform")->second));
+	OvalBuildingMaterial			= ResourceManager::Get<Material>((MaterialList.find("SmallPlatform")->second));
 
 }
 
 
-SpawnLoop::Sptr SpawnLoop::CreateList(const nlohmann::json& blob) {
+void SpawnLoop::CreateList(const nlohmann::json& blob) {
 
 	//It's probably more efficient to grab these values Directly form the manifest since
 	//they're already loaded there but iterating through JSON's is Icky....
@@ -130,7 +126,7 @@ SpawnLoop::Sptr SpawnLoop::CreateList(const nlohmann::json& blob) {
 			return;
 		}
 		//Map the GUID created on App start to a human-readable name
-		//MeshList.insert(std::pair<std::string, Guid>(Mesh->Filename, Mesh->GetGUID()));
+		MeshList.insert(std::pair<std::string, Guid>(Mesh->Filename, Mesh->GetGUID()));
 
 		});
 
