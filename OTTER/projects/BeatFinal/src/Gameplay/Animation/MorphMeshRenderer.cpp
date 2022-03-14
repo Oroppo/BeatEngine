@@ -33,6 +33,7 @@ void MorphMeshRenderer::UpdateData(MeshResource::Sptr frame0, MeshResource::Sptr
 	m_vao = frame0->Mesh;
 
 	VertexBuffer::Sptr vbo = VertexBuffer::Create();
+
 	VertexBuffer::Sptr vbo2 = VertexBuffer::Create();
 
 	//call bind function
