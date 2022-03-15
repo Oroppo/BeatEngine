@@ -15,9 +15,7 @@ void BuildingAnim::Awake()
         IsEnabled = false;
     }
     keypoints.push_back(GetGameObject()->GetScale().y + 0.3);
-   // keypoints.push_back(GetGameObject()->GetScale().y);
     keypoints.push_back(GetGameObject()->GetScale().y - 0.3);
-   // keypoints.push_back(GetGameObject()->GetScale().y);
     keypoints.push_back(GetGameObject()->GetScale().y + 0.3);
 
 

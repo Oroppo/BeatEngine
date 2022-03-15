@@ -71,6 +71,7 @@ public:
 
 	protected:
 		friend class VertexArrayObject;
+		friend class MorphMeshRenderer;
 
 		VertexBuffer::Sptr Buffer;
 		std::vector<BufferAttribute> Attributes;

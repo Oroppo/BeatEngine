@@ -36,16 +36,14 @@
 #include "Gameplay/Components/IComponent.h"
 #include "Gameplay/Components/Camera.h"
 #include "Gameplay/Components/RotatingBehaviour.h"
-#include "Gameplay/Components/JumpBehaviour.h"
 #include "Gameplay/Components/RenderComponent.h"
-#include "Gameplay/Components/MaterialSwapBehaviour.h"
 #include "Gameplay/Components/TriggerVolumeEnterBehaviour.h"
 #include "Gameplay/Components/SimpleCameraControl.h"
 #include "Gameplay/Components/ParticleSystem.h"
 #include "Gameplay/Components/BeatTimer.h"
-#include "Gameplay/Components/MoveThings.h"
 #include "Gameplay/Components/SeekBehaviour.h"
 #include "Gameplay/Components/RotatingBehaviour.h"
+#include "Gameplay/Components/MaterialSwap.h"
 #include "Gameplay/Components/CharacterController.h"
 #include "Gameplay/Components/LevelMover.h"
 #include "Gameplay/Components/BackgroundMover.h"
@@ -54,7 +52,6 @@
 #include "Gameplay/Components/VinylAnim.h"
 #include "Gameplay/Components/ForegroundMover.h"
 #include "Gameplay/Components/BuildingAnim.h"
-#include "Gameplay/Components/MaterialSwap.h"
 #include "Gameplay/Components/SpawnLoop.h"
 
 
@@ -76,6 +73,10 @@
 
 //Sound
 #include "FMOD/AudioEngine.h"
+
+//Animation
+#include "Animation/MorphAnimator.h"
+#include "Animation/MorphMeshRenderer.h"
 
 Application* Application::_singleton = nullptr;
 std::string Application::_applicationName = "Beat!";
@@ -209,12 +210,13 @@ void Application::_Run()
 
 	Banks->LoadEvent("event:/Music");
 	Banks->SetEventPosition("event:/Music", FMOD_VECTOR{ -10.270f, 5.710f, -3.800f });
-	Banks->SetVolume("event:/Music", 0.1f);
-	Banks->PlayEvent("event:/Music");
+	Banks->SetVolume("event:/Music", 0.8f);
+	
 
 	// Infinite loop as long as the application is running
 	while (_isRunning) {
 		// Handle scene switching
+		
 		if (_targetScene != nullptr) {
 			_HandleSceneChange();
 		}
@@ -258,6 +260,11 @@ void Application::_Run()
 		}
 		//Update Our Audio Engine
 		Studio->Update();
+
+		if (!_currentScene->IsPlaying == true) {
+			Banks->PlayEvent("event:/Music");
+		}
+
 		// Store timing for next loop
 		lastFrame = thisFrame;
 
@@ -298,16 +305,14 @@ void Application::_RegisterClasses()
 	ComponentManager::RegisterType<RigidBody>();
 	ComponentManager::RegisterType<BeatTimer>();
 	ComponentManager::RegisterType<TriggerVolume>();
-	ComponentManager::RegisterType<MoveThings>();
 	ComponentManager::RegisterType<SeekBehaviour>();
 	ComponentManager::RegisterType<SimpleCameraControl>();
 	ComponentManager::RegisterType<RotatingBehaviour>();
 	ComponentManager::RegisterType<TriggerVolumeEnterBehaviour>();
 	ComponentManager::RegisterType<RotatingBehaviourCD>();
+	ComponentManager::RegisterType<MaterialSwap>();
 	ComponentManager::RegisterType<CharacterController>();
-	ComponentManager::RegisterType<JumpBehaviour>();
 	ComponentManager::RegisterType<ScoreComponent>();
-	ComponentManager::RegisterType<MaterialSwapBehaviour>();
 	ComponentManager::RegisterType<LevelMover>();
 	ComponentManager::RegisterType<BackgroundMover>();
 	ComponentManager::RegisterType<BackgroundBuildingMover>();
@@ -317,9 +322,8 @@ void Application::_RegisterClasses()
 	ComponentManager::RegisterType<GuiPanel>();
 	ComponentManager::RegisterType<GuiText>();
 	ComponentManager::RegisterType<BuildingAnim>();
-	ComponentManager::RegisterType<MaterialSwap>();
-	//ComponentManager::RegisterType<Morphanimator>();
-	//ComponentManager::RegisterType<MorphMeshRenderer>();
+	ComponentManager::RegisterType<Morphanimator>();
+	ComponentManager::RegisterType<MorphMeshRenderer>();
 	ComponentManager::RegisterType<ParticleSystem>();
 	ComponentManager::RegisterType<SpawnLoop>();
 }

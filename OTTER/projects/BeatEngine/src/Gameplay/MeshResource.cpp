@@ -10,7 +10,9 @@ namespace Gameplay {
 		MeshBuilderParams(std::vector<MeshBuilderParam>()),
 		Mesh(nullptr),
 		BulletTriMesh(nullptr)
-	{ }
+	{ 
+	
+	}
 
 	MeshResource::MeshResource(const std::string& filename) :
 		IResource(),

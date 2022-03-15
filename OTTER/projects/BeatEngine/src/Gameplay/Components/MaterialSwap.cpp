@@ -2,6 +2,7 @@
 #include "Gameplay/Components/ComponentManager.h"
 #include "Gameplay/GameObject.h"
 #include "Gameplay/Scene.h"
+#include<string.h>
 
 MaterialSwap::MaterialSwap() :
 	IComponent(),
@@ -18,21 +19,21 @@ MaterialSwap ::~MaterialSwap () = default;
 void MaterialSwap::Swap(){
 	//swaps based on BeatTime
 	float beatTime = GetGameObject()->GetScene()->FindObjectByName("GameManager")->Get<BeatTimer>()->GetBeatTime();
-
-	//Seriously this is Fucking Atrocious we need to do
+	std::string name = GetGameObject()->Name;
 	OnMaterial = GetGameObject()->GetScene()->FindObjectByName("Material Dummy On")->Get<RenderComponent>()->GetMaterial();
 	OffMaterial = GetGameObject()->GetScene()->FindObjectByName("Material Dummy Off")->Get<RenderComponent>()->GetMaterial();
 	_renderer = GetComponent<RenderComponent>();
 
-	if (beatTime >= 1.8 && beatTime <= 2.4) {
-		_renderer->SetMaterial(OnMaterial);
+	//beat gem material swap behaviour
+	if ((name[0] == 'B') && (name[1] == 'e') && (name[2] == 'a') && (name[3] == 't') && (name[4] == 'G')) {
+		int beatNumber = (int)name[8] - 48;
+		if ((beatTime >= 0.6 * beatNumber - 0.6) && (beatTime <= 0.6 * beatNumber)) {			
+			_renderer->SetMaterial(OnMaterial);
+		}
+		else {
+			_renderer->SetMaterial(OffMaterial);
+		}
 	}
-		
-
-	else  {
-		_renderer->SetMaterial(OffMaterial);
-	}
-
 }
 
 void MaterialSwap ::Awake() {

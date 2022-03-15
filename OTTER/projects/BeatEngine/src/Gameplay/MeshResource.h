@@ -13,6 +13,7 @@ namespace Gameplay {
 	/// factory and MeshBuilderParams
 	/// </summary>
 	class MeshResource : public IResource {
+		
 	public:
 		typedef std::shared_ptr<MeshResource> Sptr;
 
@@ -65,5 +66,7 @@ namespace Gameplay {
 
 		virtual nlohmann::json ToJson() const override;
 		static MeshResource::Sptr FromJson(const nlohmann::json& blob);
+
+		//MAKE_TYPENAME(MeshResource);
 	};
 }

@@ -45,10 +45,10 @@ void BackgroundMover::Update(float deltaTime)
     ObjY = GetGameObject()->GetPosition().y;
     ObjZ = GetGameObject()->GetPosition().z;
 
-    BObjPosX = BObjPosX - 15.0 * deltaTime;
+    BObjPosX = BObjPosX - 1.5 * deltaTime;
     GetGameObject()->SetPostion(glm::vec3(BObjPosX, ObjY, ObjZ));
 
-    if (GetGameObject()->GetPosition().x <= -20.0f)
+    if (GetGameObject()->GetPosition().x <= -25.0f)
     {
         GetGameObject()->SetPostion(glm::vec3(glm::vec3(14.870f, 7.80f, 2.7f)));
     }
@@ -99,11 +99,11 @@ void BackgroundBuildingMover::Update(float deltaTime)
     BuildObjY = GetGameObject()->GetPosition().y;
     BuildObjZ = GetGameObject()->GetPosition().z;
 
-    BuildObjPosX = BuildObjPosX - 5.0 * deltaTime;
+    BuildObjPosX = BuildObjPosX - 0.5 * deltaTime;
     
     GetGameObject()->SetPostion(glm::vec3(BuildObjPosX, BuildObjY, BuildObjZ));
 
-    if (GetGameObject()->GetPosition().x <= -50.0f)
+    if (GetGameObject()->GetPosition().x <= -55.0f)
     {
         GetGameObject()->SetPostion(glm::vec3(glm::vec3(40.870f, 21.880f, -46.040f)));
     }
