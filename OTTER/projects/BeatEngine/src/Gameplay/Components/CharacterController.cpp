@@ -11,7 +11,7 @@
 #include "FMOD/AudioEngine.h"
 #include "Gameplay/InputEngine.h"
 
-#include<sstream>  
+#include<sstream>
 #include<string.h>
 void CharacterController::Awake()
 {
@@ -19,7 +19,7 @@ void CharacterController::Awake()
     if (_body == nullptr) {
         IsEnabled = false;
     }
-    
+
 
     SFXS->SetVolume("event:/Coin Pickup", 0.25f);
     SFXS->SetVolume("event:/Jump", 0.05f);
@@ -27,7 +27,7 @@ void CharacterController::Awake()
     SFXS->SetVolume("event:/Walk", 0.15f);
 }
 
-
+//don't mind me just giving this a touchy touch
 void CharacterController::RenderImGui() {
 
 }
@@ -98,7 +98,7 @@ void CharacterController::OnTriggerVolumeEntered(const std::shared_ptr<Gameplay:
         _canJump = true;
         _platform = body->GetGameObject()->Name;
     }
-    //make certain things fall when touched 
+    //make certain things fall when touched
     if (_platform == "Falling Platform") {
         body->SetType(RigidBodyType::Dynamic);
     }
@@ -169,7 +169,7 @@ void CharacterController::Update(float deltaTime) {
     if (GetGameObject()->GetPosition().z <= -14.5f)
     {
         SFXS->PlayEvent("event:/Death");
-        // Activate GameOver U.I. When the player dies! 
+        // Activate GameOver U.I. When the player dies!
         //GetGameObject()->GetScene()->FindObjectByName("GameOver Dimmed Background")->Get<GuiPanel>()->IsEnabled = (GetGameObject()->GetScene()->FindObjectByName("GameOver Dimmed Background")->Get<GuiPanel>()->IsEnabled) = true;
         //GetGameObject()->GetScene()->FindObjectByName("GameOver Text")->Get<GuiPanel>()->IsEnabled = (GetGameObject()->GetScene()->FindObjectByName("GameOver Text")->Get<GuiPanel>()->IsEnabled) = true;
         //GetGameObject()->GetScene()->FindObjectByName("GameOver Score Breakdown")->Get<GuiPanel>()->IsEnabled = GetGameObject()->GetScene()->FindObjectByName("GameOver Score Breakdown")->Get<GuiPanel>()->IsEnabled = true;
@@ -186,5 +186,3 @@ void CharacterController::Update(float deltaTime) {
 
 
 //GetGameObject()->GetScene()->Lights[1].Position = GetGameObject()->GetPosition();
-
-
