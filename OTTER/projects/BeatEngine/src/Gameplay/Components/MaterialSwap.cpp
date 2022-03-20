@@ -4,14 +4,16 @@
 #include "Gameplay/Scene.h"
 #include<string.h>
 
-MaterialSwap::MaterialSwap() :
+MaterialSwap::MaterialSwap(int num) :
 	IComponent(),
 	_renderer(nullptr),
 	OnMaterial(nullptr),
+	AnticipationMaterial(nullptr),
 	OffMaterial(nullptr)
 { 
-
+	beatNumber = num;
 }
+MaterialSwap::MaterialSwap() {}
 MaterialSwap ::~MaterialSwap () = default;
 
 
@@ -19,21 +21,32 @@ MaterialSwap ::~MaterialSwap () = default;
 void MaterialSwap::Swap(){
 	//swaps based on BeatTime
 	float beatTime = GetGameObject()->GetScene()->FindObjectByName("GameManager")->Get<BeatTimer>()->GetBeatTime();
-	std::string name = GetGameObject()->Name;
 	OnMaterial = GetGameObject()->GetScene()->FindObjectByName("Material Dummy On")->Get<RenderComponent>()->GetMaterial();
+	AnticipationMaterial = GetGameObject()->GetScene()->FindObjectByName("MaterialDummyAnticipation")->Get<RenderComponent>()->GetMaterial();
 	OffMaterial = GetGameObject()->GetScene()->FindObjectByName("Material Dummy Off")->Get<RenderComponent>()->GetMaterial();
 	_renderer = GetComponent<RenderComponent>();
 
 	//beat gem material swap behaviour
-	if ((name[0] == 'B') && (name[1] == 'e') && (name[2] == 'a') && (name[3] == 't') && (name[4] == 'G')) {
-		int beatNumber = (int)name[8] - 48;
+	
+		std::cout << beatNumber << std::endl;
 		if ((beatTime >= 0.6 * beatNumber - 0.6) && (beatTime <= 0.6 * beatNumber)) {			
 			_renderer->SetMaterial(OnMaterial);
+			//GetGameObject()->SetScale(glm::vec3(1.2f, 1.2f, 1.2f));
 		}
 		else {
 			_renderer->SetMaterial(OffMaterial);
+			//GetGameObject()->SetScale(GetGameObject()->GetScale()*glm::vec3(1.2f, 1.2f, 1.2f));
 		}
-	}
+		if (beatNumber != 1) {
+			if ((beatTime >= 0.6 * (beatNumber - 1) - 0.6) && (beatTime <= 0.6 * (beatNumber - 1))) {
+				_renderer->SetMaterial(AnticipationMaterial);
+			}
+		}
+		else if (beatNumber == 1) {
+			if ((beatTime >= 0.6 * (beatNumber +3) - 0.6) && (beatTime <= 0.6 * (beatNumber +3))) {
+				_renderer->SetMaterial(AnticipationMaterial);
+			}
+		}
 }
 
 void MaterialSwap ::Awake() {
@@ -45,6 +58,7 @@ void MaterialSwap ::RenderImGui() { }
 nlohmann::json MaterialSwap ::ToJson() const {
 	return {
 		{ "On_material", OnMaterial != nullptr ? OnMaterial->GetGUID().str() : "null" },
+			{ "AnticipationMaterial", AnticipationMaterial != nullptr ? OnMaterial->GetGUID().str() : "null" },
 		{ "Off_material", OffMaterial != nullptr ? OffMaterial->GetGUID().str() : "null" }
 	};
 }
@@ -52,6 +66,7 @@ nlohmann::json MaterialSwap ::ToJson() const {
 MaterialSwap ::Sptr MaterialSwap ::FromJson(const nlohmann::json& blob) {
 	MaterialSwap ::Sptr result = std::make_shared<MaterialSwap >();
 	result->OnMaterial = ResourceManager::Get<Gameplay::Material>(Guid(blob["On_material"]));
+	result->AnticipationMaterial = ResourceManager::Get<Gameplay::Material>(Guid(blob["AnticipationMaterial"]));
 	result->OffMaterial  = ResourceManager::Get<Gameplay::Material>(Guid(blob["Off_material"]));
 	return result;
 }

@@ -16,6 +16,7 @@ class MaterialSwap: public Gameplay::IComponent {
 
 public:
 	typedef std::shared_ptr<MaterialSwap > Sptr;
+	MaterialSwap(int num);
 	MaterialSwap();
 	virtual ~MaterialSwap ();
 
@@ -23,6 +24,7 @@ public:
 
 
 	Gameplay::Material::Sptr        OnMaterial;
+	Gameplay::Material::Sptr		AnticipationMaterial;
 	Gameplay::Material::Sptr        OffMaterial;
 	void Swap();
 	// Inherited from IComponent	
@@ -32,7 +34,8 @@ public:
 	virtual nlohmann::json ToJson() const override;
 	static MaterialSwap ::Sptr FromJson(const nlohmann::json& blob);
 	MAKE_TYPENAME(MaterialSwap);
-
+private:
+	int beatNumber;
 protected:
 
 	RenderComponent::Sptr _renderer;

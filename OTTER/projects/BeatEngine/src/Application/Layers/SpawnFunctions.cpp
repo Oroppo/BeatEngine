@@ -103,7 +103,7 @@ void SpawnFunctions::SpawnStartPlat(Gameplay::Scene::Sptr scene, Gameplay::MeshR
 	}
 }
 // For spawning beat gems
-void SpawnFunctions::SpawnGem(Gameplay::Scene::Sptr scene, Gameplay::MeshResource::Sptr Mesh, Gameplay::Material::Sptr MaterialOn, Gameplay::Material::Sptr MaterialOff, std::string ObjName = "DeezNuts",
+void SpawnFunctions::SpawnGem(Gameplay::Scene::Sptr scene, Gameplay::MeshResource::Sptr Mesh, Gameplay::Material::Sptr MaterialOn, Gameplay::Material::Sptr MaterialOff, std::string ObjName = "DeezNuts",int BeatNum=0,
 	glm::vec3 pos = glm::vec3(-10.900f, 5.610f, -4.920f), glm::vec3 rot = glm::vec3(180.0f, 0.0f, 180.0f),
 	glm::vec3 scale = glm::vec3(0.350f, 0.350f, 0.350f)) {
 	// Tutorial Stuff
@@ -119,7 +119,7 @@ void SpawnFunctions::SpawnGem(Gameplay::Scene::Sptr scene, Gameplay::MeshResourc
 		//Add Components
 		Gem->Add<LevelMover>();
 		Gem->Add<RotatingBehaviour>();
-		Gem->Add<MaterialSwap>();
+		Gem->Add<MaterialSwap>(BeatNum);
 
 		// Create and attach a renderer for the Object
 		RenderComponent::Sptr renderer = Gem->Add<RenderComponent>();

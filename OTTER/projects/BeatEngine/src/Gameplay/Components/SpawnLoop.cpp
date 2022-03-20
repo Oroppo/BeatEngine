@@ -47,7 +47,7 @@ void SpawnLoop::Awake() {
 	Car1Mesh				= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
 	SemiTruckMesh			= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
 	PickupTruckMesh			= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
-	SmallWallJump			= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
+	SmallWallJump			= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);	
 	SuperSmallWallJump		= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
 	FallingPlat				= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
 	HalfCirclePlat			= ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
@@ -79,6 +79,7 @@ void SpawnLoop::Awake() {
 	SmallPlatformMaterial			= ResourceManager::Get<Material>((MaterialList.find("SmallPlatform")->second));
 	WallJumpMaterial				= ResourceManager::Get<Material>((MaterialList.find("SmallPlatform")->second));
 	BeatGemMaterial					= ResourceManager::Get<Material>((MaterialList.find("SmallPlatform")->second));
+	BeatGemAnticipationMaterial		= ResourceManager::Get<Material>((MaterialList.find("SmallPlatform")->second));
 	BeatGemOffMaterial				= ResourceManager::Get<Material>((MaterialList.find("SmallPlatform")->second));
 	VinylMaterial					= ResourceManager::Get<Material>((MaterialList.find("SmallPlatform")->second));
 	CDMaterial						= ResourceManager::Get<Material>((MaterialList.find("SmallPlatform")->second));
@@ -152,7 +153,7 @@ void SpawnLoop::SpawnBlock() {
 		Spawner.SpawnFunctions::SpawnObj(scene, SmallPlatform, SmallPlatformMaterial, "Small Platform", glm::vec3(-6.070f + distanceFromBlock, 5.610f, -4.150f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.350f, 0.350f, 0.350f));
 		Spawner.SpawnFunctions::SpawnObj(scene, SmallPlatform, SmallPlatformMaterial, "Small Platform", glm::vec3(-2.840f + distanceFromBlock, 5.610f, -4.150f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.350f, 0.350f, 0.350f));
 		Spawner.SpawnFunctions::SpawnObj(scene, SmallPlatform, SmallPlatformMaterial, "Small Platform", glm::vec3(2.760f + distanceFromBlock, 5.610f, -1.770f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.350f, 0.350f, 0.350f));
-		Spawner.SpawnFunctions::SpawnGem(scene, BeatGem, BeatGemMaterial, BeatGemOffMaterial, "BeatGem", glm::vec3(0.120f + distanceFromBlock, 5.610f, -3.160f), glm::vec3(90.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.500f, 0.500f));
+		Spawner.SpawnFunctions::SpawnGem(scene, BeatGem, BeatGemMaterial, BeatGemOffMaterial, "BeatGem",4, glm::vec3(0.120f + distanceFromBlock, 5.610f, -3.160f), glm::vec3(90.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.500f, 0.500f));
 		Spawner.SpawnFunctions::SpawnCollectable(scene, Vinyl, VinylMaterial, "Vinyl", glm::vec3(5.640f + distanceFromBlock, 5.610f, 0.080f), glm::vec3(90.000f, 0.0f, 90.000f), glm::vec3(1.000f, 1.000f, 1.000f));
 		Spawner.SpawnFunctions::SpawnStartPlat(scene, StartPlatform, StartPlatformMaterial, "EndPlatform", glm::vec3(6.360f + distanceFromBlock, 5.610f, -4.920f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.350f, 0.350f, 0.350f));
 
@@ -170,7 +171,7 @@ void SpawnLoop::SpawnBlock() {
 		Spawner.SpawnFunctions::SpawnWallJump(scene, WallJump, WallJumpMaterial, "Wall Jump", glm::vec3(-6.660f + distanceFromBlock, 5.610f, 2.000f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.040f, 1.500f));
 		Spawner.SpawnFunctions::SpawnObj(scene, SmallPlatform, SmallPlatformMaterial, "Small Platform", glm::vec3(-4.400f + distanceFromBlock, 5.610f, 4.000f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.350f, 0.350f, 0.350f));
 		Spawner.SpawnFunctions::SpawnObj(scene, SmallPlatform, SmallPlatformMaterial, "Small Platform", glm::vec3(1.940f + distanceFromBlock, 5.610f, -4.150f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.350f, 0.350f, 0.350f));
-		Spawner.SpawnFunctions::SpawnGem(scene, BeatGem, BeatGemMaterial, BeatGemOffMaterial, "BeatGem", glm::vec3(-1.340f + distanceFromBlock, 5.610f, 0.500f), glm::vec3(90.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.500f, 0.500f));
+		Spawner.SpawnFunctions::SpawnGem(scene, BeatGem, BeatGemMaterial, BeatGemOffMaterial, "BeatGem",4, glm::vec3(-1.340f + distanceFromBlock, 5.610f, 0.500f), glm::vec3(90.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.500f, 0.500f));
 		Spawner.SpawnFunctions::SpawnStartPlat(scene, StartPlatform, StartPlatformMaterial, "EndPlatform", glm::vec3(6.360f + distanceFromBlock, 5.610f, -9.10f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.350f, 0.350f, 0.350f));
 
 		// CDs for Block 2
@@ -188,8 +189,8 @@ void SpawnLoop::SpawnBlock() {
 		Spawner.SpawnFunctions::SpawnObj(scene, SmallPlatform, SmallPlatformMaterial, "Small Platform", glm::vec3(0.350f + distanceFromBlock, 5.610f, -0.290f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.350f, 0.350f, 0.350f));
 		Spawner.SpawnFunctions::SpawnObj(scene, FallingPlat, PianoMaterial, "Falling Platform", glm::vec3(0.390f + distanceFromBlock, 5.610f, -4.150f), glm::vec3(180.0f, 0.0f, 0.0f), glm::vec3(0.350f, 0.350f, 0.350f));
 		Spawner.SpawnFunctions::SpawnObj(scene, SmallPlatform, SmallPlatformMaterial, "Small Platform", glm::vec3(3.220f + distanceFromBlock, 5.610f, -4.150f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.350f, 0.350f, 0.350f));
-		Spawner.SpawnFunctions::SpawnGem(scene, BeatGem, BeatGemMaterial, BeatGemOffMaterial, "BeatGem", glm::vec3(-6.870f + distanceFromBlock, 5.610f, -1.970f), glm::vec3(90.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.500f, 0.500f));
-		Spawner.SpawnFunctions::SpawnGem(scene, BeatGem, BeatGemMaterial, BeatGemOffMaterial, "BeatGem", glm::vec3(-1.870f + distanceFromBlock, 5.610f, -1.970f), glm::vec3(90.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.500f, 0.500f));
+		Spawner.SpawnFunctions::SpawnGem(scene, BeatGem, BeatGemMaterial, BeatGemOffMaterial, "BeatGem",4, glm::vec3(-6.870f + distanceFromBlock, 5.610f, -1.970f), glm::vec3(90.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.500f, 0.500f));
+		Spawner.SpawnFunctions::SpawnGem(scene, BeatGem, BeatGemMaterial, BeatGemOffMaterial, "BeatGem",4, glm::vec3(-1.870f + distanceFromBlock, 5.610f, -1.970f), glm::vec3(90.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.500f, 0.500f));
 		Spawner.SpawnFunctions::SpawnCollectable(scene, Vinyl, VinylMaterial, "Vinyl", glm::vec3(0.370f + distanceFromBlock, 5.610f, -2.830f), glm::vec3(90.000f, 0.0f, 90.000f), glm::vec3(1.000f, 1.000f, 1.000f));
 		Spawner.SpawnFunctions::SpawnStartPlat(scene, StartPlatform, StartPlatformMaterial, "EndPlatform", glm::vec3(6.360f + distanceFromBlock, 5.610f, -9.10f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.350f, 0.350f, 0.350f));
 
@@ -210,7 +211,7 @@ void SpawnLoop::SpawnBlock() {
 		Spawner.SpawnFunctions::SpawnBuilding(scene, Building, BuildingMaterial, "Building", glm::vec3(4.150f + distanceFromBlock, 5.610f, -7.110f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.350f, 0.350f, 0.350f));
 		Spawner.SpawnFunctions::SpawnWallJump(scene, WallJump, WallJumpMaterial, "Wall Jump", glm::vec3(-1.590f + distanceFromBlock, 5.610f, 2.650f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.210f, 1.500f));
 		Spawner.SpawnFunctions::SpawnWallJump(scene, WallJump, WallJumpMaterial, "Wall Jump", glm::vec3(0.460f + distanceFromBlock, 5.610f, 1.610), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.210f, 1.500f));
-		Spawner.SpawnFunctions::SpawnGem(scene, BeatGem, BeatGemMaterial, BeatGemOffMaterial, "BeatGem", glm::vec3(1.770f + distanceFromBlock, 5.610f, -3.520f), glm::vec3(90.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.500f, 0.500f));
+		Spawner.SpawnFunctions::SpawnGem(scene, BeatGem, BeatGemMaterial, BeatGemOffMaterial, "BeatGem",4, glm::vec3(1.770f + distanceFromBlock, 5.610f, -3.520f), glm::vec3(90.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.500f, 0.500f));
 		//Spawner.SpawnFunctions::SpawnCollectable(scene, Vinyl, VinylMaterial, "Vinyl", glm::vec3(2.190f + distanceFromBlock, 5.610f, 5.390f), glm::vec3(90.000f, 0.0f, 90.000f), glm::vec3(1.000f, 1.000f, 1.000f));
 		Spawner.SpawnFunctions::SpawnStartPlat(scene, StartPlatform, StartPlatformMaterial, "EndPlatform", glm::vec3(8.700f + distanceFromBlock, 5.610f, -9.10f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.350f, 0.350f, 0.350f));
 
@@ -237,7 +238,7 @@ void SpawnLoop::SpawnBlock() {
 		Spawner.SpawnFunctions::SpawnSmallWallJump(scene, SmallWallJump, SmallWallJumpMaterial, "Small Wall Jump", glm::vec3(-5.030f + distanceFromBlock, 5.610f, 4.110f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.210f, 1.500f));
 		Spawner.SpawnFunctions::SpawnSmallWallJump(scene, SmallWallJump, SmallWallJumpMaterial, "Small Wall Jump", glm::vec3(-1.590f + distanceFromBlock, 5.610f, 2.650f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.210f, 1.500f));
 		Spawner.SpawnFunctions::SpawnSmallWallJump(scene, SmallWallJump, SmallWallJumpMaterial, "Small Wall Jump", glm::vec3(0.460f + distanceFromBlock, 5.610f, 1.610f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.210f, 1.500f));
-		Spawner.SpawnFunctions::SpawnGem(scene, BeatGem, BeatGemMaterial, BeatGemOffMaterial, "BeatGem", glm::vec3(-0.580f + distanceFromBlock, 5.610f, -1.970f), glm::vec3(90.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.500f, 0.500f));
+		Spawner.SpawnFunctions::SpawnGem(scene, BeatGem, BeatGemMaterial, BeatGemOffMaterial, "BeatGem",4, glm::vec3(-0.580f + distanceFromBlock, 5.610f, -1.970f), glm::vec3(90.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.500f, 0.500f));
 		Spawner.SpawnFunctions::SpawnCollectable(scene, Vinyl, VinylMaterial, "Vinyl", glm::vec3(2.190f + distanceFromBlock, 5.610f, 5.390f), glm::vec3(90.000f, 0.0f, 90.000f), glm::vec3(1.000f, 1.000f, 1.000f));
 		Spawner.SpawnFunctions::SpawnStartPlat(scene, StartPlatform, StartPlatformMaterial, "EndPlatform", glm::vec3(6.840f + distanceFromBlock, 5.610f, -9.10f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.350f, 0.350f, 0.350f));
 
@@ -287,7 +288,7 @@ void SpawnLoop::SpawnBlock() {
 		Spawner.SpawnFunctions::SpawnSmallWallJump(scene,SmallWallJump, SmallWallJumpMaterial, "Small Wall Jump", glm::vec3(-8.210f + distanceFromBlock, 5.610f, 2.050f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.210f, 1.500f));
 		Spawner.SpawnFunctions::SpawnSmallWallJump(scene,SmallWallJump, SmallWallJumpMaterial, "Small Wall Jump", glm::vec3(-5.780f + distanceFromBlock, 5.610f, 0.380f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.210f, 1.500f));
 		Spawner.SpawnFunctions::SpawnBuilding(scene, Building, BuildingMaterial, "Building", glm::vec3(4.130f + distanceFromBlock, 5.610f, -3.610f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.310f, 0.310f, 0.310f));
-		Spawner.SpawnFunctions::SpawnGem(scene, BeatGem, BeatGemMaterial, BeatGemOffMaterial, "BeatGem", glm::vec3(1.350f + distanceFromBlock, 5.610f, 1.180f), glm::vec3(90.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.500f, 0.500f));
+		Spawner.SpawnFunctions::SpawnGem(scene, BeatGem, BeatGemMaterial, BeatGemOffMaterial, "BeatGem",4, glm::vec3(1.350f + distanceFromBlock, 5.610f, 1.180f), glm::vec3(90.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.500f, 0.500f));
 		Spawner.SpawnFunctions::SpawnCollectable(scene, Vinyl, VinylMaterial, "Vinyl", glm::vec3(-0.180f + distanceFromBlock, 5.610f, -0.330f), glm::vec3(90.000f, 0.0f, 90.000f), glm::vec3(1.000f, 1.000f, 1.000f));
 		Spawner.SpawnFunctions::SpawnStartPlat(scene, StartPlatform, StartPlatformMaterial, "EndPlatform", glm::vec3(6.840f + distanceFromBlock, 5.610f, -9.10f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.350f, 0.350f, 0.350f));
 
@@ -308,7 +309,7 @@ void SpawnLoop::SpawnBlock() {
 		Spawner.SpawnFunctions::SpawnBuilding(scene, Building, BuildingMaterial, "Building", glm::vec3(4.570f + distanceFromBlock, 5.610f, -6.630f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.310f, 0.310f, 0.310f));
 		Spawner.SpawnFunctions::SpawnBuilding2(scene,Building, BuildingMaterial, "Building", glm::vec3(-4.500f + distanceFromBlock, 5.610f, 7.810f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.350f, 0.350f, 0.350f));
 		Spawner.SpawnFunctions::SpawnBuilding3(scene,Building, BuildingMaterial, "Building", glm::vec3(-1.350f + distanceFromBlock, 5.610f, 5.180f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.290f, 0.290f, 0.290f));
-		Spawner.SpawnFunctions::SpawnGem(scene, BeatGem, BeatGemMaterial, BeatGemOffMaterial, "BeatGem", glm::vec3(-2.630f + distanceFromBlock, 5.610f, -4.550f), glm::vec3(90.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.500f, 0.500f));
+		Spawner.SpawnFunctions::SpawnGem(scene, BeatGem, BeatGemMaterial, BeatGemOffMaterial, "BeatGem",4, glm::vec3(-2.630f + distanceFromBlock, 5.610f, -4.550f), glm::vec3(90.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.500f, 0.500f));
 		Spawner.SpawnFunctions::SpawnSuperSmallWallJump(scene,SuperSmallWallJump, SuperSmallWallJumpMaterial, "Super Small Wall Jump", glm::vec3(2.400f + distanceFromBlock, 5.610f, -3.180f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.210f, 1.500f));
 		Spawner.SpawnFunctions::SpawnSuperSmallWallJump(scene,SuperSmallWallJump, SuperSmallWallJumpMaterial, "Super Small Wall Jump", glm::vec3(0.700f + distanceFromBlock, 5.610f, -1.510f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.210f, 1.500f));
 		Spawner.SpawnFunctions::SpawnSuperSmallWallJump(scene,SuperSmallWallJump, SuperSmallWallJumpMaterial, "Super Small Wall Jump", glm::vec3(2.400f + distanceFromBlock, 5.610f, -0.590f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.210f, 1.500f));
@@ -329,7 +330,7 @@ void SpawnLoop::SpawnBlock() {
 		Spawner.SpawnFunctions::SpawnObj(scene, SmallPlatform, SmallPlatformMaterial, "Small Platform", glm::vec3(-6.070f + distanceFromBlock, 5.610f, -4.150f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.350f, 0.350f, 0.350f));
 		Spawner.SpawnFunctions::SpawnObj(scene,SmallPlatform, SmallPlatformMaterial, "Small Platform", glm::vec3(-2.840f + distanceFromBlock, 5.610f, -4.150f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.350f, 0.350f, 0.350f));
 		Spawner.SpawnFunctions::SpawnObj(scene,SmallPlatform, SmallPlatformMaterial, "Small Platform", glm::vec3(2.760f + distanceFromBlock, 5.610f, -1.770f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.350f, 0.350f, 0.350f));
-		Spawner.SpawnFunctions::SpawnGem(scene,BeatGem, BeatGemMaterial, BeatGemOffMaterial, "BeatGem", glm::vec3(0.120f + distanceFromBlock, 5.610f, -3.160f), glm::vec3(90.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.500f, 0.500f));
+		Spawner.SpawnFunctions::SpawnGem(scene,BeatGem, BeatGemMaterial, BeatGemOffMaterial, "BeatGem",4, glm::vec3(0.120f + distanceFromBlock, 5.610f, -3.160f), glm::vec3(90.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.500f, 0.500f));
 		Spawner.SpawnFunctions::SpawnCollectable(scene, Vinyl, VinylMaterial, "Vinyl", glm::vec3(5.640f + distanceFromBlock, 5.610f, 0.080f), glm::vec3(90.000f, 0.0f, 90.000f), glm::vec3(1.000f, 1.000f, 1.000f));
 		Spawner.SpawnFunctions::SpawnStartPlat(scene, StartPlatform, StartPlatformMaterial, "EndPlatform", glm::vec3(6.360f + distanceFromBlock, 5.610f, -4.920f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.350f, 0.350f, 0.350f));
 

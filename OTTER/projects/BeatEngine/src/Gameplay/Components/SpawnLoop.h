@@ -98,6 +98,7 @@ private:
 	Gameplay::Material::Sptr SmallPlatformMaterial;
 	Gameplay::Material::Sptr WallJumpMaterial;
 	Gameplay::Material::Sptr BeatGemMaterial;
+	Gameplay::Material::Sptr BeatGemAnticipationMaterial;
 	Gameplay::Material::Sptr BeatGemOffMaterial;
 	Gameplay::Material::Sptr VinylMaterial;
 	Gameplay::Material::Sptr CDMaterial;

@@ -247,6 +247,7 @@ void Level1Scene::_CreateScene()
 		 Texture2D::Sptr CDTex = ResourceManager::CreateAsset<Texture2D>("textures/CDTex.png");
 		 Texture2D::Sptr GemTex = ResourceManager::CreateAsset<Texture2D>("textures/Gem.png");
 		 Texture2D::Sptr GemOff = ResourceManager::CreateAsset<Texture2D>("textures/GemOff.png");
+		 Texture2D::Sptr GemAnticipation = ResourceManager::CreateAsset<Texture2D>("textures/GemYellow.png");
 		 Texture2D::Sptr CharacterTex = ResourceManager::CreateAsset<Texture2D>("textures/shirt.png");
 		 Texture2D::Sptr LoseScreenTex = ResourceManager::CreateAsset<Texture2D>("textures/Game_Over_Screen.png");
 		 Texture2D::Sptr SmallWallJumpTex = ResourceManager::CreateAsset<Texture2D>("textures/SmallWallJumpTexBlue.png");
@@ -326,7 +327,14 @@ void Level1Scene::_CreateScene()
 			BeatGemMaterial->Set("u_Material.Diffuse", GemTex);
 			BeatGemMaterial->Set("u_Material.Shininess", 0.1f);
 		}
-		
+	//	GemAnticipation	 
+		Material::Sptr BeatGemAnticipationMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+		{
+			BeatGemAnticipationMaterial->Name = "BeatGemAnticipationMaterial";
+			BeatGemAnticipationMaterial->Set("u_Material.Diffuse", GemAnticipation);
+			BeatGemAnticipationMaterial->Set("u_Material.Shininess", 0.1f);
+		}
+
 		 Material::Sptr BeatGemOffMaterial = ResourceManager::CreateAsset<Material>(basicShader);
 		{
 			BeatGemOffMaterial->Name = "BeatGemOff";
@@ -578,7 +586,7 @@ void Level1Scene::_CreateScene()
 		spawner.SpawnObj(scene,SmallPlatform, SmallPlatformMaterial, "Small Platform", glm::vec3(-2.110f, 5.610f, 5.440f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.350f, 0.350f, 0.350f));
 		spawner.SpawnWallJump(scene,WallJump, WallJumpMaterial, "Wall Jump", glm::vec3(-0.350f, 5.610f, 3.070f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.210f, 1.500f));
 		spawner.SpawnWallJump(scene,WallJump, WallJumpMaterial, "Wall Jump", glm::vec3(2.430f, 5.610f, 3.930f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.210f, 1.500f));
-		spawner.SpawnGem(scene, BeatGem, BeatGemMaterial, BeatGemOffMaterial, "BeatGem 4", glm::vec3(2.020f, 5.610f, -1.910f), glm::vec3(90.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.500f, 0.500f));
+		spawner.SpawnGem(scene, BeatGem, BeatGemMaterial, BeatGemOffMaterial, "BeatGem",1, glm::vec3(2.020f, 5.610f, -1.910f), glm::vec3(90.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.500f, 0.500f));
 		spawner.SpawnCollectable(scene, Vinyl, VinylMaterial, "Vinyl", glm::vec3(-2.110f, 5.610f, 6.010f), glm::vec3(90.000f, 0.0f, 90.000f), glm::vec3(1.000f, 1.000f, 1.000f));
 		spawner.SpawnStartPlat(scene, StartPlatform, StartPlatformMaterial, "EndPlatform", glm::vec3(6.360f, 5.610f, -9.10f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.350f, 0.350f, 0.350f));
 		spawner.SpawnBackGroundCar(scene,Car1Mesh, Car1Material, "Car1", glm::vec3(14.870f, 9.80f, 2.7f), glm::vec3(90.0f, 0.0f, -90.0f), glm::vec3(0.250f, 0.250f, 0.250f));
@@ -592,7 +600,7 @@ void Level1Scene::_CreateScene()
 		spawner.SpawnObj(scene,SmallPlatform, SmallPlatformMaterial, "Small Platform", glm::vec3(-6.070f + 22, 5.610f, -4.150f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.350f, 0.350f, 0.350f));
 		spawner.SpawnObj(scene,SmallPlatform, SmallPlatformMaterial, "Small Platform", glm::vec3(-2.840f + 22, 5.610f, -4.150f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.350f, 0.350f, 0.350f));
 		spawner.SpawnObj(scene,SmallPlatform, SmallPlatformMaterial, "Small Platform", glm::vec3(2.760f + 22, 5.610f, -1.770f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.350f, 0.350f, 0.350f));
-		spawner.SpawnGem(scene,BeatGem, BeatGemMaterial, BeatGemOffMaterial, "BeatGem 4", glm::vec3(0.120f + 22, 5.610f, -3.160f), glm::vec3(90.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.500f, 0.500f));
+		spawner.SpawnGem(scene,BeatGem, BeatGemMaterial, BeatGemOffMaterial, "BeatGem",4, glm::vec3(0.120f + 22, 5.610f, -3.160f), glm::vec3(90.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.500f, 0.500f));
 		spawner.SpawnCollectable(scene, Vinyl, VinylMaterial, "Vinyl", glm::vec3(5.640f + 22, 5.610f, 0.080f), glm::vec3(90.000f, 0.0f, 90.000f), glm::vec3(1.000f, 1.000f, 1.000f));
 		spawner.SpawnStartPlat(scene, StartPlatform, StartPlatformMaterial, "EndPlatform", glm::vec3(6.360f + 22, 5.610f, -9.10f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.350f, 0.350f, 0.350f));
 
@@ -619,6 +627,13 @@ void Level1Scene::_CreateScene()
 			RenderComponent::Sptr renderer = MaterialDummyOff->Add<RenderComponent>();
 			renderer->SetMesh(BeatGem);
 			renderer->SetMaterial(BeatGemOffMaterial);
+			renderer->IsEnabled = false;
+		}
+		{
+			GameObject::Sptr MaterialDummyAnticipation = scene->CreateGameObject("MaterialDummyAnticipation");
+			RenderComponent::Sptr renderer = MaterialDummyAnticipation->Add<RenderComponent>();
+			renderer->SetMesh(BeatGem);
+			renderer->SetMaterial(BeatGemAnticipationMaterial);
 			renderer->IsEnabled = false;
 		}
 
