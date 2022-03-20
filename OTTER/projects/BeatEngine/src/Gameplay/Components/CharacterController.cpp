@@ -58,7 +58,7 @@ void CharacterController::OnEnteredTrigger(const std::shared_ptr<Gameplay::Physi
     std::string name = trigger->GetGameObject()->Name;
 
     if ((name[0] == 'B') && (name[1] == 'e') && (name[2] == 'a') && (name[3] == 't') && (name[4] == 'G')) {
-        int beatNumber = (int)name[8] - 48;
+        int beatNumber = 4;
 
         if ((_GemJumpTimer > 0.6 * beatNumber - 0.6) && (_GemJumpTimer < 0.6 * beatNumber)) {
             _canJump = true;

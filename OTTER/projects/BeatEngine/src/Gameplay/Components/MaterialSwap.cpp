@@ -35,7 +35,7 @@ void MaterialSwap::Swap(){
 		}
 		else {
 			_renderer->SetMaterial(OffMaterial);
-			//GetGameObject()->SetScale(GetGameObject()->GetScale()*glm::vec3(1.2f, 1.2f, 1.2f));
+			//GetGameObject()->SetScale(GetGameObject()->GetScale()*1.2f);
 		}
 		if (beatNumber != 1) {
 			if ((beatTime >= 0.6 * (beatNumber - 1) - 0.6) && (beatTime <= 0.6 * (beatNumber - 1))) {
