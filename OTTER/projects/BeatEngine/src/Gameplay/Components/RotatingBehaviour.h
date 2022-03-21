@@ -11,6 +11,9 @@ public:
 	RotatingBehaviour() = default;
 	glm::vec3 RotationSpeed = glm::vec3(0,0,30);
 
+	glm::vec3 GetRotationSpeed();
+	void SetRotationSpeed(glm::vec3 value);
+
 	virtual void Update(float deltaTime) override;
 
 	virtual void RenderImGui() override;

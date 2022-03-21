@@ -260,6 +260,13 @@ namespace Gameplay {
 		return component;
 	}
 
+	void GameObject::AddParent(const GameObject::Sptr& Parent) {
+		Parent->AddChild(_selfRef.lock());
+	}
+	bool GameObject::RemoveParent(const GameObject::Sptr& Parent) {
+		return Parent->RemoveChild(_selfRef.lock());
+	}
+
 	void GameObject::AddChild(const GameObject::Sptr& child) {
 		// If the object already has a parent, remove it from the other object
 		if (child->_parent != nullptr) {

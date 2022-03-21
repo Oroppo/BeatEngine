@@ -8,6 +8,13 @@
 void RotatingBehaviour::Update(float deltaTime) {
 	GetGameObject()->SetRotation(GetGameObject()->GetRotationEuler() + RotationSpeed * deltaTime);
 }
+glm::vec3 RotatingBehaviour::GetRotationSpeed() {
+	return RotationSpeed;
+}
+
+void RotatingBehaviour::SetRotationSpeed(glm::vec3 value) {
+	RotationSpeed = value;
+}
 
 void RotatingBehaviour::RenderImGui() {
 	LABEL_LEFT(ImGui::DragFloat3, "Speed", &RotationSpeed.x);

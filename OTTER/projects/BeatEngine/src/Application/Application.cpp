@@ -54,6 +54,7 @@
 #include "Gameplay/Components/ForegroundMover.h"
 #include "Gameplay/Components/BuildingAnim.h"
 #include "Gameplay/Components/SpawnLoop.h"
+#include "Gameplay/Components/InteractableMenu.h"
 
 
 // GUI
@@ -71,6 +72,7 @@
 #include "Layers/InstancedRenderingTestLayer.h"
 #include "Layers/ParticleLayer.h"
 #include "Layers/Level1Scene.h"
+#include "Application/Layers/MainMenuScene.h"
 
 //Sound
 #include "FMOD/AudioEngine.h"
@@ -169,6 +171,8 @@ void Application::_Run()
 	_layers.push_back(std::make_shared<GLAppLayer>());
 	//_layers.push_back(std::make_shared<DefaultSceneLayer>());
 	_layers.push_back(std::make_shared<Level1Scene>());
+	_layers.push_back(std::make_shared<MainMenuScene>());
+	
 	_layers.push_back(std::make_shared<LogicUpdateLayer>());
 	_layers.push_back(std::make_shared<RenderLayer>());
 	_layers.push_back(std::make_shared<ParticleLayer>());
@@ -260,7 +264,10 @@ void Application::_Run()
 			_PostRender();
 		}
 		//Update Our Audio Engine
-		Studio->Update();
+		if (IsFocused) {
+			Studio->Update();
+		}
+		
 
 		if (!_currentScene->IsPlaying == true) {
 			Banks->PlayEvent("event:/Music");
@@ -328,6 +335,7 @@ void Application::_RegisterClasses()
 	ComponentManager::RegisterType<ParticleSystem>();
 	ComponentManager::RegisterType<SpawnLoop>();
 	ComponentManager::RegisterType<BeatGem>();
+	ComponentManager::RegisterType<InteractableMenu>();
 }
 
 void Application::_Load() {

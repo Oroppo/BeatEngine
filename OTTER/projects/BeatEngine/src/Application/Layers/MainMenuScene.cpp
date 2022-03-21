@@ -53,8 +53,10 @@
 #include "Gameplay/Components/ScoreComponent.h"
 #include "Gameplay/Components/VinylAnim.h"
 #include "Gameplay/Components/ForegroundMover.h"
+#include "Gameplay/Components/RotatingBehaviour.h"
 #include "Gameplay/Components/BuildingAnim.h"
 #include "Gameplay/Components/SpawnLoop.h"
+#include "Gameplay/Components/InteractableMenu.h"
 
 // Physics
 #include "Gameplay/Physics/RigidBody.h"
@@ -110,6 +112,13 @@ void MainMenuScene::_CreateScene()
 	bool loadScene = false;
 	// For now we can use a toggle to generate our scene vs load from file
 	if (loadScene && std::filesystem::exists("scene.json")) {
+
+		//NOTE This method of Scene loading is prone to breaking! 
+		//For future me, if you ever have trouble loading this way, 
+		//instead try using the following:
+		//Scene::Sptr scene = Scene::FromJson( /*FilenameHere*/ );
+		//app.LoadScene(scene);
+
 		app.LoadScene("scene.json");
 	}
 	else {
@@ -257,9 +266,11 @@ void MainMenuScene::_CreateScene()
 		{
 			camera->SetPostion(glm::vec3(-1.410, -3.500, 2.450));
 			camera->LookAt(glm::vec3(0.0f));
-			camera->SetRotation(glm::vec3(-103, 180, -180));
+			camera->SetRotation(glm::vec3(-90, -179, -163));
 
 			Camera::Sptr cam = camera->Add<Camera>();
+			auto rot = camera->Add<RotatingBehaviour>();
+			rot->SetRotationSpeed({0,0,8});
 			//cam->SetOrthoEnabled(true);
 			//cam->SetOrthoVerticalScale(19.0f);
 			//cam->SetFovRadians(105.f);
@@ -275,112 +286,129 @@ void MainMenuScene::_CreateScene()
 
 		/////////////////////////// UI //////////////////////////////
 
-		{//Main Menu Block
+	//Main Menu Block
 
 
 
-			{//Logo
-				GameObject::Sptr logo = scene->CreateGameObject("MainMenu Logo");
+		//Logo
+		GameObject::Sptr logo = scene->CreateGameObject("MainMenu Logo");
+		{
+			RectTransform::Sptr transform = logo->Add<RectTransform>();
+			transform->SetPosition({ 0, 0 });
+			transform->SetRotationDeg(0);
+			transform->SetMin({ 0, 0 });
 
-				RectTransform::Sptr transform = logo->Add<RectTransform>();
-				transform->SetPosition({ 0, 0 });
-				transform->SetRotationDeg(0);
-				transform->SetMin({ 0, 0 });
-
-				GuiPanel::Sptr logoPanel = logo->Add<GuiPanel>(0.5, 0.3, 667, 406);
-				logoPanel->SetTexture(TexBeatLogo);
-				logoPanel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-				logoPanel->SetBorderRadius(0);
-				logoPanel->IsEnabled = true;
-
-
-			}
-
-			{//Play Button
-				GameObject::Sptr button = scene->CreateGameObject("MainMenu Play Button");
-
-				RectTransform::Sptr transform = button->Add<RectTransform>();
-				transform->SetPosition({ 0, 0 });
-				transform->SetRotationDeg(0);
-				transform->SetMin({ 0, 0 });
-
-				GuiPanel::Sptr panel = button->Add<GuiPanel>(0.2, 0.8, 300, 150);
-				panel->SetTexture(TexPlayButton);
-				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-				panel->SetBorderRadius(0);
-				panel->IsEnabled = true;
-
-			}
-
-			{//Options Button
-				GameObject::Sptr button = scene->CreateGameObject("MainMenu Options Button");
-
-				RectTransform::Sptr transform = button->Add<RectTransform>();
-				transform->SetPosition({ 0, 0 });
-				transform->SetRotationDeg(0);
-				transform->SetMin({ 0, 0 });
-
-				GuiPanel::Sptr panel = button->Add<GuiPanel>(0.35, 0.8, 300, 150);
-				panel->SetTexture(TexOptionsButton);
-				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 0.6f));
-				panel->SetBorderRadius(0);
-				panel->IsEnabled = true;
-
-
-			}
-
-			{//Music Button
-				GameObject::Sptr button = scene->CreateGameObject("MainMenu Music Button");
-
-				RectTransform::Sptr transform = button->Add<RectTransform>();
-				transform->SetPosition({ 0, 0 });
-				transform->SetRotationDeg(0);
-				transform->SetMin({ 0, 0 });
-
-				GuiPanel::Sptr panel = button->Add<GuiPanel>(0.5, 0.8, 300, 150);
-				panel->SetTexture(TexMusicButton);
-				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 0.6f));
-				panel->SetBorderRadius(0);
-				panel->IsEnabled = true;
-
-
-			}
-
-			{//Credits Button
-				GameObject::Sptr button = scene->CreateGameObject("MainMenu Credits Button");
-
-				RectTransform::Sptr transform = button->Add<RectTransform>();
-				transform->SetPosition({ 0, 0 });
-				transform->SetRotationDeg(0);
-				transform->SetMin({ 0, 0 });
-
-				GuiPanel::Sptr panel = button->Add<GuiPanel>(0.65, 0.8, 300, 150);
-				panel->SetTexture(TexCreditsButton);
-				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 0.6f));
-				panel->SetBorderRadius(0);
-				panel->IsEnabled = true;
-
-			}
-
-			{//Quit Button
-				GameObject::Sptr button = scene->CreateGameObject("MainMenu Quit Button");
-
-				RectTransform::Sptr transform = button->Add<RectTransform>();
-				transform->SetPosition({ 0, 0 });
-				transform->SetRotationDeg(0);
-				transform->SetMin({ 0, 0 });
-
-				GuiPanel::Sptr panel = button->Add<GuiPanel>(0.8, 0.8, 300, 150);
-				panel->SetTexture(TexQuitButton);
-				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-				panel->SetBorderRadius(0);
-				panel->IsEnabled = true;
-
-
-			}
-
-
+			GuiPanel::Sptr logoPanel = logo->Add<GuiPanel>(0.5, 0.3, 667, 406);
+			logoPanel->SetTexture(TexBeatLogo);
+			logoPanel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+			logoPanel->SetBorderRadius(0);
+			logoPanel->IsEnabled = true;
 		}
+
+
+		
+
+		//Play Button
+		GameObject::Sptr PlayButton = scene->CreateGameObject("MainMenu Play Button");
+		{
+			RectTransform::Sptr transform = PlayButton->Add<RectTransform>();
+			transform->SetPosition({ 0, 0 });
+			transform->SetRotationDeg(0);
+			transform->SetMin({ 0, 0 });
+
+			GuiPanel::Sptr panel = PlayButton->Add<GuiPanel>(0.2, 0.8, 300, 150);
+			panel->SetTexture(TexPlayButton);
+			panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+			panel->SetBorderRadius(0);
+			panel->IsEnabled = true;
+		}
+
+
+		
+
+		//Options Button
+		GameObject::Sptr OptionsButton = scene->CreateGameObject("MainMenu Options Button");
+		{
+			RectTransform::Sptr transform = OptionsButton->Add<RectTransform>();
+			transform->SetPosition({ 0, 0 });
+			transform->SetRotationDeg(0);
+			transform->SetMin({ 0, 0 });
+
+			GuiPanel::Sptr panel = OptionsButton->Add<GuiPanel>(0.35, 0.8, 300, 150);
+			panel->SetTexture(TexOptionsButton);
+			panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 0.6f));
+			panel->SetBorderRadius(0);
+			panel->IsEnabled = true;
+		}
+
+
+		
+
+		//Music Button
+		GameObject::Sptr MusicButton = scene->CreateGameObject("MainMenu Music Button");
+		{
+			RectTransform::Sptr transform = MusicButton->Add<RectTransform>();
+			transform->SetPosition({ 0, 0 });
+			transform->SetRotationDeg(0);
+			transform->SetMin({ 0, 0 });
+
+			GuiPanel::Sptr panel = MusicButton->Add<GuiPanel>(0.5, 0.8, 300, 150);
+			panel->SetTexture(TexMusicButton);
+			panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 0.6f));
+			panel->SetBorderRadius(0);
+			panel->IsEnabled = true;
+		}
+
+		
+
+		//Credits Button
+		GameObject::Sptr CreditsButton = scene->CreateGameObject("MainMenu Credits Button");
+		{
+		RectTransform::Sptr transform = CreditsButton->Add<RectTransform>();
+		transform->SetPosition({ 0, 0 });
+		transform->SetRotationDeg(0);
+		transform->SetMin({ 0, 0 });
+
+		GuiPanel::Sptr panel = CreditsButton->Add<GuiPanel>(0.65, 0.8, 300, 150);
+		panel->SetTexture(TexCreditsButton);
+		panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 0.6f));
+		panel->SetBorderRadius(0);
+		panel->IsEnabled = true;
+		}
+
+		
+
+		//Quit Button
+		GameObject::Sptr QuitButton = scene->CreateGameObject("MainMenu Quit Button");
+		{
+		RectTransform::Sptr transform = QuitButton->Add<RectTransform>();
+		transform->SetPosition({ 0, 0 });
+		transform->SetRotationDeg(0);
+		transform->SetMin({ 0, 0 });
+
+		GuiPanel::Sptr panel = QuitButton->Add<GuiPanel>(0.8, 0.8, 300, 150);
+		panel->SetTexture(TexQuitButton);
+		panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+		panel->SetBorderRadius(0);
+		panel->IsEnabled = true;
+		}
+
+
+		
+
+		GameObject::Sptr MenuParent = scene->CreateGameObject("INTERACTABLE MENU ITEMS");
+		{	
+			MenuParent->AddChild(PlayButton);
+			MenuParent->AddChild(OptionsButton);
+			MenuParent->AddChild(MusicButton);
+			MenuParent->AddChild(CreditsButton);
+			MenuParent->AddChild(QuitButton);
+
+			MenuParent->Add<InteractableMenu>();
+		}
+
+
+		
 
 
 

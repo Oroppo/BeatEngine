@@ -45,7 +45,7 @@ private:
 	std::map<std::string, Guid> MaterialList;
 	std::map<std::string, Guid> MeshList;
 	int _BlockToSpawn;
-	float _SpawnTimer = 20;
+	float _SpawnTimer = 0;
 	bool _isDirty=false;
 
 	//This is Disgusting.

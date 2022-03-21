@@ -193,7 +193,7 @@ MorphAnimationManager::Sptr MorphAnimationManager::FromJson(const nlohmann::json
 	MorphAnimationManager::Sptr result = std::make_shared<MorphAnimationManager>();
 	result->currentlyAnimating = blob["is_currently_animating"];
 	result->currentAnimIndex = blob["current_anim_index"];
-	result->curIdleIndex = blob["curIdleIndex"];
+	result->curIdleIndex = blob["current_idle_index"];
 	result->orderIndex = blob["order_index"];
 	int orderSize = blob["animation_queue_size"];
 

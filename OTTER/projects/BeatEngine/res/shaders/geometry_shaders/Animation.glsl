@@ -8,7 +8,7 @@
 void main() {
 	
 	vec4 interpolatedPosition;
-	interpolatedPosition.xyz = (inPosition + (inPosition2 - inPosition) * u_DeltaTime);
+	interpolatedPosition.xyz = (inPosition + ((inPosition+ vec3(0,0,10)) - inPosition) * u_DeltaTime);
 
 	gl_Position = u_ModelViewProjection * interpolatedPosition;
 

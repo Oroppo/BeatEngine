@@ -312,6 +312,8 @@ namespace Gameplay {
 
 		void AddChild(const GameObject::Sptr& child);
 		bool RemoveChild(const GameObject::Sptr& child);
+		void AddParent(const GameObject::Sptr& Parent);
+		bool RemoveParent(const GameObject::Sptr& Parent);
 		const std::vector<WeakRef>& GetChildren() const;
 
 		GameObject::Sptr GetParent() const;

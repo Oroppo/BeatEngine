@@ -11,6 +11,8 @@
 #include "FMOD/AudioEngine.h"
 #include "Gameplay/InputEngine.h"
 #include "Gameplay/Components/BeatGem.h"
+#include "Application/Application.h"
+#include "Gameplay/Scene.h"
 #include<sstream>
 #include<string.h>
 #include <queue>
@@ -146,6 +148,7 @@ void CharacterController::RespawnBeatGems(const std::vector<Gameplay::Physics::T
             std::cout << "boom shakalaka" << std::endl;
             trigger[i]->GetGameObject()->Get<RenderComponent>()->IsEnabled = true;
         }
+        BeatGemsUsed.clear();
     }
    
 }
@@ -202,6 +205,12 @@ void CharacterController::Update(float deltaTime) {
         GetGameObject()->SetPostion(glm::vec3(-15.820f, 5.710f, 0.0f));
         score = 0;
         _body->SetLinearVelocity(glm::vec3(0.0f, 0.0f, 0.0f));
+
+        Application& app = Application::Get();
+        //Change this to GameOver.Json once it exists :^)
+        app.LoadScene("MainMenu.json");
+
+
     }
 }
 
