@@ -345,7 +345,7 @@ void SpawnLoop::SpawnBlock() {
 void SpawnLoop::ToSpawn() {
 	_SpawnTimer -= 22;
 	_BlockToSpawn = 2;//rand() % 8;
-	SpawnBlock();
+	//SpawnBlock();
 	//return _BlockToSpawn;
 }
 
@@ -377,7 +377,7 @@ void SpawnLoop::Update(float dt) {
 	//LOG_INFO(_SpawnTimer);
 	if (_SpawnTimer >= 22) {
 		ToSpawn();
-		SpawnBlock();
+		//SpawnBlock();
 	}
 
 }
