@@ -234,9 +234,6 @@ void Application::_Run()
 			_isRunning = false;
 		}
 
-
-
-
 		// Grab the timing singleton instance as a reference
 		Timing& timing = Timing::_singleton;
 
