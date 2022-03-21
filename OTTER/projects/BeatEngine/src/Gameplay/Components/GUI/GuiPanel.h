@@ -15,8 +15,6 @@ public:
 	GuiPanel();
 	virtual ~GuiPanel();
 
-	GuiPanel(float percX, float percY, float width, float height);
-
 	/// <summary>
 	/// Sets the color multiplier for this GUI object
 	/// </summary>
@@ -37,10 +35,6 @@ public:
 	/// </summary>
 	void SetBorderRadius(int value);
 
-
-
-	virtual void Update(float deltaTime) override;
-
 	/// <summary>
 	/// Gets the background texture for this panel
 	/// </summary>
@@ -58,14 +52,6 @@ public:
 	MAKE_TYPENAME(GuiPanel);
 	virtual nlohmann::json ToJson() const override;
 	static GuiPanel::Sptr FromJson(const nlohmann::json& blob);
-
-private:
-	float _percentOfScreenX;
-	float _percentOfScreenY;
-	float _width;
-	float _height;
-	float _proportionX;
-	float _proportionY;
 
 protected:
 	int             _borderRadius;
