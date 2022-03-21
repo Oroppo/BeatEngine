@@ -79,8 +79,8 @@
 //Testing...
 #include "SpawnFunctions.h"
 //Animation
-#include "Animation/MorphAnimator.h"
-#include "Animation/MorphMeshRenderer.h"
+#include "Animation/MorphRenderComponent.h"
+#include "Animation/MorphAnimationManager.h"
 
 
 
@@ -127,6 +127,12 @@ void Level1Scene::_CreateScene()
 			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_blinn_phong_textured.glsl" }
 		});
 		basicShader->SetDebugName("Blinn-phong");
+
+		ShaderProgram::Sptr AnimatedShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
+			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
+			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_blinn_phong_textured.glsl" }
+		});
+		basicShader->SetDebugName("Animated Object Material");
 		
 		
 		 ShaderProgram::Sptr specShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
@@ -666,10 +672,9 @@ void Level1Scene::_CreateScene()
 			collider->SetPosition(glm::vec3(0.f, 0.25f, 0.f));
 			volume->AddCollider(collider);
 
-			MorphMeshRenderer::Sptr morph1 = character->Add<MorphMeshRenderer>();
-			morph1->SetMorphMeshRenderer(DiscoBotMesh1, CharacterMaterial);
-			Morphanimator::Sptr Animator = character->Add<Morphanimator>();
+			MorphRenderComponent::Sptr morph1 = character->Add<MorphRenderComponent>(CharacterMesh);
 
+			MorphAnimationManager::Sptr animator = character->Add<MorphAnimationManager>();
 
 			std::vector<MeshResource::Sptr> RunAnim;
 			std::vector<MeshResource::Sptr> JumpAnim;
@@ -690,10 +695,11 @@ void Level1Scene::_CreateScene()
 			JumpAnim.push_back(BotJump6);
 			JumpAnim.push_back(BotJump7);
 
-			Animator->SetInitial();
-			Animator->SetFrameTime(0.1f);
-			
-			Animator->SetFrames(RunAnim);
+			animator->AddAnim(RunAnim, 0.05);
+			animator->AddAnim(JumpAnim, 0.25);
+			animator->SetContinuity(true);
+			animator->SetCurrentAnim(0);
+
 
 		}
 
@@ -1269,6 +1275,7 @@ void Level1Scene::_CreateScene()
 
 		GuiBatcher::SetDefaultTexture(ResourceManager::CreateAsset<Texture2D>("textures/ui-sprite.png"));
 		GuiBatcher::SetDefaultBorderRadius(8);
+
 
 		// Save the asset manifest for all the resources we just loaded
 		ResourceManager::SaveManifest("scene-manifest.json");

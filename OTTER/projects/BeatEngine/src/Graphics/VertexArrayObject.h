@@ -75,6 +75,7 @@ public:
 
 		VertexBuffer::Sptr Buffer;
 		std::vector<BufferAttribute> Attributes;
+
 		bool Instanced;
 	};
 	

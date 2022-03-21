@@ -25,6 +25,7 @@ void DebugWindow::RenderMenuBar()
 	}
 
 	ImGui::Separator();
+	 
 
 	RenderFlags flags = renderLayer->GetRenderFlags();
 	bool changed = false;

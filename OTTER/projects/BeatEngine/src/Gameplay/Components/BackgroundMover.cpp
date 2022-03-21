@@ -38,15 +38,9 @@ BackgroundMover::Sptr BackgroundMover::FromJson(const nlohmann::json & blob) {
 
 void BackgroundMover::Update(float deltaTime)
 {
-    // object with behavior attached X position
-    float BObjPosX = GetGameObject()->GetPosition().x;
-
-    // Object with behavior attached Y and Z position
-    ObjY = GetGameObject()->GetPosition().y;
-    ObjZ = GetGameObject()->GetPosition().z;
-
-    BObjPosX = BObjPosX - 1.5 * deltaTime;
-    GetGameObject()->SetPostion(glm::vec3(BObjPosX, ObjY, ObjZ));
+    glm::vec3 current = GetGameObject()->GetPosition();
+    current.x -= 1.5 * deltaTime;
+    GetGameObject()->SetPostion(current);
 
     if (GetGameObject()->GetPosition().x <= -25.0f)
     {

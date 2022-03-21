@@ -76,8 +76,8 @@
 #include "FMOD/AudioEngine.h"
 
 //Animation
-#include "Animation/MorphAnimator.h"
-#include "Animation/MorphMeshRenderer.h"
+#include "Animation/MorphAnimationManager.h"
+#include "Animation/MorphRenderComponent.h"
 
 Application* Application::_singleton = nullptr;
 std::string Application::_applicationName = "Beat!";
@@ -323,8 +323,8 @@ void Application::_RegisterClasses()
 	ComponentManager::RegisterType<GuiPanel>();
 	ComponentManager::RegisterType<GuiText>();
 	ComponentManager::RegisterType<BuildingAnim>();
-	ComponentManager::RegisterType<Morphanimator>();
-	ComponentManager::RegisterType<MorphMeshRenderer>();
+	ComponentManager::RegisterType<MorphAnimationManager>();
+	ComponentManager::RegisterType<MorphRenderComponent>();
 	ComponentManager::RegisterType<ParticleSystem>();
 	ComponentManager::RegisterType<SpawnLoop>();
 	ComponentManager::RegisterType<BeatGem>();

@@ -12,6 +12,8 @@ layout (std140, binding = 0) uniform b_FrameLevelUniforms {
     uniform float u_Time;    
     // The time in seconds since the last frame
     uniform float u_DeltaTime;
+
+    uniform int u_KeyPressed;
     // Lets us store up to 32 bool flags in one value
     uniform uint  u_Flags;
 };
