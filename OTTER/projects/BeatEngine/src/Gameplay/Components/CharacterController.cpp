@@ -10,9 +10,10 @@
 #include "Gameplay/Components/GUI/GuiText.h"
 #include "FMOD/AudioEngine.h"
 #include "Gameplay/InputEngine.h"
-
+#include "Gameplay/Components/BeatGem.h"
 #include<sstream>
 #include<string.h>
+#include <queue>
 void CharacterController::Awake()
 {
     _body = GetComponent<Gameplay::Physics::RigidBody>();
@@ -52,39 +53,43 @@ CharacterController::Sptr CharacterController::FromJson(const nlohmann::json & b
     return result;
 }
 
+
 //for collectibles
 void CharacterController::OnEnteredTrigger(const std::shared_ptr<Gameplay::Physics::TriggerVolume>&trigger) {
-
     std::string name = trigger->GetGameObject()->Name;
 
+    //beat gem logic
     if ((name[0] == 'B') && (name[1] == 'e') && (name[2] == 'a') && (name[3] == 't') && (name[4] == 'G')) {
-        int beatNumber = 4;
-
+        int beatNumber = trigger->GetGameObject()->Get<BeatGem>()->GetBeatNum();
+        trigger->GetGameObject()->Get<BeatGem>()->GetBeatNum();
         if ((_GemJumpTimer > 0.6 * beatNumber - 0.6) && (_GemJumpTimer < 0.6 * beatNumber)) {
             _canJump = true;
+            BeatGemsUsed.push_back(trigger);
             trigger->GetGameObject()->Get<RenderComponent>()->IsEnabled = false;
             _BeatGemHits++;
             score += 500;
             SFXS->PlayEvent("event:/Coin Pickup");
         }
-    }
-
+    }   
+    //vinyl logic
     if (trigger->GetGameObject()->Name == "Vinyl") {
         score += 1000;
         _VinylScore++;
         SFXS->PlayEvent("event:/Coin Pickup");
+        trigger->GetGameObject()->SetPostion(glm::vec3(0.0f, -100.0f, 0.0f));
     }
-
+    //cd logic
     if (trigger->GetGameObject()->Name == "CD") {
         score += 100;
         _CDScore++;
         SFXS->PlayEvent("event:/Coin Pickup");
+        trigger->GetGameObject()->SetPostion(glm::vec3(0.0f, -100.0f, 0.0f));
     }
     std::stringstream ss;
     ss << score;
     std::string stringScore;
     ss >> stringScore;
-    trigger->GetGameObject()->SetPostion(glm::vec3(0.0f, -100.0f, 0.0f));
+   
     //trigger->GetGameObject()->GetScene()->FindObjectByName("GameOver Score Text")->Get<RectTransform>()->SetPosition({ 425 , 100 });
   //  GetGameObject()->GetScene()->FindObjectByName("GameOver Score Text")->Get<GuiText>()->SetText(stringScore);
 
@@ -119,9 +124,12 @@ void CharacterController::OnTriggerVolumeLeaving(const std::shared_ptr<Gameplay:
         body->GetGameObject()->SetRotation(glm::vec3(-90.000f, 0.0f, 180.0f));
 
     }
+    //to make player move faster on wall jumps so that they are eZ
     if (_platform == "Wall Jump") {
         speed = 6.0f;
     }
+
+    // i forgor
     if ((_platform != "BeatGem") || (_platform == "Falling Platform")) {
         _platform = "";
         _canJump = false;
@@ -130,14 +138,23 @@ void CharacterController::OnTriggerVolumeLeaving(const std::shared_ptr<Gameplay:
 }
 
 
+void CharacterController::RespawnBeatGems(const std::vector<Gameplay::Physics::TriggerVolume::Sptr> trigger) {
+    if (BeatGemsUsed.size() > 0) {
+        int LoopLength = BeatGemsUsed.size();
+        std::cout << "Loop length is "<<LoopLength << std::endl;
+        for (int i = 0; i < LoopLength; i++) {
+            std::cout << "boom shakalaka" << std::endl;
+            trigger[i]->GetGameObject()->Get<RenderComponent>()->IsEnabled = true;
+        }
+    }
+   
+}
 void CharacterController::Update(float deltaTime) {
 
     bool _A = InputEngine::IsKeyDown(GLFW_KEY_A);
     bool _D = InputEngine::IsKeyDown(GLFW_KEY_D);
     bool _W = InputEngine::IsKeyDown(GLFW_KEY_SPACE);
     _GemJumpTimer = GetGameObject()->GetScene()->FindObjectByName("GameManager")->Get<BeatTimer>()->GetBeatTime();
-    std::cout << " Beat Gem timer " << _GemJumpTimer << std::endl;
-
     glm::vec3 CurrentPosition = GetGameObject()->GetPosition();
     if (_A) {
 
@@ -169,6 +186,10 @@ void CharacterController::Update(float deltaTime) {
     if (GetGameObject()->GetPosition().z <= -14.5f)
     {
         SFXS->PlayEvent("event:/Death");
+    
+          RespawnBeatGems(BeatGemsUsed);
+        
+      
         // Activate GameOver U.I. When the player dies!
         //GetGameObject()->GetScene()->FindObjectByName("GameOver Dimmed Background")->Get<GuiPanel>()->IsEnabled = (GetGameObject()->GetScene()->FindObjectByName("GameOver Dimmed Background")->Get<GuiPanel>()->IsEnabled) = true;
         //GetGameObject()->GetScene()->FindObjectByName("GameOver Text")->Get<GuiPanel>()->IsEnabled = (GetGameObject()->GetScene()->FindObjectByName("GameOver Text")->Get<GuiPanel>()->IsEnabled) = true;

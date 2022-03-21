@@ -30,8 +30,7 @@ public:
 	virtual void OnEnteredTrigger(const std::shared_ptr<Gameplay::Physics::TriggerVolume>& trigger);
 	virtual void OnTriggerVolumeEntered(const std::shared_ptr<Gameplay::Physics::RigidBody>& body);
 	virtual void OnTriggerVolumeLeaving(const std::shared_ptr<Gameplay::Physics::RigidBody>& body);
-
-
+	void RespawnBeatGems(const std::vector<Gameplay::Physics::TriggerVolume::Sptr> trigger);
 protected:
 	double xPos = 0, yPos = 0;
 	float _impulse2;
@@ -43,6 +42,8 @@ protected:
 	glm::vec3 _impulse = glm::vec3(0, 0, 12.0);
 	Gameplay::Physics::RigidBody::Sptr _body;
 	Gameplay::Physics::RigidBody::Sptr _curvePlatform;
+	//vector to store which gems have been used so that they may be reactivated upon respawn 
+	std::vector  <Gameplay::Physics::TriggerVolume::Sptr> BeatGemsUsed;
 	bool _onCurvePlatform;
 	glm::vec3 _rotPlat = glm::vec3(0.0f, 0.0f, 0.0f);
 	int _LoadSceneC = 0;
