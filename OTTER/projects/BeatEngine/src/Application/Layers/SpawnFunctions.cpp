@@ -52,7 +52,7 @@ void SpawnFunctions::SpawnObj(Gameplay::Scene::Sptr scene, Gameplay::MeshResourc
 	{
 		// Set position in the scene
 		Startplatform->SetPostion(pos);
-		Startplatform->SetRotation(rot);
+		Startplatform->SetRotation({90.0f, 0.0f, 0.0f});
 		Startplatform->SetScale(scale);
 
 		Startplatform->Add<LevelMover>();
@@ -89,7 +89,7 @@ void SpawnFunctions::SpawnStartPlat(Gameplay::Scene::Sptr scene, Gameplay::MeshR
 		// Set position in the scene
 		Startplatform->SetPostion(pos);
 		Startplatform->SetRotation(rot);
-		Startplatform->SetScale(scale);
+		Startplatform->SetScale({ 0.300f, 0.300f, 0.300f });
 
 		Startplatform->Add<LevelMover>();
 
@@ -100,7 +100,7 @@ void SpawnFunctions::SpawnStartPlat(Gameplay::Scene::Sptr scene, Gameplay::MeshR
 
 		// Add a dynamic rigid body to this object
 		RigidBody::Sptr physics = Startplatform->Add<RigidBody>(RigidBodyType::Kinematic);
-		physics->AddCollider(BoxCollider::Create(glm::vec3(1.8f, 5.2f, 1.0f)));
+		physics->AddCollider(BoxCollider::Create(glm::vec3(1.8f, 6.0f, 1.0f)));
 	}
 }
 // For spawning beat gems

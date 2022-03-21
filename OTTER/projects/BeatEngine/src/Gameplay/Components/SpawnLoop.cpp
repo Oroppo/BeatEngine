@@ -31,7 +31,7 @@ void SpawnLoop::Awake() {
 	
 	//Meshes
 	monkeyMesh = ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
-	SmallPlatform = ResourceManager::Get<MeshResource>(MeshList.find("SmallSpeakerPlatformV5.obj")->second);
+	SmallPlatform = ResourceManager::Get<MeshResource>(MeshList.find("HaloBasicPlatform.obj")->second);
 	WallJump = ResourceManager::Get<MeshResource>(MeshList.find("WallJumpV6.obj")->second);
 	BeatGem = ResourceManager::Get<MeshResource>(MeshList.find("Gem.obj")->second);
 	Vinyl = ResourceManager::Get<MeshResource>(MeshList.find("VinylV2.obj")->second);
@@ -43,7 +43,7 @@ void SpawnLoop::Awake() {
 	OvalBuilding = ResourceManager::Get<MeshResource>(MeshList.find("OvalBuilding.obj")->second);
 	CharacterMesh = ResourceManager::Get<MeshResource>(MeshList.find("discobot.obj")->second);
 	DiscoBallMesh = ResourceManager::Get<MeshResource>(MeshList.find("DiscoBall2.obj")->second);
-	StartPlatform = ResourceManager::Get<MeshResource>(MeshList.find("LStartPlatform.obj")->second);
+	StartPlatform = ResourceManager::Get<MeshResource>(MeshList.find("startbuilding.obj")->second);
 	Car1Mesh = ResourceManager::Get<MeshResource>(MeshList.find("FutureCar1.obj")->second);
 	SemiTruckMesh = ResourceManager::Get<MeshResource>(MeshList.find("Semitruck.obj")->second);
 	PickupTruckMesh = ResourceManager::Get<MeshResource>(MeshList.find("FuturePickup.obj")->second);
@@ -51,7 +51,7 @@ void SpawnLoop::Awake() {
 	SuperSmallWallJump = ResourceManager::Get<MeshResource>(MeshList.find("SuperSmallWallJump.obj")->second);
 	FallingPlat = ResourceManager::Get<MeshResource>(MeshList.find("pianoplatform.obj")->second);
 	HalfCirclePlat = ResourceManager::Get<MeshResource>(MeshList.find("HalfCriclePlat.obj")->second);
-	StairsRight = ResourceManager::Get<MeshResource>(MeshList.find("StairCaseR.obj")->second);
+	StairsRight = ResourceManager::Get<MeshResource>(MeshList.find("SlantedStairCase.obj")->second);
 	StairsLeft = ResourceManager::Get<MeshResource>(MeshList.find("StairCaseL.obj")->second);
 	Speaker = ResourceManager::Get<MeshResource>(MeshList.find("speaker.obj")->second);
 	SquarePlat = ResourceManager::Get<MeshResource>(MeshList.find("SquarePlatform.obj")->second);

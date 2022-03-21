@@ -79,8 +79,8 @@
 //Testing...
 #include "SpawnFunctions.h"
 //Animation
-#include "Animation/MorphAnimator.h"
-#include "Animation/MorphMeshRenderer.h"
+#include "Animation/MorphAnimationManager.h"
+#include "Animation/MorphRenderComponent.h"
 
 
 
