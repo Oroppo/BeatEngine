@@ -342,13 +342,11 @@ void SpawnLoop::SpawnBlock() {
 	}
 }
 
-int SpawnLoop::ToSpawn() {
+void SpawnLoop::ToSpawn() {
 	_SpawnTimer -= 22;
-
-	if(!_isDirty)
-	_BlockToSpawn = rand() % 8;
-
-	return _BlockToSpawn;
+	_BlockToSpawn = 2;//rand() % 8;
+	SpawnBlock();
+	//return _BlockToSpawn;
 }
 
 void SpawnLoop::RenderImGui(){
@@ -375,8 +373,11 @@ nlohmann::json SpawnLoop::ToJson() const {
 void SpawnLoop::Update(float dt) {
 
 	_SpawnTimer += dt;
+
+	//LOG_INFO(_SpawnTimer);
 	if (_SpawnTimer >= 22) {
 		ToSpawn();
+		SpawnBlock();
 	}
 
 }

@@ -79,8 +79,8 @@
 //Testing...
 #include "SpawnFunctions.h"
 //Animation
-#include "Animation/MorphAnimator.h"
-#include "Animation/MorphMeshRenderer.h"
+#include "Animation/MorphAnimationManager.h"
+#include "Animation/MorphRenderComponent.h"
 
 
 
@@ -191,9 +191,8 @@ void MainMenuScene::_CreateScene()
 			{ ShaderPartType::Fragment, "shaders/fragment_shaders/skybox_frag.glsl" }
 		});
 
-		<<<<<< < Updated upstream
-			// Setting up our enviroment map
-			scene->SetSkyboxTexture(testCubemap);
+		// Setting up our enviroment map
+		scene->SetSkyboxTexture(testCubemap);
 		scene->SetSkyboxShader(skyboxShader);
 		// Since the skybox I used was for Y-up, we need to rotate it 90 deg around the X-axis to convert it to z-up 
 		scene->SetSkyboxRotation(glm::rotate(MAT4_IDENTITY, glm::half_pi<float>(), glm::vec3(1.0f, 0.0f, 0.0f)));
@@ -211,28 +210,6 @@ void MainMenuScene::_CreateScene()
 		FontVCR->Bake();
 
 		Material::Sptr UIMat = ResourceManager::CreateAsset<Material>(basicShader);
-		====== =
-			// Setting up our enviroment map
-			scene->SetSkyboxTexture(testCubemap);
-		scene->SetSkyboxShader(skyboxShader);
-		// Since the skybox I used was for Y-up, we need to rotate it 90 deg around the X-axis to convert it to z-up 
-		scene->SetSkyboxRotation(glm::rotate(MAT4_IDENTITY, glm::half_pi<float>(), glm::vec3(1.0f, 0.0f, 0.0f)));
-
-
-		Texture3D::Sptr lut = ResourceManager::CreateAsset<Texture3D>("luts/cool.CUBE");
-		Texture2D::Sptr StartTex = ResourceManager::CreateAsset<Texture2D>("textures/LStartPlatformTex.png");
-		Texture2D::Sptr TexBeatLogo = ResourceManager::CreateAsset<Texture2D>("textures/GUI/BeatLogoUpdated.png");
-		Texture2D::Sptr TexPlayButton = ResourceManager::CreateAsset<Texture2D>("textures/GUI/BPlay.png");
-		Texture2D::Sptr TexOptionsButton = ResourceManager::CreateAsset<Texture2D>("textures/GUI/BOptions.png");
-		Texture2D::Sptr TexMusicButton = ResourceManager::CreateAsset<Texture2D>("textures/GUI/BMusic.png");
-		Texture2D::Sptr TexCreditsButton = ResourceManager::CreateAsset<Texture2D>("textures/GUI/BCredits.png");
-		Texture2D::Sptr TexQuitButton = ResourceManager::CreateAsset<Texture2D>("textures/GUI/BQuit.png");
-
-		Font::Sptr FontVCR = ResourceManager::CreateAsset<Font>("fonts/VCR.ttf", 16.f);
-		FontVCR->Bake();
-
-		Material::Sptr UIMat = ResourceManager::CreateAsset<Material>(basicShader);
-		>>>>>> > Stashed changes
 		{
 			UIMat->Name = "UIButton";
 			UIMat->Set("u_Material.Diffuse", StartTex);

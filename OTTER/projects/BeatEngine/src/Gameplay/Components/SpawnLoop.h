@@ -29,7 +29,7 @@ public:
 	virtual void Awake() override;
 	virtual void Update(float deltaTime) override;
 
-	int ToSpawn();
+	void ToSpawn();
 	float GetSpawnTimer();
 	void SpawnBlock();
 	void CreateList(const nlohmann::json&);
