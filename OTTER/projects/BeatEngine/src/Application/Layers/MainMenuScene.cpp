@@ -205,6 +205,7 @@ void MainMenuScene::_CreateScene()
 		 Texture2D::Sptr TexMusicButton = ResourceManager::CreateAsset<Texture2D>("textures/GUI/BMusic.png");
 		 Texture2D::Sptr TexCreditsButton = ResourceManager::CreateAsset<Texture2D>("textures/GUI/BCredits.png");
 		 Texture2D::Sptr TexQuitButton = ResourceManager::CreateAsset<Texture2D>("textures/GUI/BQuit.png");
+		 Texture2D::Sptr StartTex = ResourceManager::CreateAsset<Texture2D>("textures/LStartPlatformTex.png");
 		 Font::Sptr FontVCR = ResourceManager::CreateAsset<Font>("fonts/VCR.ttf", 16.f);
 		 FontVCR->Bake();
 		
@@ -425,6 +426,7 @@ void MainMenuScene::_CreateScene()
 
 		// Send the scene to the application
 		app.LoadScene(scene);
-		}
+		
 	}
 }
+	
