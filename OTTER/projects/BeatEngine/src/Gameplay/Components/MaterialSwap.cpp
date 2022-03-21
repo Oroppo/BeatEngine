@@ -28,7 +28,6 @@ void MaterialSwap::Swap(){
 
 	//beat gem material swap behaviour
 	
-		std::cout << beatNumber << std::endl;
 		if ((beatTime >= 0.6 * beatNumber - 0.6) && (beatTime <= 0.6 * beatNumber)) {			
 			_renderer->SetMaterial(OnMaterial);
 			//GetGameObject()->SetScale(glm::vec3(1.2f, 1.2f, 1.2f));

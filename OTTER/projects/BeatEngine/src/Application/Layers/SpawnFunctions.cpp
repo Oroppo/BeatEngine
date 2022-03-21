@@ -31,6 +31,7 @@
 #include "Gameplay/Components/ForegroundMover.h"
 #include "Gameplay/Components/BuildingAnim.h"
 #include "Gameplay/Components/MaterialSwap.h"
+#include "Gameplay/Components/BeatGem.h"
 
 //Physics
 #include "Gameplay/Physics/RigidBody.h"
@@ -120,7 +121,7 @@ void SpawnFunctions::SpawnGem(Gameplay::Scene::Sptr scene, Gameplay::MeshResourc
 		Gem->Add<LevelMover>();
 		Gem->Add<RotatingBehaviour>();
 		Gem->Add<MaterialSwap>(BeatNum);
-
+		Gem->Add <BeatGem>(BeatNum);
 		// Create and attach a renderer for the Object
 		RenderComponent::Sptr renderer = Gem->Add<RenderComponent>();
 		renderer->SetMesh(Mesh);

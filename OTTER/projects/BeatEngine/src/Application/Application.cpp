@@ -42,6 +42,7 @@
 #include "Gameplay/Components/ParticleSystem.h"
 #include "Gameplay/Components/BeatTimer.h"
 #include "Gameplay/Components/SeekBehaviour.h"
+#include "Gameplay/Components/BeatGem.h"
 #include "Gameplay/Components/RotatingBehaviour.h"
 #include "Gameplay/Components/MaterialSwap.h"
 #include "Gameplay/Components/CharacterController.h"
@@ -326,6 +327,7 @@ void Application::_RegisterClasses()
 	ComponentManager::RegisterType<MorphMeshRenderer>();
 	ComponentManager::RegisterType<ParticleSystem>();
 	ComponentManager::RegisterType<SpawnLoop>();
+	ComponentManager::RegisterType<BeatGem>();
 }
 
 void Application::_Load() {
