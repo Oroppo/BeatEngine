@@ -113,84 +113,85 @@ void MainMenuScene::_CreateScene()
 		app.LoadScene("scene.json");
 	}
 	else {
-		 Scene::Sptr scene = std::make_shared<Scene>();
-		
-		 ShaderProgram::Sptr reflectiveShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
+		Scene::Sptr scene = std::make_shared<Scene>();
+
+		ShaderProgram::Sptr reflectiveShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
 			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_environment_reflective.glsl" }
 		});
 		reflectiveShader->SetDebugName("Reflective");
-		
-		
-		 ShaderProgram::Sptr basicShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
+
+
+		ShaderProgram::Sptr basicShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
 			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_blinn_phong_textured.glsl" }
 		});
 		basicShader->SetDebugName("Blinn-phong");
-		
-		
-		 ShaderProgram::Sptr specShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
+
+
+		ShaderProgram::Sptr specShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
 			{ ShaderPartType::Fragment, "shaders/fragment_shaders/textured_specular.glsl" }
 		});
 		specShader->SetDebugName("Textured-Specular");
-		
-		 ShaderProgram::Sptr foliageShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
+
+		ShaderProgram::Sptr foliageShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/foliage.glsl" },
 			{ ShaderPartType::Fragment, "shaders/fragment_shaders/screendoor_transparency.glsl" }
 		});
 		foliageShader->SetDebugName("Foliage");
-		
-		
-		 ShaderProgram::Sptr toonShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
+
+
+		ShaderProgram::Sptr toonShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
 			{ ShaderPartType::Fragment, "shaders/fragment_shaders/toon_shading.glsl" }
 		});
 		toonShader->SetDebugName("Toon Shader");
-		
-		
-		 ShaderProgram::Sptr displacementShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
+
+
+		ShaderProgram::Sptr displacementShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/displacement_mapping.glsl" },
 			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_tangentspace_normal_maps.glsl" }
 		});
 		displacementShader->SetDebugName("Displacement Mapping");
-		
-		 ShaderProgram::Sptr tangentSpaceMapping = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
+
+		ShaderProgram::Sptr tangentSpaceMapping = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
 			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_tangentspace_normal_maps.glsl" }
 		});
 		tangentSpaceMapping->SetDebugName("Tangent Space Mapping");
-		
-		 ShaderProgram::Sptr multiTextureShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
+
+		ShaderProgram::Sptr multiTextureShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/vert_multitextured.glsl" },
 			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_multitextured.glsl" }
 		});
 		multiTextureShader->SetDebugName("Multitexturing");
-		
-		
-		 MeshResource::Sptr monkeyMesh = ResourceManager::CreateAsset<MeshResource>("Monkey.obj");
-		
-		
-		 Texture2D::Sptr    boxTexture = ResourceManager::CreateAsset<Texture2D>("textures/box-diffuse.png");
-		 Texture2D::Sptr    boxSpec = ResourceManager::CreateAsset<Texture2D>("textures/box-specular.png");
-		 Texture2D::Sptr    monkeyTex = ResourceManager::CreateAsset<Texture2D>("textures/monkey-uvMap.png");
-		 Texture2D::Sptr    leafTex = ResourceManager::CreateAsset<Texture2D>("textures/leaves.png");
+
+
+		MeshResource::Sptr monkeyMesh = ResourceManager::CreateAsset<MeshResource>("Monkey.obj");
+
+
+		Texture2D::Sptr    boxTexture = ResourceManager::CreateAsset<Texture2D>("textures/box-diffuse.png");
+		Texture2D::Sptr    boxSpec = ResourceManager::CreateAsset<Texture2D>("textures/box-specular.png");
+		Texture2D::Sptr    monkeyTex = ResourceManager::CreateAsset<Texture2D>("textures/monkey-uvMap.png");
+		Texture2D::Sptr    leafTex = ResourceManager::CreateAsset<Texture2D>("textures/leaves.png");
 		leafTex->SetMinFilter(MinFilter::Nearest);
 		leafTex->SetMagFilter(MagFilter::Nearest);
-		
-		
-		
-		 Texture1D::Sptr toonLut = ResourceManager::CreateAsset<Texture1D>("luts/toon-1D.png");
+
+
+
+		Texture1D::Sptr toonLut = ResourceManager::CreateAsset<Texture1D>("luts/toon-1D.png");
 		toonLut->SetWrap(WrapMode::ClampToEdge);
-		
-		
-		 TextureCube::Sptr testCubemap = ResourceManager::CreateAsset<TextureCube>("cubemaps/city/skybox.jpg");
-		
-		 ShaderProgram::Sptr      skyboxShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
+
+
+		TextureCube::Sptr testCubemap = ResourceManager::CreateAsset<TextureCube>("cubemaps/city/skybox.jpg");
+
+		ShaderProgram::Sptr      skyboxShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/skybox_vert.glsl" },
 			{ ShaderPartType::Fragment, "shaders/fragment_shaders/skybox_frag.glsl" }
 		});
 
+<<<<<<< Updated upstream
 		 // Setting up our enviroment map
 		 scene->SetSkyboxTexture(testCubemap);
 		 scene->SetSkyboxShader(skyboxShader);
@@ -210,6 +211,28 @@ void MainMenuScene::_CreateScene()
 		 FontVCR->Bake();
 		
 		 Material::Sptr UIMat = ResourceManager::CreateAsset<Material>(basicShader);
+=======
+		// Setting up our enviroment map
+		scene->SetSkyboxTexture(testCubemap);
+		scene->SetSkyboxShader(skyboxShader);
+		// Since the skybox I used was for Y-up, we need to rotate it 90 deg around the X-axis to convert it to z-up 
+		scene->SetSkyboxRotation(glm::rotate(MAT4_IDENTITY, glm::half_pi<float>(), glm::vec3(1.0f, 0.0f, 0.0f)));
+
+
+		Texture3D::Sptr lut = ResourceManager::CreateAsset<Texture3D>("luts/cool.CUBE");
+		Texture2D::Sptr StartTex = ResourceManager::CreateAsset<Texture2D>("textures/LStartPlatformTex.png");
+		Texture2D::Sptr TexBeatLogo = ResourceManager::CreateAsset<Texture2D>("textures/GUI/BeatLogoUpdated.png");
+		Texture2D::Sptr TexPlayButton = ResourceManager::CreateAsset<Texture2D>("textures/GUI/BPlay.png");
+		Texture2D::Sptr TexOptionsButton = ResourceManager::CreateAsset<Texture2D>("textures/GUI/BOptions.png");
+		Texture2D::Sptr TexMusicButton = ResourceManager::CreateAsset<Texture2D>("textures/GUI/BMusic.png");
+		Texture2D::Sptr TexCreditsButton = ResourceManager::CreateAsset<Texture2D>("textures/GUI/BCredits.png");
+		Texture2D::Sptr TexQuitButton = ResourceManager::CreateAsset<Texture2D>("textures/GUI/BQuit.png");
+
+		Font::Sptr FontVCR = ResourceManager::CreateAsset<Font>("fonts/VCR.ttf", 16.f);
+		FontVCR->Bake();
+
+		Material::Sptr UIMat = ResourceManager::CreateAsset<Material>(basicShader);
+>>>>>>> Stashed changes
 		{
 			UIMat->Name = "UIButton";
 			UIMat->Set("u_Material.Diffuse", StartTex);
@@ -217,38 +240,40 @@ void MainMenuScene::_CreateScene()
 		}
 
 
-	
+
 		//// Create some lights for our scene
 		//scene->Lights.resize(2);
 		//scene->Lights[0].Position = glm::vec3(0.0f, 1.0f, 3.0f);
 		//scene->Lights[0].Color = glm::vec3(1.0f, 1.0f, 1.0f);
 		//scene->Lights[0].Range = 50.0f;
-		
+
 			// Create some lights for our scene
-			scene->Lights.resize(6);
-			//scene->Lights[0].Position = glm::vec3(0.0f, 1.0f, 3.0f);
-			scene->Lights[0].Color = glm::vec3(1.0f, 1.0f, 1.0f);
-			scene->Lights[0].Range = 100.0f;
+		scene->Lights.resize(6);
+		//scene->Lights[0].Position = glm::vec3(0.0f, 1.0f, 3.0f);
+		scene->Lights[0].Color = glm::vec3(1.0f, 1.0f, 1.0f);
+		scene->Lights[0].Range = 100.0f;
 
-			scene->Lights[2].Position = glm::vec3(-1.380f, 17.460f, -5.710f);
-			scene->Lights[2].Color = glm::vec3(1.0f, 1.0f, 1.0f);
-			scene->Lights[2].Range = 50;
+		scene->Lights[2].Position = glm::vec3(-1.380f, 17.460f, -5.710f);
+		scene->Lights[2].Color = glm::vec3(1.0f, 1.0f, 1.0f);
+		scene->Lights[2].Range = 50;
 
-			scene->Lights[3].Position = glm::vec3(-25.380f, 14.060f, -14.020f);
-			scene->Lights[3].Color = glm::vec3(1.0f, 1.0f, 1.0f);
-			scene->Lights[3].Range = 187;
+		scene->Lights[3].Position = glm::vec3(-25.380f, 14.060f, -14.020f);
+		scene->Lights[3].Color = glm::vec3(1.0f, 1.0f, 1.0f);
+		scene->Lights[3].Range = 187;
 
-			scene->Lights[4].Position = glm::vec3(25.380f, 14.060f, -14.020f);
-			scene->Lights[4].Color = glm::vec3(1.0f, 1.0f, 1.0f);
-			scene->Lights[4].Range = 187;
+		scene->Lights[4].Position = glm::vec3(25.380f, 14.060f, -14.020f);
+		scene->Lights[4].Color = glm::vec3(1.0f, 1.0f, 1.0f);
+		scene->Lights[4].Range = 187;
 
-			scene->Lights[5].Color = glm::vec3(1.0f, 1.0f, 1.0f);
+		scene->Lights[5].Color = glm::vec3(1.0f, 1.0f, 1.0f);
 
-			
-			// Red/Green light
+
+		// Red/Green light
 		scene->Lights[1].Position = glm::vec3(6.840f, 5.610f, 3.0f);
 		scene->Lights[1].Color = glm::vec3((1.0f, 0.99f, 0.99f));
 		scene->Lights[1].Range = 50.0f;
+
+
 
 		// Set up the scene's camera
 		GameObject::Sptr camera = scene->CreateGameObject("Main Camera");
@@ -275,25 +300,22 @@ void MainMenuScene::_CreateScene()
 
 		{//Main Menu Block
 
+
+
 			{//Logo
 				GameObject::Sptr logo = scene->CreateGameObject("MainMenu Logo");
 
 				RectTransform::Sptr transform = logo->Add<RectTransform>();
 				transform->SetPosition({ 0, 0 });
 				transform->SetRotationDeg(0);
-				transform->SetSize({ 750, 750 });
 				transform->SetMin({ 0, 0 });
-				transform->SetMax({ 750, 750 });
 
-				GuiPanel::Sptr logoPanel = logo->Add<GuiPanel>();
+				GuiPanel::Sptr logoPanel = logo->Add<GuiPanel>(0.5, 0.3, 667, 406);
 				logoPanel->SetTexture(TexBeatLogo);
 				logoPanel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 				logoPanel->SetBorderRadius(0);
-				logoPanel->IsEnabled = false;
+				logoPanel->IsEnabled = true;
 
-
-
-				transform->SetPosition({ (float)windowSize.x * 0.5, 300 });
 
 			}
 
@@ -303,18 +325,13 @@ void MainMenuScene::_CreateScene()
 				RectTransform::Sptr transform = button->Add<RectTransform>();
 				transform->SetPosition({ 0, 0 });
 				transform->SetRotationDeg(0);
-				transform->SetSize({ 200, 100 });
 				transform->SetMin({ 0, 0 });
-				transform->SetMax({ 200, 100 });
 
-				GuiPanel::Sptr panel = button->Add<GuiPanel>();
+				GuiPanel::Sptr panel = button->Add<GuiPanel>(0.2, 0.8, 300, 150);
 				panel->SetTexture(TexPlayButton);
 				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 				panel->SetBorderRadius(0);
-				panel->IsEnabled = false;
-
-
-				transform->SetPosition({ (float)windowSize.x * 0.20, (float)windowSize.y * 0.8 });
+				panel->IsEnabled = true;
 
 			}
 
@@ -324,18 +341,14 @@ void MainMenuScene::_CreateScene()
 				RectTransform::Sptr transform = button->Add<RectTransform>();
 				transform->SetPosition({ 0, 0 });
 				transform->SetRotationDeg(0);
-				transform->SetSize({ 200, 100 });
 				transform->SetMin({ 0, 0 });
-				transform->SetMax({ 200, 100 });
 
-				GuiPanel::Sptr panel = button->Add<GuiPanel>();
+				GuiPanel::Sptr panel = button->Add<GuiPanel>(0.35, 0.8, 300, 150);
 				panel->SetTexture(TexOptionsButton);
 				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 0.6f));
 				panel->SetBorderRadius(0);
-				panel->IsEnabled = false;
+				panel->IsEnabled = true;
 
-
-				transform->SetPosition({ (float)windowSize.x * 0.35, (float)windowSize.y * 0.8 });
 
 			}
 
@@ -345,18 +358,14 @@ void MainMenuScene::_CreateScene()
 				RectTransform::Sptr transform = button->Add<RectTransform>();
 				transform->SetPosition({ 0, 0 });
 				transform->SetRotationDeg(0);
-				transform->SetSize({ 200, 100 });
 				transform->SetMin({ 0, 0 });
-				transform->SetMax({ 200, 100 });
 
-				GuiPanel::Sptr panel = button->Add<GuiPanel>();
+				GuiPanel::Sptr panel = button->Add<GuiPanel>(0.5, 0.8, 300, 150);
 				panel->SetTexture(TexMusicButton);
 				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 0.6f));
 				panel->SetBorderRadius(0);
-				panel->IsEnabled = false;
+				panel->IsEnabled = true;
 
-
-				transform->SetPosition({ (float)windowSize.x * 0.5, (float)windowSize.y * 0.8 });
 
 			}
 
@@ -366,19 +375,13 @@ void MainMenuScene::_CreateScene()
 				RectTransform::Sptr transform = button->Add<RectTransform>();
 				transform->SetPosition({ 0, 0 });
 				transform->SetRotationDeg(0);
-				transform->SetSize({ 200, 100 });
 				transform->SetMin({ 0, 0 });
-				transform->SetMax({ 200, 100 });
 
-				GuiPanel::Sptr panel = button->Add<GuiPanel>();
+				GuiPanel::Sptr panel = button->Add<GuiPanel>(0.65, 0.8, 300, 150);
 				panel->SetTexture(TexCreditsButton);
 				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 0.6f));
 				panel->SetBorderRadius(0);
-				panel->IsEnabled = false;
-
-
-
-				transform->SetPosition({ (float)windowSize.x * 0.65, (float)windowSize.y * 0.8 });
+				panel->IsEnabled = true;
 
 			}
 
@@ -388,33 +391,21 @@ void MainMenuScene::_CreateScene()
 				RectTransform::Sptr transform = button->Add<RectTransform>();
 				transform->SetPosition({ 0, 0 });
 				transform->SetRotationDeg(0);
-				transform->SetSize({ 200, 100 });
 				transform->SetMin({ 0, 0 });
-				transform->SetMax({ 200, 100 });
 
-				GuiPanel::Sptr panel = button->Add<GuiPanel>();
+				GuiPanel::Sptr panel = button->Add<GuiPanel>(0.8, 0.8, 300, 150);
 				panel->SetTexture(TexQuitButton);
 				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 				panel->SetBorderRadius(0);
-				panel->IsEnabled = false;
+				panel->IsEnabled = true;
 
-
-
-				transform->SetPosition({ (float)windowSize.x * 0.8, (float)windowSize.y * 0.8 });
 
 			}
 
+
 		}
 
 
-		
-			
-
-		GameObject::Sptr particles = scene->CreateGameObject("Particles");
-		{
-			ParticleSystem::Sptr particleManager = particles->Add<ParticleSystem>();
-			particleManager->AddEmitter(glm::vec3(0.0f), glm::vec3(0.0f, -1.0f, 10.0f), 10.0f, glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
-		}
 
 		GuiBatcher::SetDefaultTexture(ResourceManager::CreateAsset<Texture2D>("textures/ui-sprite.png"));
 		GuiBatcher::SetDefaultBorderRadius(8);
