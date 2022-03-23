@@ -73,6 +73,8 @@
 #include "Layers/ParticleLayer.h"
 #include "Layers/Level1Scene.h"
 #include "Application/Layers/MainMenuScene.h"
+#include "Application/Layers/GameOverScene.h"
+#include "Application/Layers/PauseMenuScene.h"
 
 //Sound
 #include "FMOD/AudioEngine.h"
@@ -170,6 +172,8 @@ void Application::_Run()
 	// TODO: Register layers
 	_layers.push_back(std::make_shared<GLAppLayer>());
 	//_layers.push_back(std::make_shared<DefaultSceneLayer>());
+	//_layers.push_back(std::make_shared<PauseMenuScene>());
+	//_layers.push_back(std::make_shared<GameOverScene>());
 	_layers.push_back(std::make_shared<Level1Scene>());
 	_layers.push_back(std::make_shared<MainMenuScene>());
 	
