@@ -307,14 +307,14 @@ void GameOverScene::_CreateScene()
 			panel->IsEnabled = true;
 		}
 
-		GameObject::Sptr button = scene->CreateGameObject("GameOver Text");
+		GameObject::Sptr GameOverText = scene->CreateGameObject("GameOver Text");
 		{//Game Over Text
-			RectTransform::Sptr transform = button->Add<RectTransform>();
+			RectTransform::Sptr transform = GameOverText->Add<RectTransform>();
 			transform->SetPosition({ 0, 0 });
 			transform->SetRotationDeg(0);
 			transform->SetMin({ 0, 0 });
 
-			GuiPanel::Sptr panel = button->Add<GuiPanel>(0.5, 0.2, 809, 249);
+			GuiPanel::Sptr panel = GameOverText->Add<GuiPanel>(0.5, 0.2, 809, 249);
 			panel->SetTexture(TexGameOverText);
 			panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 			panel->SetBorderRadius(0);
@@ -322,14 +322,14 @@ void GameOverScene::_CreateScene()
 
 		}
 
-		GameObject::Sptr button = scene->CreateGameObject("GameOver Score Breakdown");
+		GameObject::Sptr GameOverScore = scene->CreateGameObject("GameOver Score Breakdown");
 		{//Score breakdown
-			RectTransform::Sptr transform = button->Add<RectTransform>();
+			RectTransform::Sptr transform = GameOverScore->Add<RectTransform>();
 			transform->SetPosition({ 0, 0 });
 			transform->SetRotationDeg(0);
 			transform->SetMin({ 0, 0 });
 
-			GuiPanel::Sptr panel = button->Add<GuiPanel>(0.4, 0.5, 504 * 0.75, 475 * 0.75);
+			GuiPanel::Sptr panel = GameOverScore->Add<GuiPanel>(0.4, 0.5, 504 * 0.75, 475 * 0.75);
 			panel->SetTexture(TexScoreBreakdown);
 			panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 			panel->SetBorderRadius(0);
@@ -368,14 +368,14 @@ void GameOverScene::_CreateScene()
 
 		}
 
-		GameObject::Sptr button = scene->CreateGameObject("GameOver Navigation");
+		GameObject::Sptr GameOverNavigation = scene->CreateGameObject("GameOver Navigation");
 		{//Navigation Buttons
-			RectTransform::Sptr transform = button->Add<RectTransform>();
+			RectTransform::Sptr transform = GameOverNavigation->Add<RectTransform>();
 			transform->SetPosition({ 0, 0 });
 			transform->SetRotationDeg(0);
 			transform->SetMin({ 0, 0 });
 
-			GuiPanel::Sptr panel = button->Add<GuiPanel>(0.9, 0.93, 400 * 0.75, 150 * 0.75);
+			GuiPanel::Sptr panel = GameOverNavigation->Add<GuiPanel>(0.9, 0.93, 400 * 0.75, 150 * 0.75);
 			panel->SetTexture(TexNavigationLeftRight);
 			panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 			panel->SetBorderRadius(0);

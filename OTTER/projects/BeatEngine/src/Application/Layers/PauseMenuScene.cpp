@@ -293,28 +293,28 @@ void PauseMenuScene::_CreateScene()
 
 		//Pause Menu Block
 
-			GameObject::Sptr background = scene->CreateGameObject("PauseMenu Dimmed Background");
+			GameObject::Sptr DimmedBackground = scene->CreateGameObject("PauseMenu Dimmed Background");
 			{//Dim BG
-				RectTransform::Sptr transform = background->Add<RectTransform>();
+				RectTransform::Sptr transform = DimmedBackground->Add<RectTransform>();
 				transform->SetPosition({ 0, 0 });
 				transform->SetRotationDeg(0);
 				transform->SetMin({ 0, 0 });
 
-				GuiPanel::Sptr panel = background->Add<GuiPanel>(0.5, 0.5, 1920, 1080);
+				GuiPanel::Sptr panel = DimmedBackground->Add<GuiPanel>(0.5, 0.5, 1920, 1080);
 				panel->SetTexture(TexDimmedBG);
 				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 				panel->SetBorderRadius(0);
 				panel->IsEnabled = true;
 			}
 
-			GameObject::Sptr background = scene->CreateGameObject("PauseMenu Background");
+			GameObject::Sptr PauseMenuBackground = scene->CreateGameObject("PauseMenu Background");
 			{//Background
-				RectTransform::Sptr transform = background->Add<RectTransform>();
+				RectTransform::Sptr transform = PauseMenuBackground->Add<RectTransform>();
 				transform->SetPosition({ 0, 0 });
 				transform->SetRotationDeg(0);
 				transform->SetMin({ 0, 0 });
 
-				GuiPanel::Sptr panel = background->Add<GuiPanel>(0.5, 0.5, 400, 750);
+				GuiPanel::Sptr panel = PauseMenuBackground->Add<GuiPanel>(0.5, 0.5, 400, 750);
 				panel->SetTexture(TexPauseMenu);
 				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 				panel->SetBorderRadius(0);
@@ -382,14 +382,14 @@ void PauseMenuScene::_CreateScene()
 
 			}
 
-			GameObject::Sptr button = scene->CreateGameObject("PauseMenu Navigation");
+			GameObject::Sptr PauseMenuNavigation = scene->CreateGameObject("PauseMenu Navigation");
 			{//Navigation Buttons
-				RectTransform::Sptr transform = button->Add<RectTransform>();
+				RectTransform::Sptr transform = PauseMenuNavigation->Add<RectTransform>();
 				transform->SetPosition({ 0, 0 });
 				transform->SetRotationDeg(0);
 				transform->SetMin({ 0, 0 });
 
-				GuiPanel::Sptr panel = button->Add<GuiPanel>(0.9, 0.93, 400 * 0.75, 150 * 0.75);
+				GuiPanel::Sptr panel = PauseMenuNavigation->Add<GuiPanel>(0.9, 0.93, 400 * 0.75, 150 * 0.75);
 				panel->SetTexture(TexNavigationUpDown);
 				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 				panel->SetBorderRadius(0);
