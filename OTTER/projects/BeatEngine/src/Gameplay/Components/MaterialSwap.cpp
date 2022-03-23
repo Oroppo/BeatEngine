@@ -28,21 +28,21 @@ void MaterialSwap::Swap(){
 
 	//beat gem material swap behaviour
 	
-		if ((beatTime >= 0.6 * beatNumber - 0.6) && (beatTime <= 0.6 * beatNumber)) {			
+		if ((beatTime >= (0.6 * beatNumber) - 0.6) && (beatTime <= 0.6 * beatNumber)) {			
 			_renderer->SetMaterial(OnMaterial);
 			//GetGameObject()->SetScale(glm::vec3(1.2f, 1.2f, 1.2f));
 		}
 		else {
+			//_renderer->SetMaterial(Lerp(OffMaterial,AnticipationMaterial,beatTime/1.2f));
 			_renderer->SetMaterial(OffMaterial);
-			//GetGameObject()->SetScale(GetGameObject()->GetScale()*1.2f);
 		}
 		if (beatNumber != 1) {
-			if ((beatTime >= 0.6 * (beatNumber - 1) - 0.6) && (beatTime <= 0.6 * (beatNumber - 1))) {
+			if ((beatTime >= (0.6 * (beatNumber - 1)) - 0.6) && (beatTime <= 0.6 * (beatNumber - 1))) {
 				_renderer->SetMaterial(AnticipationMaterial);
 			}
 		}
 		else if (beatNumber == 1) {
-			if ((beatTime >= 0.6 * (beatNumber +3) - 0.6) && (beatTime <= 0.6 * (beatNumber +3))) {
+			if ((beatTime >=( 0.6 * (beatNumber +3) - 0.6)) && (beatTime <= 0.6 * (beatNumber +3))) {
 				_renderer->SetMaterial(AnticipationMaterial);
 			}
 		}
@@ -69,7 +69,11 @@ MaterialSwap ::Sptr MaterialSwap ::FromJson(const nlohmann::json& blob) {
 	result->OffMaterial  = ResourceManager::Get<Gameplay::Material>(Guid(blob["Off_material"]));
 	return result;
 }
-
+template <typename T>
+T MaterialSwap::Lerp(const T& p0, const T& p1, float t)
+{
+	return (1.0f - t) * p0 + t * p1;
+}
 void MaterialSwap::Update(float dt) {
 
 	Swap();

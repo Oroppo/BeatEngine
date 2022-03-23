@@ -149,7 +149,7 @@ void CharacterController::RespawnBeatGems(const std::vector<Gameplay::Physics::T
         std::cout << "Loop length is "<<LoopLength << std::endl;
         for (int i = 0; i < LoopLength; i++) {
             std::cout << "boom shakalaka" << std::endl;
-            if (GetGameObject()) {
+            if (trigger[i]->GetGameObject()!= nullptr) {
                 trigger[i]->GetGameObject()->Get<RenderComponent>()->IsEnabled = true;
             }   
            }
@@ -166,7 +166,7 @@ void CharacterController::AirControl(char Direction) {
         }
         else if (_Direction == Direction) {
             if (_AirSpeed > 1.0f) {
-                _AirSpeed -= 0.025f;
+                _AirSpeed -= 0.05f;
             }
         }
    }

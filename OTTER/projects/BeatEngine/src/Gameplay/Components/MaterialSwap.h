@@ -21,7 +21,9 @@ public:
 	virtual ~MaterialSwap ();
 
 
-
+	
+	template<typename T>
+	T Lerp(const T& p0, const T& p1, float t);
 
 	Gameplay::Material::Sptr        OnMaterial;
 	Gameplay::Material::Sptr		AnticipationMaterial;
