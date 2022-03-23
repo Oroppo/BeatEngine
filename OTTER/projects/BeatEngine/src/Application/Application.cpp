@@ -175,7 +175,7 @@ void Application::_Run()
 	//_layers.push_back(std::make_shared<PauseMenuScene>());
 	//_layers.push_back(std::make_shared<GameOverScene>());
 	_layers.push_back(std::make_shared<Level1Scene>());
-	_layers.push_back(std::make_shared<MainMenuScene>());
+	//_layers.push_back(std::make_shared<MainMenuScene>());
 	
 	_layers.push_back(std::make_shared<LogicUpdateLayer>());
 	_layers.push_back(std::make_shared<RenderLayer>());

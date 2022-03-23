@@ -37,13 +37,16 @@ void CharacterController::RenderImGui() {
 
 nlohmann::json CharacterController::ToJson() const {
     return {
-        { "impulse", _impulse2 }
+        { "impulse", _impulse }
     };
 }
 
 CharacterController::CharacterController() :
     IComponent()
 {
+    _AirSpeed = 1.0f;
+    _Direction = 'U';
+    _isJumping = false;
     _canJump = true;
     _platform = "";
 }
@@ -146,33 +149,54 @@ void CharacterController::RespawnBeatGems(const std::vector<Gameplay::Physics::T
         std::cout << "Loop length is "<<LoopLength << std::endl;
         for (int i = 0; i < LoopLength; i++) {
             std::cout << "boom shakalaka" << std::endl;
-            trigger[i]->GetGameObject()->Get<RenderComponent>()->IsEnabled = true;
-        }
+            if (GetGameObject()) {
+                trigger[i]->GetGameObject()->Get<RenderComponent>()->IsEnabled = true;
+            }   
+           }
         BeatGemsUsed.clear();
     }
    
 }
-void CharacterController::Update(float deltaTime) {
 
+void CharacterController::AirControl(char Direction) {
+    if (_isJumping == true) {
+        if (_Direction != Direction) {
+            _Direction = Direction;
+            _AirSpeed = 2.0f;
+        }
+        else if (_Direction == Direction) {
+            if (_AirSpeed > 1.0f) {
+                _AirSpeed -= 0.025f;
+            }
+        }
+   }
+   
+}
+void CharacterController::Update(float deltaTime) {
+    _GemJumpTimer = GetGameObject()->GetScene()->FindObjectByName("GameManager")->Get<BeatTimer>()->GetBeatTime();
+    glm::vec3 CurrentPosition = GetGameObject()->GetPosition();
     bool _A = InputEngine::IsKeyDown(GLFW_KEY_A);
     bool _D = InputEngine::IsKeyDown(GLFW_KEY_D);
     bool _W = InputEngine::IsKeyDown(GLFW_KEY_SPACE);
-    _GemJumpTimer = GetGameObject()->GetScene()->FindObjectByName("GameManager")->Get<BeatTimer>()->GetBeatTime();
-    glm::vec3 CurrentPosition = GetGameObject()->GetPosition();
+   
     if (_A) {
-
-        _body->SetLinearVelocity(glm::vec3(-speed, _body->GetLinearVelocity().y, _body->GetLinearVelocity().z));
+        AirControl('A');
+       _body->SetLinearVelocity(glm::vec3(-speed*_AirSpeed, _body->GetLinearVelocity().y, _body->GetLinearVelocity().z));
         SFXS->PlayEvent("event:/Walk");
     }
+
     if (_D) {
-        _body->SetLinearVelocity(glm::vec3(speed, _body->GetLinearVelocity().y, _body->GetLinearVelocity().z));
+        AirControl('D');
+        _body->SetLinearVelocity(glm::vec3(speed*_AirSpeed, _body->GetLinearVelocity().y, _body->GetLinearVelocity().z));
     }
+
     if ((_W) && (_canJump == true)) {
+        _isJumping = true;
         _body->SetLinearVelocity(glm::vec3(_body->GetLinearVelocity().x, _body->GetLinearVelocity().y, _impulse.z * (speed / 3)));
         _canJump = false;
         SFXS->PlayEvent("event:/Jump");
-
     }
+ 
     if ((!_A) && (!_D) && (!_W) && (_platform != "") && (_platform != "BeatGem")) {
         _body->SetLinearVelocity(glm::vec3(-1.0f, 0.0f, 0.0f));
     }
