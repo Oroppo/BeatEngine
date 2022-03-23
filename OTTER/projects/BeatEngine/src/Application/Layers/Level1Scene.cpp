@@ -295,6 +295,8 @@ void Level1Scene::_CreateScene()
 		 Texture2D::Sptr TexBeatBar = ResourceManager::CreateAsset<Texture2D>("textures/GUI/BeatBar.png");
 		 Texture2D::Sptr TexBeatBarTick = ResourceManager::CreateAsset<Texture2D>("textures/GUI/BeatBarTick.png");
 		 Texture2D::Sptr TexScoreDisplay = ResourceManager::CreateAsset<Texture2D>("textures/GUI/ScoreDisplay.png");
+		 Texture2D::Sptr TexNavigationLeftRight = ResourceManager::CreateAsset<Texture2D>("textures/GUI/NavigationLeftRight.png");
+		 Texture2D::Sptr TexNavigationUpDown = ResourceManager::CreateAsset<Texture2D>("textures/GUI/NavigationUpDown.png");
 		
 		 Font::Sptr FontVCR = ResourceManager::CreateAsset<Font>("fonts/VCR.ttf", 16.f);
 		 FontVCR->Bake();
@@ -505,7 +507,7 @@ void Level1Scene::_CreateScene()
 			OvalBuildingMaterial->Set("u_Material.Shininess", 0.1f);
 		}
 
-	
+
 		//// Create some lights for our scene
 		//scene->Lights.resize(2);
 		//scene->Lights[0].Position = glm::vec3(0.0f, 1.0f, 3.0f);
@@ -720,140 +722,7 @@ void Level1Scene::_CreateScene()
 
 		/////////////////////////// UI //////////////////////////////
 
-		{//Main Menu Block
-
-			{//Logo
-				GameObject::Sptr logo = scene->CreateGameObject("MainMenu Logo");
-
-				RectTransform::Sptr transform = logo->Add<RectTransform>();
-				transform->SetPosition({ 0, 0 });
-				transform->SetRotationDeg(0);
-				transform->SetSize({ 750, 750 });
-				transform->SetMin({ 0, 0 });
-				transform->SetMax({ 750, 750 });
-
-				GuiPanel::Sptr logoPanel = logo->Add<GuiPanel>();
-				logoPanel->SetTexture(TexBeatLogo);
-				logoPanel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-				logoPanel->SetBorderRadius(0);
-				logoPanel->IsEnabled = false;
-
-
-
-				transform->SetPosition({ (float)windowSize.x * 0.5, 300 });
-
-			}
-
-			{//Play Button
-				GameObject::Sptr button = scene->CreateGameObject("MainMenu Play Button");
-
-				RectTransform::Sptr transform = button->Add<RectTransform>();
-				transform->SetPosition({ 0, 0 });
-				transform->SetRotationDeg(0);
-				transform->SetSize({ 200, 100 });
-				transform->SetMin({ 0, 0 });
-				transform->SetMax({ 200, 100 });
-
-				GuiPanel::Sptr panel = button->Add<GuiPanel>();
-				panel->SetTexture(TexPlayButton);
-				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-				panel->SetBorderRadius(0);
-				panel->IsEnabled = false;
-
-
-				transform->SetPosition({ (float)windowSize.x * 0.20, (float)windowSize.y * 0.8 });
-
-			}
-
-			{//Options Button
-				GameObject::Sptr button = scene->CreateGameObject("MainMenu Options Button");
-
-				RectTransform::Sptr transform = button->Add<RectTransform>();
-				transform->SetPosition({ 0, 0 });
-				transform->SetRotationDeg(0);
-				transform->SetSize({ 200, 100 });
-				transform->SetMin({ 0, 0 });
-				transform->SetMax({ 200, 100 });
-
-				GuiPanel::Sptr panel = button->Add<GuiPanel>();
-				panel->SetTexture(TexOptionsButton);
-				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 0.6f));
-				panel->SetBorderRadius(0);
-				panel->IsEnabled = false;
-
-
-				transform->SetPosition({ (float)windowSize.x * 0.35, (float)windowSize.y * 0.8 });
-
-			}
-
-			{//Music Button
-				GameObject::Sptr button = scene->CreateGameObject("MainMenu Music Button");
-
-				RectTransform::Sptr transform = button->Add<RectTransform>();
-				transform->SetPosition({ 0, 0 });
-				transform->SetRotationDeg(0);
-				transform->SetSize({ 200, 100 });
-				transform->SetMin({ 0, 0 });
-				transform->SetMax({ 200, 100 });
-
-				GuiPanel::Sptr panel = button->Add<GuiPanel>();
-				panel->SetTexture(TexMusicButton);
-				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 0.6f));
-				panel->SetBorderRadius(0);
-				panel->IsEnabled = false;
-
-
-				transform->SetPosition({ (float)windowSize.x * 0.5, (float)windowSize.y * 0.8 });
-
-			}
-
-			{//Credits Button
-				GameObject::Sptr button = scene->CreateGameObject("MainMenu Credits Button");
-
-				RectTransform::Sptr transform = button->Add<RectTransform>();
-				transform->SetPosition({ 0, 0 });
-				transform->SetRotationDeg(0);
-				transform->SetSize({ 200, 100 });
-				transform->SetMin({ 0, 0 });
-				transform->SetMax({ 200, 100 });
-
-				GuiPanel::Sptr panel = button->Add<GuiPanel>();
-				panel->SetTexture(TexCreditsButton);
-				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 0.6f));
-				panel->SetBorderRadius(0);
-				panel->IsEnabled = false;
-
-
-
-				transform->SetPosition({ (float)windowSize.x * 0.65, (float)windowSize.y * 0.8 });
-
-			}
-
-			{//Quit Button
-				GameObject::Sptr button = scene->CreateGameObject("MainMenu Quit Button");
-
-				RectTransform::Sptr transform = button->Add<RectTransform>();
-				transform->SetPosition({ 0, 0 });
-				transform->SetRotationDeg(0);
-				transform->SetSize({ 200, 100 });
-				transform->SetMin({ 0, 0 });
-				transform->SetMax({ 200, 100 });
-
-				GuiPanel::Sptr panel = button->Add<GuiPanel>();
-				panel->SetTexture(TexQuitButton);
-				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-				panel->SetBorderRadius(0);
-				panel->IsEnabled = false;
-
-
-
-				transform->SetPosition({ (float)windowSize.x * 0.8, (float)windowSize.y * 0.8 });
-
-			}
-
-		}
-
-
+		
 		{//Pause Menu Block
 
 			{//Dim BG
@@ -862,19 +731,13 @@ void Level1Scene::_CreateScene()
 				RectTransform::Sptr transform = background->Add<RectTransform>();
 				transform->SetPosition({ 0, 0 });
 				transform->SetRotationDeg(0);
-				transform->SetSize({ 1920, 1080 });
 				transform->SetMin({ 0, 0 });
-				transform->SetMax({ 1920, 1080 });
 
-				GuiPanel::Sptr panel = background->Add<GuiPanel>();
+				GuiPanel::Sptr panel = background->Add<GuiPanel>(0.5, 0.5, 1920, 1080);
 				panel->SetTexture(TexDimmedBG);
 				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 				panel->SetBorderRadius(0);
 				panel->IsEnabled = false;
-
-
-				transform->SetPosition({ (float)windowSize.x * 0.5, (float)windowSize.y * 0.5 });
-
 			}
 
 			{//Background
@@ -883,20 +746,15 @@ void Level1Scene::_CreateScene()
 				RectTransform::Sptr transform = background->Add<RectTransform>();
 				transform->SetPosition({ 0, 0 });
 				transform->SetRotationDeg(0);
-				transform->SetSize({ 400, 750 });
 				transform->SetMin({ 0, 0 });
-				transform->SetMax({ 400, 750 });
 
-				GuiPanel::Sptr panel = background->Add<GuiPanel>();
+				GuiPanel::Sptr panel = background->Add<GuiPanel>(0.5, 0.5, 400, 750);
 				panel->SetTexture(TexPauseMenu);
 				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 				panel->SetBorderRadius(0);
 				panel->IsEnabled = false;
-
-
-				transform->SetPosition({ (float)windowSize.x * 0.5, (float)windowSize.y * 0.5 });
-
 			}
+
 
 			{//Resume Button
 				GameObject::Sptr button = scene->CreateGameObject("PauseMenu Resume Button");
@@ -904,18 +762,13 @@ void Level1Scene::_CreateScene()
 				RectTransform::Sptr transform = button->Add<RectTransform>();
 				transform->SetPosition({ 0, 0 });
 				transform->SetRotationDeg(0);
-				transform->SetSize({ 300, 150 });
 				transform->SetMin({ 0, 0 });
-				transform->SetMax({ 300, 150 });
 
-				GuiPanel::Sptr panel = button->Add<GuiPanel>();
+				GuiPanel::Sptr panel = button->Add<GuiPanel>(0.5, 0.28, 300, 150);
 				panel->SetTexture(TexResumeButton);
 				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 				panel->SetBorderRadius(0);
 				panel->IsEnabled = false;
-
-
-				transform->SetPosition({ (float)windowSize.x * 0.5, (float)windowSize.y * 0.28 });
 
 			}
 
@@ -925,17 +778,13 @@ void Level1Scene::_CreateScene()
 				RectTransform::Sptr transform = button->Add<RectTransform>();
 				transform->SetPosition({ 0, 0 });
 				transform->SetRotationDeg(0);
-				transform->SetSize({ 300, 150 });
 				transform->SetMin({ 0, 0 });
-				transform->SetMax({ 300, 150 });
 
-				GuiPanel::Sptr panel = button->Add<GuiPanel>();
+				GuiPanel::Sptr panel = button->Add<GuiPanel>(0.5, 0.43, 300, 150);
 				panel->SetTexture(TexOptionsButton);
 				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 0.6f));
 				panel->SetBorderRadius(0);
 				panel->IsEnabled = false;
-
-				transform->SetPosition({ (float)windowSize.x * 0.5, (float)windowSize.y * 0.43 });
 
 			}
 
@@ -945,17 +794,13 @@ void Level1Scene::_CreateScene()
 				RectTransform::Sptr transform = button->Add<RectTransform>();
 				transform->SetPosition({ 0, 0 });
 				transform->SetRotationDeg(0);
-				transform->SetSize({ 300, 150 });
 				transform->SetMin({ 0, 0 });
-				transform->SetMax({ 300, 150 });
 
-				GuiPanel::Sptr panel = button->Add<GuiPanel>();
+				GuiPanel::Sptr panel = button->Add<GuiPanel>(0.5, 0.58, 300, 150);
 				panel->SetTexture(TexResyncButton);
 				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 0.6f));
 				panel->SetBorderRadius(0);
 				panel->IsEnabled = false;
-
-				transform->SetPosition({ (float)windowSize.x * 0.5, (float)windowSize.y * 0.58 });
 
 			}
 
@@ -965,130 +810,132 @@ void Level1Scene::_CreateScene()
 				RectTransform::Sptr transform = button->Add<RectTransform>();
 				transform->SetPosition({ 0, 0 });
 				transform->SetRotationDeg(0);
-				transform->SetSize({ 300, 150 });
 				transform->SetMin({ 0, 0 });
-				transform->SetMax({ 300, 150 });
 
-				GuiPanel::Sptr panel = button->Add<GuiPanel>();
+				GuiPanel::Sptr panel = button->Add<GuiPanel>(0.5, 0.73, 300, 150);
 				panel->SetTexture(TexQuitButton);
 				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 				panel->SetBorderRadius(0);
 				panel->IsEnabled = false;
 
+			}
 
-				transform->SetPosition({ (float)windowSize.x * 0.5, (float)windowSize.y * 0.73 });
+			{//Navigation Buttons
+				GameObject::Sptr button = scene->CreateGameObject("PauseMenu Navigation");
+
+				RectTransform::Sptr transform = button->Add<RectTransform>();
+				transform->SetPosition({ 0, 0 });
+				transform->SetRotationDeg(0);
+				transform->SetMin({ 0, 0 });
+
+				GuiPanel::Sptr panel = button->Add<GuiPanel>(0.9, 0.93, 400 * 0.75, 150 * 0.75);
+				panel->SetTexture(TexNavigationUpDown);
+				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				panel->SetBorderRadius(0);
+				panel->IsEnabled = false;
 
 			}
-		//}
-		//
-		//{//Game Over Block
-		//
-		//	{//Dim BG
-		//		GameObject::Sptr background = scene->CreateGameObject("GameOver Dimmed Background");
-		//
-		//		RectTransform::Sptr transform = background->Add<RectTransform>();
-		//		transform->SetPosition({ 0, 0 });
-		//		transform->SetRotationDeg(0);
-		//		transform->SetSize({ 1920, 1080 });
-		//		transform->SetMin({ 0, 0 });
-		//		transform->SetMax({ 1920, 1080 });
-		//
-		//		GuiPanel::Sptr panel = background->Add<GuiPanel>();
-		//		panel->SetTexture(TexDimmedBG);
-		//		panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-		//		panel->SetBorderRadius(0);
-		//		panel->IsEnabled = false;
-		//
-		//
-		//		transform->SetPosition({ (float)windowSize.x * 0.5, (float)windowSize.y * 0.5 });
-		//
-		//	}
-		//
-		//	{//Game Over Text
-		//		GameObject::Sptr button = scene->CreateGameObject("GameOver Text");
-		//
-		//		RectTransform::Sptr transform = button->Add<RectTransform>();
-		//		transform->SetPosition({ 0, 0 });
-		//		transform->SetRotationDeg(0);
-		//		transform->SetSize({ 809, 249 });
-		//		transform->SetMin({ 0, 0 });
-		//		transform->SetMax({ 809, 249 });
-		//
-		//		GuiPanel::Sptr panel = button->Add<GuiPanel>();
-		//		panel->SetTexture(TexGameOverText);
-		//		panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-		//		panel->SetBorderRadius(0);
-		//		panel->IsEnabled = false;
-		//
-		//
-		//		transform->SetPosition({ (float)windowSize.x * 0.5, (float)windowSize.y * 0.2 });
-		//
-		//	}
-		//
-		//	{//Score breakdown
-		//		GameObject::Sptr button = scene->CreateGameObject("GameOver Score Breakdown");
-		//
-		//		RectTransform::Sptr transform = button->Add<RectTransform>();
-		//		transform->SetPosition({ 0, 0 });
-		//		transform->SetRotationDeg(0);
-		//		transform->SetSize({ 504 * 0.75, 475 * 0.75 });
-		//		transform->SetMin({ 0, 0 });
-		//		transform->SetMax({ 504 * 0.75, 475 * 0.75 });
-		//
-		//		GuiPanel::Sptr panel = button->Add<GuiPanel>();
-		//		panel->SetTexture(TexScoreBreakdown);
-		//		panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-		//		panel->SetBorderRadius(0);
-		//		panel->IsEnabled = false;
-		//
-		//
-		//		transform->SetPosition({ (float)windowSize.x * 0.4, (float)windowSize.y * 0.5 });
-		//
-		//	}
-		//
-		//
-		//	{//Quit
-		//		GameObject::Sptr button = scene->CreateGameObject("GameOver Quit Button");
-		//
-		//		RectTransform::Sptr transform = button->Add<RectTransform>();
-		//		transform->SetPosition({ 0, 0 });
-		//		transform->SetRotationDeg(0);
-		//		transform->SetSize({ 300, 150 });
-		//		transform->SetMin({ 0, 0 });
-		//		transform->SetMax({ 300, 150 });
-		//
-		//		GuiPanel::Sptr panel = button->Add<GuiPanel>();
-		//		panel->SetTexture(TexQuitButton);
-		//		panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-		//		panel->SetBorderRadius(0);
-		//		panel->IsEnabled = false;
-		//
-		//		transform->SetPosition({ (float)windowSize.x * 0.35, (float)windowSize.y * 0.8 });
-		//
-		//	}
-		//
-		//	{//Continue Button
-		//		GameObject::Sptr button = scene->CreateGameObject("GameOver Continue Button");
-		//
-		//		RectTransform::Sptr transform = button->Add<RectTransform>();
-		//		transform->SetPosition({ 0, 0 });
-		//		transform->SetRotationDeg(0);
-		//		transform->SetSize({ 300, 150 });
-		//		transform->SetMin({ 0, 0 });
-		//		transform->SetMax({ 300, 150 });
-		//
-		//		GuiPanel::Sptr panel = button->Add<GuiPanel>();
-		//		panel->SetTexture(TexContinueButton);
-		//		panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-		//		panel->SetBorderRadius(0);
-		//		panel->IsEnabled = false;
-		//
-		//
-		//		transform->SetPosition({ (float)windowSize.x * 0.65, (float)windowSize.y * 0.8 });
-		//
-		//	}
-		//}
-		//
+		}
+
+		{//Game Over Block
+		
+			{//Dim BG
+				GameObject::Sptr background = scene->CreateGameObject("GameOver Dimmed Background");
+		
+				RectTransform::Sptr transform = background->Add<RectTransform>();
+				transform->SetPosition({ 0, 0 });
+				transform->SetRotationDeg(0);
+				transform->SetMin({ 0, 0 });
+
+				GuiPanel::Sptr panel = background->Add<GuiPanel>(0.5, 0.5, 1920, 1080);
+				panel->SetTexture(TexDimmedBG);
+				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				panel->SetBorderRadius(0);
+				panel->IsEnabled = false;
+			}
+		
+			{//Game Over Text
+				GameObject::Sptr button = scene->CreateGameObject("GameOver Text");
+		
+				RectTransform::Sptr transform = button->Add<RectTransform>();
+				transform->SetPosition({ 0, 0 });
+				transform->SetRotationDeg(0);
+				transform->SetMin({ 0, 0 });
+		
+				GuiPanel::Sptr panel = button->Add<GuiPanel>(0.5, 0.2, 809, 249);
+				panel->SetTexture(TexGameOverText);
+				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				panel->SetBorderRadius(0);
+				panel->IsEnabled = false;
+		
+			}
+		
+			{//Score breakdown
+				GameObject::Sptr button = scene->CreateGameObject("GameOver Score Breakdown");
+		
+				RectTransform::Sptr transform = button->Add<RectTransform>();
+				transform->SetPosition({ 0, 0 });
+				transform->SetRotationDeg(0);
+				transform->SetMin({ 0, 0 });
+		
+				GuiPanel::Sptr panel = button->Add<GuiPanel>(0.4, 0.5, 504 * 0.75, 475 * 0.75);
+				panel->SetTexture(TexScoreBreakdown);
+				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				panel->SetBorderRadius(0);
+				panel->IsEnabled = false;
+		
+			}
+		
+		
+			{//Quit
+				GameObject::Sptr button = scene->CreateGameObject("GameOver Quit Button");
+		
+				RectTransform::Sptr transform = button->Add<RectTransform>();
+				transform->SetPosition({ 0, 0 });
+				transform->SetRotationDeg(0);
+				transform->SetMin({ 0, 0 });
+		
+				GuiPanel::Sptr panel = button->Add<GuiPanel>(0.35, 0.8, 300, 150);
+				panel->SetTexture(TexQuitButton);
+				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				panel->SetBorderRadius(0);
+				panel->IsEnabled = false;
+		
+			}
+		
+			{//Continue Button
+				GameObject::Sptr button = scene->CreateGameObject("GameOver Continue Button");
+		
+				RectTransform::Sptr transform = button->Add<RectTransform>();
+				transform->SetPosition({ 0, 0 });
+				transform->SetRotationDeg(0);
+				transform->SetMin({ 0, 0 });
+		
+				GuiPanel::Sptr panel = button->Add<GuiPanel>(0.65, 0.8, 300, 150);
+				panel->SetTexture(TexContinueButton);
+				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				panel->SetBorderRadius(0);
+				panel->IsEnabled = false;
+		
+			}
+
+			{//Navigation Buttons
+				GameObject::Sptr button = scene->CreateGameObject("GameOver Navigation");
+
+				RectTransform::Sptr transform = button->Add<RectTransform>();
+				transform->SetPosition({ 0, 0 });
+				transform->SetRotationDeg(0);
+				transform->SetMin({ 0, 0 });
+
+				GuiPanel::Sptr panel = button->Add<GuiPanel>(0.9, 0.93, 400 * 0.75, 150 * 0.75);
+				panel->SetTexture(TexNavigationLeftRight);
+				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				panel->SetBorderRadius(0);
+				panel->IsEnabled = false;
+
+			}
+		}
+		
 		//{//Tutorial Blocks
 		//
 		//	{//Movement
@@ -1283,6 +1130,6 @@ void Level1Scene::_CreateScene()
 
 		// Send the scene to the application
 		app.LoadScene(scene);
-		}
+		
 	}
 }

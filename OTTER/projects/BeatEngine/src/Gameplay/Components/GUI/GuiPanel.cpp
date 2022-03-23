@@ -55,6 +55,7 @@ void GuiPanel::Awake() {
 	Application& app = Application::Get();
 	glm::vec2 windowSize = app.GetWindowSize();
 
+	//Store the propotions of the GUI element based on a native 1920x1080 screen size
 	_proportionX = _width / 1920;
 	_proportionY = _height / 1080;
 
@@ -89,9 +90,12 @@ void GuiPanel::Update(float deltaTime) {
 	Application& app = Application::Get();
 	glm::vec2 windowSize = app.GetWindowSize();
 
+	//Update the GUI to dynamically move to the correct percent position of the screen. For example, an element dead center (50%, 50%) on a 1080p screen will stay centered when rescaled to 4k 
 	GetGameObject()->Get<RectTransform>()->SetPosition({ windowSize.x * _percentOfScreenX, windowSize.y * _percentOfScreenY });
 
-	GetGameObject()->Get<RectTransform>()->SetSize({ (_proportionX / 4.5) * windowSize.x, (_proportionY / 4.5) * windowSize.y });
+	//Use the proptortion relative to a 1920/1080 screen to properly scale it to their screen size
+	//For some reason windowSize returns a value ~4x larger than it should be? Jank fix for now
+	GetGameObject()->Get<RectTransform>()->SetSize({ (_proportionX / 4) * windowSize.x, (_proportionY / 4) * windowSize.y });
 
 }
 

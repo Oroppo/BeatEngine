@@ -215,6 +215,8 @@ void MainMenuScene::_CreateScene()
 		Texture2D::Sptr TexCreditsButton = ResourceManager::CreateAsset<Texture2D>("textures/GUI/BCredits.png");
 		Texture2D::Sptr TexQuitButton = ResourceManager::CreateAsset<Texture2D>("textures/GUI/BQuit.png");
 		Texture2D::Sptr StartTex = ResourceManager::CreateAsset<Texture2D>("textures/LStartPlatformTex.png");
+		Texture2D::Sptr TexNavigationLeftRight = ResourceManager::CreateAsset<Texture2D>("textures/GUI/NavigationLeftRight.png");
+		Texture2D::Sptr TexNavigationUpDown = ResourceManager::CreateAsset<Texture2D>("textures/GUI/NavigationUpDown.png");
 		Font::Sptr FontVCR = ResourceManager::CreateAsset<Font>("fonts/VCR.ttf", 16.f);
 		FontVCR->Bake();
 
@@ -316,7 +318,7 @@ void MainMenuScene::_CreateScene()
 			transform->SetRotationDeg(0);
 			transform->SetMin({ 0, 0 });
 
-			GuiPanel::Sptr panel = PlayButton->Add<GuiPanel>(0.2, 0.8, 300, 150);
+			GuiPanel::Sptr panel = PlayButton->Add<GuiPanel>(0.16, 0.7, 300, 150);
 			panel->SetTexture(TexPlayButton);
 			panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 			panel->SetBorderRadius(0);
@@ -334,7 +336,7 @@ void MainMenuScene::_CreateScene()
 			transform->SetRotationDeg(0);
 			transform->SetMin({ 0, 0 });
 
-			GuiPanel::Sptr panel = OptionsButton->Add<GuiPanel>(0.35, 0.8, 300, 150);
+			GuiPanel::Sptr panel = OptionsButton->Add<GuiPanel>(0.33, 0.7, 300, 150);
 			panel->SetTexture(TexOptionsButton);
 			panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 0.6f));
 			panel->SetBorderRadius(0);
@@ -352,7 +354,7 @@ void MainMenuScene::_CreateScene()
 			transform->SetRotationDeg(0);
 			transform->SetMin({ 0, 0 });
 
-			GuiPanel::Sptr panel = MusicButton->Add<GuiPanel>(0.5, 0.8, 300, 150);
+			GuiPanel::Sptr panel = MusicButton->Add<GuiPanel>(0.5, 0.7, 300, 150);
 			panel->SetTexture(TexMusicButton);
 			panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 0.6f));
 			panel->SetBorderRadius(0);
@@ -369,7 +371,7 @@ void MainMenuScene::_CreateScene()
 		transform->SetRotationDeg(0);
 		transform->SetMin({ 0, 0 });
 
-		GuiPanel::Sptr panel = CreditsButton->Add<GuiPanel>(0.65, 0.8, 300, 150);
+		GuiPanel::Sptr panel = CreditsButton->Add<GuiPanel>(0.67, 0.7, 300, 150);
 		panel->SetTexture(TexCreditsButton);
 		panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 0.6f));
 		panel->SetBorderRadius(0);
@@ -386,11 +388,27 @@ void MainMenuScene::_CreateScene()
 		transform->SetRotationDeg(0);
 		transform->SetMin({ 0, 0 });
 
-		GuiPanel::Sptr panel = QuitButton->Add<GuiPanel>(0.8, 0.8, 300, 150);
+		GuiPanel::Sptr panel = QuitButton->Add<GuiPanel>(0.84, 0.7, 300, 150);
 		panel->SetTexture(TexQuitButton);
 		panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 		panel->SetBorderRadius(0);
 		panel->IsEnabled = true;
+		}
+
+		{//Navigation Buttons
+			GameObject::Sptr button = scene->CreateGameObject("MainMenu Navigation");
+
+			RectTransform::Sptr transform = button->Add<RectTransform>();
+			transform->SetPosition({ 0, 0 });
+			transform->SetRotationDeg(0);
+			transform->SetMin({ 0, 0 });
+
+			GuiPanel::Sptr panel = button->Add<GuiPanel>(0.9, 0.93, 400 * 0.75, 150 * 0.75);
+			panel->SetTexture(TexNavigationLeftRight);
+			panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+			panel->SetBorderRadius(0);
+			panel->IsEnabled = true;
+
 		}
 
 
