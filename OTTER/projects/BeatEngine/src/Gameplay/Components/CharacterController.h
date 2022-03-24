@@ -32,15 +32,13 @@ public:
 	virtual void OnTriggerVolumeLeaving(const std::shared_ptr<Gameplay::Physics::RigidBody>& body);
 	void RespawnBeatGems(const std::vector<Gameplay::Physics::TriggerVolume::Sptr> trigger);
 	void AirControl(char);
+	void CoyoteTime(float);
 protected:
-	float _GemJumpTimer;
-	bool _canJump;
-	bool _isJumping;
-	float _AirSpeed;
+	float _GemJumpTimer, _AirSpeed, speed = 3.0f, _CoyoteTime;
+	bool _canJump, _isJumping, _OnPlatform,_CoyoteTimeUsed;
 	int score = 0, _VinylScore = 0, _CDScore = 0, _BeatGemHits = 0;
-	float speed = 3.0f;
 	char _Direction;
-	std::string _platform;
+	std::string _PlatformName;
 	glm::vec3 _impulse = glm::vec3(0, 0, 12.0);
 	Gameplay::Physics::RigidBody::Sptr _body;
 	Gameplay::Physics::RigidBody::Sptr _curvePlatform;

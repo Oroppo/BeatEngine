@@ -43,12 +43,15 @@ nlohmann::json CharacterController::ToJson() const {
 
 CharacterController::CharacterController() :
     IComponent()
-{
+{ 
+    _CoyoteTimeUsed = true;
+    _CoyoteTime = 0.0f;
     _AirSpeed = 1.0f;
     _Direction = 'U';
     _isJumping = false;
     _canJump = true;
-    _platform = "";
+    _OnPlatform = false;
+    _PlatformName = "";
 }
 
 CharacterController::~CharacterController() = default;
@@ -62,9 +65,10 @@ CharacterController::Sptr CharacterController::FromJson(const nlohmann::json & b
 //for collectibles
 void CharacterController::OnEnteredTrigger(const std::shared_ptr<Gameplay::Physics::TriggerVolume>&trigger) {
     std::string name = trigger->GetGameObject()->Name;
-
+    
     //beat gem logic
     if ((name[0] == 'B') && (name[1] == 'e') && (name[2] == 'a') && (name[3] == 't') && (name[4] == 'G')) {
+        _PlatformName = "BeatGem";
         int beatNumber = trigger->GetGameObject()->Get<BeatGem>()->GetBeatNum();
         trigger->GetGameObject()->Get<BeatGem>()->GetBeatNum();
         if ((_GemJumpTimer > 0.6 * beatNumber - 0.6) && (_GemJumpTimer < 0.6 * beatNumber)) {
@@ -72,7 +76,7 @@ void CharacterController::OnEnteredTrigger(const std::shared_ptr<Gameplay::Physi
             BeatGemsUsed.push_back(trigger);
             trigger->GetGameObject()->Get<RenderComponent>()->IsEnabled = false;
             _BeatGemHits++;
-            score += 500;
+            score += 500; 
             SFXS->PlayEvent("event:/Coin Pickup");
         }
     }   
@@ -103,23 +107,23 @@ void CharacterController::OnEnteredTrigger(const std::shared_ptr<Gameplay::Physi
 //for physical platforms
 void CharacterController::OnTriggerVolumeEntered(const std::shared_ptr<Gameplay::Physics::RigidBody>&body) {
     speed = 3.0f;
+    _OnPlatform = true;
+    _CoyoteTimeUsed = false;
     LOG_INFO("Body has entered our trigger volume: {}", body->GetGameObject()->Name);
-    if (_platform != body->GetGameObject()->Name) {
+    if (_PlatformName != body->GetGameObject()->Name) {
         _canJump = true;
-        _platform = body->GetGameObject()->Name;
+        _PlatformName = body->GetGameObject()->Name;
     }
     //make certain things fall when touched
-    if (_platform == "Falling Platform") {
+    if (_PlatformName == "Falling Platform") {
         body->SetType(RigidBodyType::Dynamic);
     }
     //rotate half circle platforms
-    if (_platform == "Half Circle Platform") {
+    if (_PlatformName == "Half Circle Platform") {
         _rotPlat = (_body->GetGameObject()->GetPosition()) - body->GetGameObject()->GetPosition();
         body->GetGameObject()->SetRotation(body->GetGameObject()->GetRotationEuler() + glm::vec3(0.0f, -20 * _rotPlat.x, 0.0f));
         LOG_INFO(_rotPlat.x);
     }
-
-
 }
 
 void CharacterController::OnTriggerVolumeLeaving(const std::shared_ptr<Gameplay::Physics::RigidBody>&body) {
@@ -127,28 +131,26 @@ void CharacterController::OnTriggerVolumeLeaving(const std::shared_ptr<Gameplay:
     if (body->GetGameObject()->Name == "Half Circle Platform") {
         LOG_INFO("functions");
         body->GetGameObject()->SetRotation(glm::vec3(-90.000f, 0.0f, 180.0f));
-
     }
     //to make player move faster on wall jumps so that they are eZ
-    if (_platform == "Wall Jump") {
-        speed = 6.0f;
+   
+    if (_PlatformName == "Wall Jump") {
+        speed = 4.0f;
     }
 
     // i forgor
-    if ((_platform != "BeatGem") || (_platform == "Falling Platform")) {
-        _platform = "";
-        _canJump = false;
+    if (_PlatformName != "BeatGem") {
+        _PlatformName = "";
+        _OnPlatform = false;
     }
-
+ 
 }
 
 
 void CharacterController::RespawnBeatGems(const std::vector<Gameplay::Physics::TriggerVolume::Sptr> trigger) {
     if (BeatGemsUsed.size() > 0) {
         int LoopLength = BeatGemsUsed.size();
-        std::cout << "Loop length is "<<LoopLength << std::endl;
         for (int i = 0; i < LoopLength; i++) {
-            std::cout << "boom shakalaka" << std::endl;
             if (trigger[i]->GetGameObject()!= nullptr) {
                 trigger[i]->GetGameObject()->Get<RenderComponent>()->IsEnabled = true;
             }   
@@ -160,10 +162,12 @@ void CharacterController::RespawnBeatGems(const std::vector<Gameplay::Physics::T
 
 void CharacterController::AirControl(char Direction) {
     if (_isJumping == true) {
+        //if character is now travelling in a direction they were not previously travelling
         if (_Direction != Direction) {
             _Direction = Direction;
             _AirSpeed = 2.0f;
         }
+        //creates an initial burst of speed on movement startup creating greater agility
         else if (_Direction == Direction) {
             if (_AirSpeed > 1.0f) {
                 _AirSpeed -= 0.05f;
@@ -172,7 +176,24 @@ void CharacterController::AirControl(char Direction) {
    }
    
 }
+
+void CharacterController::CoyoteTime(float dt) {
+    if ((_OnPlatform == false)&&(_PlatformName!="BeatGem")&&(_CoyoteTimeUsed==false)) {
+       
+        if (_CoyoteTime > 1.0f) {
+            _CoyoteTimeUsed = true;
+            _canJump = false;
+            _CoyoteTime = 0.0f;
+        }
+        
+        else { 
+            _CoyoteTime += dt;
+            _body->SetLinearVelocity(glm::vec3(_body->GetLinearVelocity().x, _body->GetLinearVelocity().y, 0.0f));
+        }
+    }
+}
 void CharacterController::Update(float deltaTime) {
+    std::cout << _PlatformName << std::endl;
     _GemJumpTimer = GetGameObject()->GetScene()->FindObjectByName("GameManager")->Get<BeatTimer>()->GetBeatTime();
     glm::vec3 CurrentPosition = GetGameObject()->GetPosition();
     bool _A = InputEngine::IsKeyDown(GLFW_KEY_A);
@@ -191,24 +212,26 @@ void CharacterController::Update(float deltaTime) {
     }
 
     if ((_W) && (_canJump == true)) {
+        _CoyoteTimeUsed = true;
         _isJumping = true;
         _body->SetLinearVelocity(glm::vec3(_body->GetLinearVelocity().x, _body->GetLinearVelocity().y, _impulse.z * (speed / 3)));
         _canJump = false;
         SFXS->PlayEvent("event:/Jump");
     }
  
-    if ((!_A) && (!_D) && (!_W) && (_platform != "") && (_platform != "BeatGem")) {
+    if ((!_A) && (!_D) && (!_W) && (_PlatformName != "") && (_PlatformName != "BeatGem")) {
         _body->SetLinearVelocity(glm::vec3(-1.0f, 0.0f, 0.0f));
     }
 
     GetGameObject()->SetPostion({ CurrentPosition.x, 5.61f, CurrentPosition.z });
     _body->GetGameObject()->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
 
-    if (_platform == "Wall Jump") {
+    if (_PlatformName == "Wall Jump") {
         if (_body->GetLinearVelocity().z < 0) {
             _body->ApplyForce(glm::vec3(-6 * _body->GetLinearVelocity().x, 0.0f, 35.0f));
         }
     }
+    CoyoteTime(deltaTime);
     // when the player is under the bottom frame of the screen aka. when the player dies
     if (GetGameObject()->GetPosition().z <= -14.5f)
     {
