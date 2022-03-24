@@ -38,6 +38,7 @@ protected:
 	float _speed;
 	std::vector<float> keypoints;
 	float _journeyLength;
+	int _BuildingPresets;
 
 
 	int keyframe;
