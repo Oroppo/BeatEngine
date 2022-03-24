@@ -350,8 +350,7 @@ void Level1Scene::_CreateScene()
 			BeatGemOffMaterial->Set("u_Material.Shininess", 0.1f);
 		}
 		
-		
-		 Material::Sptr VinylMaterial = ResourceManager::CreateAsset<Material>(toonShader);
+		 Material::Sptr VinylMaterial = ResourceManager::CreateAsset<Material>(basicShader);
 		{
 			VinylMaterial->Name = "Vinyl";
 			VinylMaterial->Set("u_Material.Diffuse", VinylTex);
@@ -359,7 +358,7 @@ void Level1Scene::_CreateScene()
 			VinylMaterial->Set("u_Material.Steps", 4);
 		}
 		
-		 Material::Sptr CDMaterial = ResourceManager::CreateAsset<Material>(toonShader);
+		 Material::Sptr CDMaterial = ResourceManager::CreateAsset<Material>(basicShader);
 		{
 			CDMaterial->Name = "CD";
 			CDMaterial->Set("u_Material.Diffuse", CDTex);
@@ -596,10 +595,10 @@ void Level1Scene::_CreateScene()
 		SpawnFunctions::SpawnGem(scene, BeatGem, BeatGemMaterial, BeatGemOffMaterial, "BeatGem",4, glm::vec3(2.020f, 5.610f, -1.910f), glm::vec3(90.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.500f, 0.500f));
 		SpawnFunctions::SpawnCollectable(scene, Vinyl, VinylMaterial, "Vinyl", glm::vec3(-2.110f, 5.610f, 6.010f), glm::vec3(90.000f, 0.0f, 90.000f), glm::vec3(1.000f, 1.000f, 1.000f));
 		SpawnFunctions::SpawnStartPlat(scene, StartPlatform, StartPlatformMaterial, "EndPlatform", glm::vec3(6.360f, 5.610f, -9.10f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.350f, 0.350f, 0.350f));
-		SpawnFunctions::SpawnBackGroundCar(scene,Car1Mesh, Car1Material, "Car1", glm::vec3(14.870f, 9.80f, 2.7f), glm::vec3(90.0f, 0.0f, -90.0f), glm::vec3(0.250f, 0.250f, 0.250f));
-		SpawnFunctions::SpawnBackGroundCar(scene,SemiTruckMesh, SemiTruckMaterial, "Semi1", glm::vec3(28.870f, 9.80f, 2.7f), glm::vec3(90.0f, 0.0f, -90.0f), glm::vec3(0.250f, 0.250f, 0.250f));
-		SpawnFunctions::SpawnForeGroundCar(scene,Car1Mesh, Car1Material, "Car2", glm::vec3(-9.970f, 0.470f, -1.90f), glm::vec3(90.0f, 0.0f, 90.0f), glm::vec3(0.250f, 0.250f, 0.250f));
-		SpawnFunctions::SpawnForeGroundCar(scene,PickupTruckMesh, PickupTruckMaterial, "Pickup1", glm::vec3(-18.970f, 0.470f, -1.90f), glm::vec3(90.0f, 0.0f, 90.0f), glm::vec3(0.250f, 0.250f, 0.250f));
+	//	SpawnFunctions::SpawnBackGroundCar(scene,Car1Mesh, Car1Material, "Car1", glm::vec3(14.870f, 9.80f, 2.7f), glm::vec3(90.0f, 0.0f, -90.0f), glm::vec3(0.250f, 0.250f, 0.250f));
+	//	SpawnFunctions::SpawnBackGroundCar(scene,SemiTruckMesh, SemiTruckMaterial, "Semi1", glm::vec3(28.870f, 9.80f, 2.7f), glm::vec3(90.0f, 0.0f, -90.0f), glm::vec3(0.250f, 0.250f, 0.250f));
+	//	SpawnFunctions::SpawnForeGroundCar(scene,Car1Mesh, Car1Material, "Car2", glm::vec3(-9.970f, 0.470f, -1.90f), glm::vec3(90.0f, 0.0f, 90.0f), glm::vec3(0.250f, 0.250f, 0.250f));
+	//	SpawnFunctions::SpawnForeGroundCar(scene,PickupTruckMesh, PickupTruckMaterial, "Pickup1", glm::vec3(-18.970f, 0.470f, -1.90f), glm::vec3(90.0f, 0.0f, 90.0f), glm::vec3(0.250f, 0.250f, 0.250f));
 
 
 		// 1st Block		
