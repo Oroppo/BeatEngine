@@ -115,7 +115,7 @@ void CharacterController::OnTriggerVolumeEntered(const std::shared_ptr<Gameplay:
         _PlatformName = body->GetGameObject()->Name;
     }
     //make certain things fall when touched
-    if (_PlatformName == "Falling Platform") {
+    if (_PlatformName == "FallingPlatform") {
         body->SetType(RigidBodyType::Dynamic);
     }
     //rotate half circle platforms
@@ -139,7 +139,7 @@ void CharacterController::OnTriggerVolumeLeaving(const std::shared_ptr<Gameplay:
     }
 
     // i forgor
-    if (_PlatformName != "BeatGem") {
+    if ((_PlatformName != "BeatGem")&&(_PlatformName!="FallingPlatform")) {
         _PlatformName = "";
         _OnPlatform = false;
     }
