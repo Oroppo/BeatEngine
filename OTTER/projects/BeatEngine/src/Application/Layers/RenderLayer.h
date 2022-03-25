@@ -30,6 +30,8 @@ public:
 		float u_DeltaTime;
 		// Bitfield representing up to 32 bool values to enable/disable stuff
 		RenderFlags u_RenderFlags;
+		// for toggling different lighting in shaders
+		float u_toggleKeys;
 	};
 
 	// Structure for our instance-level uniforms, matches layout from

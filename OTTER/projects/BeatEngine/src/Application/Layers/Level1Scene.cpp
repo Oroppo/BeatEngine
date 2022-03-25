@@ -204,7 +204,19 @@ void Level1Scene::_CreateScene()
 		 scene->SetSkyboxRotation(glm::rotate(MAT4_IDENTITY, glm::half_pi<float>(), glm::vec3(1.0f, 0.0f, 0.0f)));
 		
 		
-		 Texture3D::Sptr lut = ResourceManager::CreateAsset<Texture3D>("luts/cool.CUBE");
+		 // Loading in a color lookup table
+		// Warm
+		// Texture3D::Sptr lutWarm = ResourceManager::CreateAsset<Texture3D>("luts/Dawn.CUBE");
+		 // Cool
+		 Texture3D::Sptr lutCool = ResourceManager::CreateAsset<Texture3D>("luts/cool.CUBE");
+		 // Custom
+		// Texture3D::Sptr lutCustom = ResourceManager::CreateAsset<Texture3D>("luts/Dawn_Custom.CUBE");
+
+		 // Configure the color correction LUT
+		 scene->SetColorLUT(lutCool);
+		// scene->SetColorLUTCool(lutWarm);
+		 //scene->SetColorLUTCustom(lutCustom);
+
 		 MeshResource::Sptr SmallPlatform = ResourceManager::CreateAsset<MeshResource>("HaloBasicPlatform.obj");
 		 MeshResource::Sptr WallJump = ResourceManager::CreateAsset<MeshResource>("WallJumpV6.obj");
 		 MeshResource::Sptr BeatGem = ResourceManager::CreateAsset<MeshResource>("Gem.obj");
@@ -300,6 +312,9 @@ void Level1Scene::_CreateScene()
 		
 		 Font::Sptr FontVCR = ResourceManager::CreateAsset<Font>("fonts/VCR.ttf", 16.f);
 		 FontVCR->Bake();
+
+		 // In Order For the Toon Shader to Work you must include this line on each object using the shader
+		 // 
 		
 		 Material::Sptr StartPlatformMaterial = ResourceManager::CreateAsset<Material>(basicShader);
 		{
@@ -366,14 +381,15 @@ void Level1Scene::_CreateScene()
 			CDMaterial->Set("u_Material.Steps", 4);
 		}
 		
-		 Material::Sptr CharacterMaterial = ResourceManager::CreateAsset<Material>(AnimatedShader);
+		// Material::Sptr CharacterMaterial = ResourceManager::CreateAsset<Material>(AnimatedShader);
+		Material::Sptr CharacterMaterial = ResourceManager::CreateAsset<Material>(basicShader);
 		{
 			CharacterMaterial->Name = "Character";
 			CharacterMaterial->Set("u_Material.Diffuse", CharacterTex);
 			CharacterMaterial->Set("u_Material.Shininess", 0.1f);
 		}
 		
-		 Material::Sptr DiscoBallMaterial = ResourceManager::CreateAsset<Material>(reflectiveShader);
+		 Material::Sptr DiscoBallMaterial = ResourceManager::CreateAsset<Material>(basicShader);
 		{
 			DiscoBallMaterial->Name = "DiscoBall";
 			DiscoBallMaterial->Set("u_Material.Diffuse", DiscoBallTex);

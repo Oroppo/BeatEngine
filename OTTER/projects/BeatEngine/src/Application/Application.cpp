@@ -167,6 +167,64 @@ void Application::SaveSettings()
 	FileHelpers::WriteContentsToFile(settingsPath.string(), _appSettings.dump(1, '\t'));
 }
 
+// key toggle variable
+float toggleKeys = 0.0;
+float Application::keyboard()
+{
+	// for key 0 regular lighting + custom LUT
+	if (glfwGetKey(_window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+		toggleKeys = 10.0;
+
+	}
+
+	// for key 1 no lighting at all
+	if (glfwGetKey(_window, GLFW_KEY_1) == GLFW_PRESS) {
+		toggleKeys = 1.0;
+
+	}
+	// for key 2 Ambient lighting
+	if (glfwGetKey(_window, GLFW_KEY_2) == GLFW_PRESS) {
+		toggleKeys = 2.0;
+
+	}
+	// for key 3 specular lighting
+	if (glfwGetKey(_window, GLFW_KEY_3) == GLFW_PRESS) {
+		toggleKeys = 3.0;
+
+	}
+
+	// for key 4 Ambient + specular lighting
+	if (glfwGetKey(_window, GLFW_KEY_4) == GLFW_PRESS) {
+		toggleKeys = 4.0;
+
+	}
+
+	// for key 5 Ambient + specular lighting + toon shader
+	if (glfwGetKey(_window, GLFW_KEY_5) == GLFW_PRESS) {
+		toggleKeys = 5.0;
+
+	}
+
+	// for key 8 regular lighting + Warm Lut
+	if (glfwGetKey(_window, GLFW_KEY_8) == GLFW_PRESS) {
+		toggleKeys = 8.0;
+	}
+
+	// for key 9 regular lighting + Cool Lut
+	if (glfwGetKey(_window, GLFW_KEY_9) == GLFW_PRESS) {
+		toggleKeys = 9.0;
+	}
+
+	// for key 0 regular lighting + custom LUT
+	if (glfwGetKey(_window, GLFW_KEY_0) == GLFW_PRESS) {
+		toggleKeys = 0.0;
+
+	}
+
+	return toggleKeys;
+}
+
+
 void Application::_Run()
 {
 	// TODO: Register layers
@@ -229,6 +287,8 @@ void Application::_Run()
 		if (_targetScene != nullptr) {
 			_HandleSceneChange();
 		}
+
+		keyboard();
 
 		// Receive events like input and window position/size changes from GLFW
 		glfwPollEvents();

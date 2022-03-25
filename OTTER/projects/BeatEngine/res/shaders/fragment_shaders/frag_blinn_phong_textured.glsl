@@ -19,6 +19,7 @@ struct Material {
 // Create a uniform for the material
 uniform Material u_Material;
 
+uniform sampler1D s_ToonTerm;
 ////////////////////////////////////////////////////////////////
 ///////////// Application Level Uniforms ///////////////////////
 ////////////////////////////////////////////////////////////////
@@ -38,7 +39,7 @@ void main() {
 	vec3 normal = normalize(inNormal);
 
 	// Use the lighting calculation that we included from our partial file
-	vec3 lightAccumulation = CalcAllLightContribution(inWorldPos, normal, u_CamPos.xyz, u_Material.Shininess);
+	vec3 lightAccumulation = CalcAllLightContribution(inWorldPos, normal, u_CamPos.xyz, u_Material.Shininess, u_toggleKeys);
 
 	// Get the albedo from the diffuse / albedo map
 	vec4 textureColor = texture(u_Material.Diffuse, inUV);
@@ -46,5 +47,18 @@ void main() {
 	// combine for the final result
 	vec3 result = lightAccumulation  * inColor * textureColor.rgb;
 
-	frag_color = vec4(ColorCorrect(result), textureColor.a);
+	// Toon Shadeing
+	if (u_toggleKeys == 5.0)
+	{
+		result.r = texture(s_ToonTerm, result.r).r;
+		result.g = texture(s_ToonTerm, result.g).g;
+		result.b = texture(s_ToonTerm, result.b).b;
+
+		frag_color = vec4(ColorCorrect(result), textureColor.a);
+	}
+
+	else
+	{
+		frag_color = vec4(ColorCorrect(result), textureColor.a);
+	}
 }

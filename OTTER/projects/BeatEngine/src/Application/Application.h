@@ -85,6 +85,8 @@ public:
 	 */
 	Gameplay::Scene::Sptr CurrentScene() { return _currentScene == nullptr ? _targetScene : _currentScene; }
 
+	float keyboard();
+
 	/**
 	 * Gets the layer of the given type from the application, or nullptr if it does not exist
 	 * 
