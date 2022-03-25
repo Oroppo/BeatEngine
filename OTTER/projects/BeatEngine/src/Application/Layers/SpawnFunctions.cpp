@@ -253,8 +253,8 @@ void SpawnFunctions::SpawnBuilding(Gameplay::Scene::Sptr scene, Gameplay::MeshRe
 		// Add a dynamic rigid body to this object
 		RigidBody::Sptr physics = Building->Add<RigidBody>(RigidBodyType::Kinematic);
 		// For Wall Jump Colliders, X = Left/Right Y = towards/away, z = Up/Down
-		ICollider::Sptr CollectCollider = physics->AddCollider(BoxCollider::Create(glm::vec3(1.590f, 5.000f, 2.000f)));
-		CollectCollider->SetPosition(glm::vec3(-0.190f, 1.280f, -0.080f));
+		ICollider::Sptr CollectCollider = physics->AddCollider(BoxCollider::Create(glm::vec3(1.590f, 6.250f, 1.800f)));
+		CollectCollider->SetPosition(glm::vec3(-0.020f, 0.110f, -0.010f));
 	}
 }
 // For spawning building2 object
