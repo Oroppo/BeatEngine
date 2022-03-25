@@ -3,6 +3,8 @@
 #include "Gameplay/Components/ComponentManager.h"
 #include "Gameplay/GameObject.h"
 #include "Utils/ResourceManager/ResourceManager.h"
+#include "Application/Application.h"
+#include "Application/Layers/RenderLayer.h"
 
 MorphRenderComponent::MorphRenderComponent() : IComponent() {
 	/*_mesh0 = GetGameObject()->Get<RenderComponent>()->GetMesh();
@@ -38,15 +40,15 @@ void MorphRenderComponent::UpdateVBOs(const Gameplay::MeshResource::Sptr& mesh0,
 	BufferAttribute posBuff(4, 3, AttributeType::Float, v_dec.at(0).Stride, v_dec.at(0).Offset, AttribUsage::Position);
 	BufferAttribute norBuff(5, 3, AttributeType::Float, v_dec.at(2).Stride, v_dec.at(2).Offset, AttribUsage::Normal);
 
-	const std::vector<BufferAttribute> posAttributes{ posBuff};
-	const std::vector<BufferAttribute> norAttributes{ norBuff };
+	const std::vector<BufferAttribute> posAttributes{posBuff};
+	const std::vector<BufferAttribute> norAttributes{norBuff};
 
 	
 	vao->AddVertexBuffer(pBuff, posAttributes);
 	vao->AddVertexBuffer(nBuff, norAttributes);
 
-	//GetGameObject()->Get<>()
-
+	Application& app = Application::Get();
+	app.GetLayer<RenderLayer>();
 
 	GetGameObject()->Get<RenderComponent>()->SetVAO(vao);
 }

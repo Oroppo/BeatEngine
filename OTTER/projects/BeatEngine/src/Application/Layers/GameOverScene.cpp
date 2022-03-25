@@ -228,42 +228,6 @@ void GameOverScene::_CreateScene()
 			UIMat->Set("u_Material.Shininess", 0.1f);
 		}
 
-
-
-			//// Create some lights for our scene
-			//scene->Lights.resize(2);
-			//scene->Lights[0].Position = glm::vec3(0.0f, 1.0f, 3.0f);
-			//scene->Lights[0].Color = glm::vec3(1.0f, 1.0f, 1.0f);
-			//scene->Lights[0].Range = 50.0f;
-
-				// Create some lights for our scene
-		scene->Lights.resize(6);
-		//scene->Lights[0].Position = glm::vec3(0.0f, 1.0f, 3.0f);
-		scene->Lights[0].Color = glm::vec3(1.0f, 1.0f, 1.0f);
-		scene->Lights[0].Range = 100.0f;
-
-		scene->Lights[2].Position = glm::vec3(-1.380f, 17.460f, -5.710f);
-		scene->Lights[2].Color = glm::vec3(1.0f, 1.0f, 1.0f);
-		scene->Lights[2].Range = 50;
-
-		scene->Lights[3].Position = glm::vec3(-25.380f, 14.060f, -14.020f);
-		scene->Lights[3].Color = glm::vec3(1.0f, 1.0f, 1.0f);
-		scene->Lights[3].Range = 187;
-
-		scene->Lights[4].Position = glm::vec3(25.380f, 14.060f, -14.020f);
-		scene->Lights[4].Color = glm::vec3(1.0f, 1.0f, 1.0f);
-		scene->Lights[4].Range = 187;
-
-		scene->Lights[5].Color = glm::vec3(1.0f, 1.0f, 1.0f);
-
-
-		// Red/Green light
-		scene->Lights[1].Position = glm::vec3(6.840f, 5.610f, 3.0f);
-		scene->Lights[1].Color = glm::vec3((1.0f, 0.99f, 0.99f));
-		scene->Lights[1].Range = 50.0f;
-
-
-
 		// Set up the scene's camera
 		GameObject::Sptr camera = scene->CreateGameObject("Main Camera");
 		{

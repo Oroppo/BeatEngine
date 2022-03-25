@@ -7,6 +7,7 @@ layout(location = 3) in vec2 inUV;
 
 layout(location = 4) in vec3 inTangent;
 layout(location = 5) in vec3 inBiTangent;
+
 layout(location = 6) in vec3 inPosition2;
 layout(location = 7) in vec3 inNormal2;
 

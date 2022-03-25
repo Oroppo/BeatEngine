@@ -4,6 +4,7 @@
 #include <GLM/glm.hpp>
 #include <GLM/gtc/matrix_transform.hpp>
 #include <GLM/gtc/type_ptr.hpp>
+#include <GLM/gtc/random.hpp>
 #define GLM_ENABLE_EXPERIMENTAL
 #include <GLM/gtx/common.hpp> // for fmod (floating modulus)
 
@@ -55,6 +56,8 @@
 #include "Gameplay/Components/ForegroundMover.h"
 #include "Gameplay/Components/BuildingAnim.h"
 #include "Gameplay/Components/SpawnLoop.h"
+#include "Gameplay/Components/ShadowCamera.h"
+#include "Gameplay/Components/Light.h"
 
 // Physics
 #include "Gameplay/Physics/RigidBody.h"
@@ -81,6 +84,7 @@
 //Animation
 #include "Animation/MorphRenderComponent.h"
 #include "Animation/MorphAnimationManager.h"
+
 
 
 
@@ -214,8 +218,8 @@ void Level1Scene::_CreateScene()
 
 		 // Configure the color correction LUT
 		 scene->SetColorLUT(lutCool);
-		 scene->SetColorLUTCool(lutWarm);
-		 scene->SetColorLUTCustom(lutCustom);
+		 //scene->SetColorLUTCool(lutWarm);
+		 //scene->SetColorLUTCustom(lutCustom);
 		 
 		 MeshResource::Sptr SmallPlatform = ResourceManager::CreateAsset<MeshResource>("HaloBasicPlatform.obj");
 		 MeshResource::Sptr WallJump = ResourceManager::CreateAsset<MeshResource>("WallJumpV6.obj");
@@ -525,38 +529,6 @@ void Level1Scene::_CreateScene()
 			OvalBuildingMaterial->Set("u_Material.Shininess", 0.1f);
 		}
 
-
-		//// Create some lights for our scene
-		//scene->Lights.resize(2);
-		//scene->Lights[0].Position = glm::vec3(0.0f, 1.0f, 3.0f);
-		//scene->Lights[0].Color = glm::vec3(1.0f, 1.0f, 1.0f);
-		//scene->Lights[0].Range = 50.0f;
-		
-			// Create some lights for our scene
-			scene->Lights.resize(6);
-			//scene->Lights[0].Position = glm::vec3(0.0f, 1.0f, 3.0f);
-			scene->Lights[0].Color = glm::vec3(1.0f, 1.0f, 1.0f);
-			scene->Lights[0].Range = 100.0f;
-
-			scene->Lights[2].Position = glm::vec3(-1.380f, 17.460f, -5.710f);
-			scene->Lights[2].Color = glm::vec3(1.0f, 1.0f, 1.0f);
-			scene->Lights[2].Range = 50;
-
-			scene->Lights[3].Position = glm::vec3(-25.380f, 14.060f, -14.020f);
-			scene->Lights[3].Color = glm::vec3(1.0f, 1.0f, 1.0f);
-			scene->Lights[3].Range = 187;
-
-			scene->Lights[4].Position = glm::vec3(25.380f, 14.060f, -14.020f);
-			scene->Lights[4].Color = glm::vec3(1.0f, 1.0f, 1.0f);
-			scene->Lights[4].Range = 187;
-
-			scene->Lights[5].Color = glm::vec3(1.0f, 1.0f, 1.0f);
-			
-			// Red/Green light
-		scene->Lights[1].Position = glm::vec3(6.840f, 5.610f, 3.0f);
-		scene->Lights[1].Color = glm::vec3((1.0f, 0.99f, 0.99f));
-		scene->Lights[1].Range = 50.0f;
-
 		// Set up the scene's camera
 		GameObject::Sptr camera = scene->CreateGameObject("Main Camera");
 		{
@@ -738,6 +710,31 @@ void Level1Scene::_CreateScene()
 			seeking->seekTo(character);
 
 			RigidBody::Sptr ballphysics = DiscoBall->Add<RigidBody>(RigidBodyType::Dynamic);
+		}
+
+		// Create some lights for our scene
+		GameObject::Sptr lightParent = scene->CreateGameObject("Lights");
+
+		for (int ix = 0; ix < 50; ix++) {
+			GameObject::Sptr light = scene->CreateGameObject("Light");
+			light->SetPostion(glm::vec3(glm::diskRand(25.0f), 1.0f));
+			lightParent->AddChild(light);
+
+			Light::Sptr lightComponent = light->Add<Light>();
+			lightComponent->SetColor(glm::linearRand(glm::vec3(0.0f), glm::vec3(1.0f)));
+			lightComponent->SetRadius(glm::linearRand(0.1f, 10.0f));
+			lightComponent->SetIntensity(glm::linearRand(1.0f, 2.0f));
+		}
+
+		GameObject::Sptr shadowCaster = scene->CreateGameObject("Shadow Light");
+		{
+			// Set position in the scene
+			shadowCaster->SetPostion(glm::vec3(3.0f, 3.0f, 5.0f));
+			shadowCaster->LookAt(glm::vec3(0.0f));
+
+			// Create and attach a renderer for the monkey
+			ShadowCamera::Sptr shadowCam = shadowCaster->Add<ShadowCamera>();
+			shadowCam->SetProjection(glm::perspective(glm::radians(120.0f), 1.0f, 0.1f, 100.0f));
 		}
 
 		/////////////////////////// UI //////////////////////////////
