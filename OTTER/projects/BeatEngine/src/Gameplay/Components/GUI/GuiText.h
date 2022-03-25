@@ -14,6 +14,8 @@ public:
 	GuiText();
 	virtual ~GuiText();
 
+	GuiText(float percX, float percY, float scale);
+
 	/// <summary>
 	/// Sets the color multiplier for this GUI object
 	/// </summary>
@@ -63,6 +65,8 @@ public:
 	/// </summary>
 	void SetFont(const Font::Sptr& font);
 
+	virtual void Update(float deltaTime) override;
+
 
 public:
 	// Inherited from IComponent
@@ -73,6 +77,13 @@ public:
 	MAKE_TYPENAME(GuiText);
 	virtual nlohmann::json ToJson() const override;
 	static GuiText::Sptr FromJson(const nlohmann::json& blob);
+
+
+private:
+	float _percentOfScreenX;
+	float _percentOfScreenY;
+	float _scale;
+
 
 protected:
 	std::wstring    _text;

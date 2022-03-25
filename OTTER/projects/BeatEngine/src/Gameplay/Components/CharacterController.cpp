@@ -98,9 +98,8 @@ void CharacterController::OnEnteredTrigger(const std::shared_ptr<Gameplay::Physi
     ss << score;
     std::string stringScore;
     ss >> stringScore;
-   
-    //trigger->GetGameObject()->GetScene()->FindObjectByName("GameOver Score Text")->Get<RectTransform>()->SetPosition({ 425 , 100 });
-  //  GetGameObject()->GetScene()->FindObjectByName("GameOver Score Text")->Get<GuiText>()->SetText(stringScore);
+
+    GetGameObject()->GetScene()->FindObjectByName("HUD Score Text")->Get<GuiText>()->SetText(stringScore);
 
 }
 
@@ -252,6 +251,8 @@ void CharacterController::Update(float deltaTime) {
         GetGameObject()->SetPostion(glm::vec3(-15.820f, 5.710f, 0.0f));
         score = 0;
         _body->SetLinearVelocity(glm::vec3(0.0f, 0.0f, 0.0f));
+
+        
 
         Application& app = Application::Get();
         //Change this to GameOver.Json once it exists :^)

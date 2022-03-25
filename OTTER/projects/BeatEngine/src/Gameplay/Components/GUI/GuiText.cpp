@@ -5,6 +5,7 @@
 #include "Utils/ImGuiHelper.h"
 #include "Utils/JsonGlmHelpers.h"
 #include "Gameplay/GameObject.h"
+#include "Application/Application.h"
 
 std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> StringConvert;
 
@@ -15,6 +16,19 @@ GuiText::GuiText() :
 	_font(nullptr),
 	_textSize(glm::vec2(0.0f)),
 	_textScale(1.0f)
+{ }
+
+GuiText::GuiText(float perX, float perY, float scale) :
+	IComponent(),
+	_text(LR"()"), // The LR and parenthesis tell us it's a unicode string (wide string)
+	_color(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)),
+	_font(nullptr),
+	_textSize(glm::vec2(0.0f)),
+	_textScale(1.0f),
+
+	_percentOfScreenX(perX),
+	_percentOfScreenY(perY),
+	_scale(scale)
 { }
 
 GuiText::~GuiText() = default;
@@ -101,6 +115,18 @@ void GuiText::RenderImGui()
 			_textSize = _font->MeausureString(_text, _textScale);
 		}
 	}
+}
+
+void GuiText::Update(float deltaTime) {
+
+	//Get Window Size
+	Application& app = Application::Get();
+	glm::vec2 windowSize = app.GetWindowSize();
+
+	//Update the GUI to dynamically move to the correct percent position of the screen. For example, an element dead center (50%, 50%) on a 1080p screen will stay centered when rescaled to 4k 
+	GetGameObject()->Get<RectTransform>()->SetPosition({ windowSize.x * _percentOfScreenX, windowSize.y * _percentOfScreenY });
+	GetGameObject()->Get<GuiText>()->SetTextScale( _scale * (windowSize.y / 1080));
+
 }
 
 nlohmann::json GuiText::ToJson() const {
