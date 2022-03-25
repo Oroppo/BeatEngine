@@ -139,7 +139,7 @@ void CharacterController::OnTriggerVolumeLeaving(const std::shared_ptr<Gameplay:
     }
 
     // i forgor
-    if (_PlatformName != "BeatGem") {
+    if ((_PlatformName != "BeatGem")&&(_PlatformName!="FallingPlatform")) {
         _PlatformName = "";
         _OnPlatform = false;
     }
