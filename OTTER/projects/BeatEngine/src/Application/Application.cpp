@@ -55,6 +55,8 @@
 #include "Gameplay/Components/BuildingAnim.h"
 #include "Gameplay/Components/SpawnLoop.h"
 #include "Gameplay/Components/InteractableMenu.h"
+#include "Gameplay/Components/ShadowCamera.h"
+#include "Gameplay/Components/Light.h"
 
 
 // GUI
@@ -75,6 +77,7 @@
 #include "Application/Layers/MainMenuScene.h"
 #include "Application/Layers/GameOverScene.h"
 #include "Application/Layers/PauseMenuScene.h"
+#include "Layers/PostProcessingLayer.h"
 
 //Sound
 #include "FMOD/AudioEngine.h"
@@ -86,8 +89,8 @@
 Application* Application::_singleton = nullptr;
 std::string Application::_applicationName = "Beat!";
 
-#define DEFAULT_WINDOW_WIDTH 1280
-#define DEFAULT_WINDOW_HEIGHT 720
+#define DEFAULT_WINDOW_WIDTH 1920
+#define DEFAULT_WINDOW_HEIGHT 1080
 
 Application::Application() :
 	_window(nullptr),
@@ -239,6 +242,7 @@ void Application::_Run()
 	_layers.push_back(std::make_shared<RenderLayer>());
 	_layers.push_back(std::make_shared<ParticleLayer>());
 	//_layers.push_back(std::make_shared<InstancedRenderingTestLayer>());
+	_layers.push_back(std::make_shared<PostProcessingLayer>());
 	_layers.push_back(std::make_shared<InterfaceLayer>());
 
 	// If we're in editor mode, we add all the editor layers
@@ -397,6 +401,8 @@ void Application::_RegisterClasses()
 	ComponentManager::RegisterType<SpawnLoop>();
 	ComponentManager::RegisterType<BeatGem>();
 	ComponentManager::RegisterType<InteractableMenu>();
+	ComponentManager::RegisterType<Light>();
+	ComponentManager::RegisterType<ShadowCamera>();
 }
 
 void Application::_Load() {

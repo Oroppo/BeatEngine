@@ -7,17 +7,19 @@
 
 void main() {
 	
-	vec4 interpolatedPosition;
-	interpolatedPosition.xyz = (inPosition + ((inPosition+ vec3(0,0,10)) - inPosition) * u_DeltaTime);
 
-	gl_Position = u_ModelViewProjection * interpolatedPosition;
+	vec3 Position = mix(inPosition, inPosition2, u_DeltaTime);
+	vec3 Normal = mix(inNormal, inNormal2, u_DeltaTime);
+
+	gl_Position = u_ModelViewProjection * vec4(Position, 1);
+
 
 	// Lecture 5
 	// Pass vertex pos in world space to frag shader
 	outWorldPos = (u_Model * vec4(inPosition, 1.0)).xyz;
 
 	// Normals
-	outNormal = mat3(u_NormalMatrix) * inNormal;
+	outNormal = mat3(u_NormalMatrix) * Normal;
 
     // We use a TBN matrix for tangent space normal mapping
     vec3 T = normalize(vec3(mat3(u_NormalMatrix) * inTangent));

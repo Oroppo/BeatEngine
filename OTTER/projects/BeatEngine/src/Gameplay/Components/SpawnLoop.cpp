@@ -469,7 +469,7 @@ void SpawnLoop::Update(float dt) {
 
 	//Rotates our Skybox, it doesn't NEED to be in SpawnLoop, it could be any Component Attached to GameManager tbh
 	glm::mat3 newRotation = glm::rotate(glm::mat3(1.0f), _SpawnTimer) * glm::rotate(glm::mat3(1.0f), 90.f);
-	app.CurrentScene()->SetSkyboxRotation(newRotation);
+	//app.CurrentScene()->SetSkyboxRotation(newRotation);
 
 	//LOG_INFO(_SpawnTimer);
 	if (_SpawnTimer >= 22) {

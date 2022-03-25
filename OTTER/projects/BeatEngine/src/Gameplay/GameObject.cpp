@@ -25,7 +25,7 @@ namespace Gameplay {
 		_scale(ONE),
 		_localTransform(MAT4_IDENTITY),
 		_inverseLocalTransform(MAT4_IDENTITY),
-		_isLocalTransformDirty(true),
+		_isLocalTransformDirty(false),
 		_worldTransform(MAT4_IDENTITY),
 		_inverseWorldTransform(MAT4_IDENTITY),
 		_isWorldTransformDirty(true),
@@ -49,6 +49,10 @@ namespace Gameplay {
 				}
 			}
 		}
+	}
+
+	const glm::vec3 GameObject::GetWorldPosition() const {
+		return this->GetTransform()[3];
 	}
 
 	void GameObject::_RecalcWorldTransform() const {
