@@ -71,6 +71,12 @@ namespace Gameplay {
 		void SetColorLUT(const Texture3D::Sptr& texture);
 		const Texture3D::Sptr& GetColorLUT() const;
 
+		void SetColorLUTCool(const Texture3D::Sptr& texture);
+		const Texture3D::Sptr& GetColorLUTCool() const;
+		// Custom
+		void SetColorLUTCustom(const Texture3D::Sptr& texture);
+		const Texture3D::Sptr& GetColorLUTCustom() const;
+
 		/**
 		 * Gets whether the scene has already called Awake()
 		 */
@@ -251,6 +257,8 @@ namespace Gameplay {
 
 		// our LUT for color correction
 		Texture3D::Sptr               _colorCorrection;
+		Texture3D::Sptr               _colorCorrectionCool;
+		Texture3D::Sptr               _colorCorrectionCustom;
 
 		/// <summary>
 		/// Represents a c++ struct layout that matches that of

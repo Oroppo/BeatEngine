@@ -82,6 +82,7 @@ vec3 CalcPointLightContribution(vec3 worldPos, vec3 normal, vec3 viewDir, Light 
 	// We add the one to prevent divide by zero errors
 	float attenuation = clamp(1.0 / (1.0 + light.ColorAttenuation.w * pow(dist, 2)), 0, 1);
 
+	
 	// Custom LUT Grading
 		if (keyTog == 0.0)
 		{
@@ -126,6 +127,7 @@ vec3 CalcPointLightContribution(vec3 worldPos, vec3 normal, vec3 viewDir, Light 
 		{
 			return (diffuseOut + specularOut) * attenuation;
 		}
+		
 		
 	//return (diffuseOut + specularOut) * attenuation;
 }

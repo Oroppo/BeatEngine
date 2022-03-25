@@ -74,15 +74,15 @@ void RenderLayer::OnRender(const Framebuffer::Sptr& prevLayer)
 		colorLUT->Bind(14);
 	}
 	// Binding the color correction LUT
-	//Texture3D::Sptr colorLUTCool = app.CurrentScene()->GetColorLUTCool();
-	//if (colorLUTCool) {
-	//	colorLUTCool->Bind(16);
-	//}
-	//// Binding the color correction LUT
-	//Texture3D::Sptr colorLUTCustom = app.CurrentScene()->GetColorLUTCustom();
-	//if (colorLUTCustom) {
-	//	colorLUTCustom->Bind(17);
-	//}
+	Texture3D::Sptr colorLUTCool = app.CurrentScene()->GetColorLUTCool();
+	if (colorLUTCool) {
+		colorLUTCool->Bind(16);
+	}
+	// Binding the color correction LUT
+	Texture3D::Sptr colorLUTCustom = app.CurrentScene()->GetColorLUTCustom();
+	if (colorLUTCustom) {
+		colorLUTCustom->Bind(17);
+	}
 
 	// Here we'll bind all the UBOs to their corresponding slots
 	app.CurrentScene()->PreRender();
@@ -102,8 +102,9 @@ void RenderLayer::OnRender(const Framebuffer::Sptr& prevLayer)
 	frameData.u_DeltaTime = Timing::Current().DeltaTime();
 	frameData.u_RenderFlags = _renderFlags;
 	frameData.u_toggleKeys = app.keyboard();
+	//std::cout << "Key Toggle is " << frameData.u_toggleKeys << std::endl;
 	_frameUniforms->Update();
-
+	
 	Material::Sptr defaultMat = app.CurrentScene()->DefaultMaterial;
 
 	// Render all our objects

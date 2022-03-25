@@ -98,6 +98,24 @@ namespace Gameplay {
 		return _colorCorrection;
 	}
 
+	// cool LUT set/get
+	void Scene::SetColorLUTCool(const Texture3D::Sptr& texture) {
+		_colorCorrectionCool = texture;
+	}
+
+	const Texture3D::Sptr& Scene::GetColorLUTCool() const {
+		return _colorCorrectionCool;
+	}
+
+	// Custom LUT set/get
+	void Scene::SetColorLUTCustom(const Texture3D::Sptr& texture) {
+		_colorCorrectionCustom = texture;
+	}
+
+	const Texture3D::Sptr& Scene::GetColorLUTCustom() const {
+		return _colorCorrectionCustom;
+	}
+
 	GameObject::Sptr Scene::CreateGameObject(const std::string& name)
 	{
 		GameObject::Sptr result(new GameObject());

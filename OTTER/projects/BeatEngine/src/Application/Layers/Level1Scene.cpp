@@ -205,18 +205,18 @@ void Level1Scene::_CreateScene()
 		
 		
 		 // Loading in a color lookup table
-		// Warm
-		// Texture3D::Sptr lutWarm = ResourceManager::CreateAsset<Texture3D>("luts/Dawn.CUBE");
+		 // Warm
+		 Texture3D::Sptr lutWarm = ResourceManager::CreateAsset<Texture3D>("luts/Dawn.CUBE");
 		 // Cool
 		 Texture3D::Sptr lutCool = ResourceManager::CreateAsset<Texture3D>("luts/cool.CUBE");
 		 // Custom
-		// Texture3D::Sptr lutCustom = ResourceManager::CreateAsset<Texture3D>("luts/Dawn_Custom.CUBE");
+		 Texture3D::Sptr lutCustom = ResourceManager::CreateAsset<Texture3D>("luts/shrooms.CUBE");
 
 		 // Configure the color correction LUT
 		 scene->SetColorLUT(lutCool);
-		// scene->SetColorLUTCool(lutWarm);
-		 //scene->SetColorLUTCustom(lutCustom);
-
+		 scene->SetColorLUTCool(lutWarm);
+		 scene->SetColorLUTCustom(lutCustom);
+		 
 		 MeshResource::Sptr SmallPlatform = ResourceManager::CreateAsset<MeshResource>("HaloBasicPlatform.obj");
 		 MeshResource::Sptr WallJump = ResourceManager::CreateAsset<MeshResource>("WallJumpV6.obj");
 		 MeshResource::Sptr BeatGem = ResourceManager::CreateAsset<MeshResource>("Gem.obj");
@@ -314,13 +314,16 @@ void Level1Scene::_CreateScene()
 		 FontVCR->Bake();
 
 		 // In Order For the Toon Shader to Work you must include this line on each object using the shader
-		 // 
+		 // boxMaterial->Set("s_ToonTerm", toonLut);
+		 // boxMaterial->Set("u_Material.Steps", 8);
 		
 		 Material::Sptr StartPlatformMaterial = ResourceManager::CreateAsset<Material>(basicShader);
 		{
 			StartPlatformMaterial->Name = "StartPlatform";
 			StartPlatformMaterial->Set("u_Material.Diffuse", StartTex);
 			StartPlatformMaterial->Set("u_Material.Shininess", 0.1f);
+			StartPlatformMaterial->Set("s_ToonTerm", toonLut);
+			StartPlatformMaterial->Set("u_Material.Steps", 8);
 		}
 		
 		 Material::Sptr UIMat = ResourceManager::CreateAsset<Material>(basicShader);
@@ -548,7 +551,6 @@ void Level1Scene::_CreateScene()
 			scene->Lights[4].Range = 187;
 
 			scene->Lights[5].Color = glm::vec3(1.0f, 1.0f, 1.0f);
-
 			
 			// Red/Green light
 		scene->Lights[1].Position = glm::vec3(6.840f, 5.610f, 3.0f);
@@ -583,7 +585,6 @@ void Level1Scene::_CreateScene()
 			//ScoreComponent
 			//LevelSpawningComponent
 			//Scene Swapper
-
 		}
 
 		//float const distanceFromBlock = 20.f;
