@@ -29,8 +29,6 @@ uniform sampler1D s_ToonTerm;
 ////////////////////////////////////////////////////////////////
 /////////////// Frame Level Uniforms ///////////////////////////
 ////////////////////////////////////////////////////////////////
-
-#include "../fragments/frame_uniforms.glsl"
 #include "../fragments/color_correction.glsl"
 
 // https://learnopengl.com/Advanced-Lighting/Advanced-Lighting
@@ -39,7 +37,7 @@ void main() {
 	vec3 normal = normalize(inNormal);
 
 	// Use the lighting calculation that we included from our partial file
-	vec3 lightAccumulation = CalcAllLightContribution(inWorldPos, normal, u_CamPos.xyz, u_Material.Shininess, u_toggleKeys);
+	vec3 lightAccumulation = CalcAllLightContribution(inWorldPos, normal, u_CamPos.xyz, u_Material.Shininess);
 
 	// Get the albedo from the diffuse / albedo map
 	vec4 textureColor = texture(u_Material.Diffuse, inUV);

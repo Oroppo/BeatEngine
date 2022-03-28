@@ -228,6 +228,7 @@ float Application::keyboard()
 }
 
 
+
 void Application::_Run()
 {
 	// TODO: Register layers
@@ -420,6 +421,7 @@ void Application::_Load() {
 
 	GuiBatcher::SetWindowSize(_windowSize);
 }
+
 
 void Application::_Update() {
 	for (const auto& layer : _layers) {

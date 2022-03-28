@@ -32,10 +32,16 @@ public:
 		float u_Time;
 		// The time in seconds since the previous frame
 		float u_DeltaTime;
+		// lighting key toggles
+		float u_toggleKeys;
+		// easy access to dimensions
+		glm::ivec2 u_ScreenSize;
 		// Bitfield representing up to 32 bool values to enable/disable stuff
 		RenderFlags u_RenderFlags;
+		//Camera Projections
 		float u_ZNear;
 		float u_ZFar;
+
 	};
 
 	// Structure for our instance-level uniforms, matches layout from

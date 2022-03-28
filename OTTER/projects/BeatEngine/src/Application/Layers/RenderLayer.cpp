@@ -87,6 +87,7 @@ void RenderLayer::OnPreRender()
 	// Draw physics debug
 	app.CurrentScene()->DrawPhysicsDebug();
 
+
 	_InitFrameUniforms();
 }
 
@@ -191,7 +192,7 @@ void RenderLayer::_AccumulateLighting()
 
 
 	// Send in how many active lights we have and the global lighting settings
-	data.AmbientCol = glm::vec3(1.0f);
+	data.AmbientCol = glm::vec3(0.8f);
 	int ix = 0;
 	app.CurrentScene()->Components().Each<Light>([&](const Light::Sptr& light) {
 		// Get the light's position in view space, since we're doing view space lighting
@@ -531,6 +532,8 @@ void RenderLayer::_InitFrameUniforms()
 	frameData.u_CameraPos = glm::vec4(camera->GetGameObject()->GetPosition(), 1.0f);
 	frameData.u_Time = static_cast<float>(Timing::Current().TimeSinceSceneLoad());
 	frameData.u_DeltaTime = Timing::Current().DeltaTime();
+	frameData.u_toggleKeys = app.keyboard();
+	frameData.u_ScreenSize = app.GetWindowSize();
 	frameData.u_RenderFlags = _renderFlags;
 	frameData.u_ZNear = camera->GetNearPlane();
 	frameData.u_ZFar = camera->GetFarPlane();

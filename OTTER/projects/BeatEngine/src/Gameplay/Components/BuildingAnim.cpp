@@ -17,7 +17,7 @@ void BuildingAnim::Awake()
     // glm::vec2 ScaleXY = { GetGameObject()->GetScale().x, GetGameObject()->GetScale().y };
 
   //  keypoints.push_back(ScaleXY + glm::vec2{ 1,0 });
-    _BuildingPresets = 1;
+    _BuildingPresets = 2;
     switch (_BuildingPresets)
     {
         // Present 0 Goes up stays for half a seconds goes down stays half a second

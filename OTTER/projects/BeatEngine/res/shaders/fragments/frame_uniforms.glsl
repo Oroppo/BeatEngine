@@ -12,10 +12,17 @@ layout (std140, binding = 0) uniform b_FrameLevelUniforms {
     uniform float u_Time;    
     // The time in seconds since the last frame
     uniform float u_DeltaTime;
-    // Lets us store up to 32 bool flags in one value
-    uniform uint  u_Flags;
     // For Lighting Debug Keys
     uniform float u_toggleKeys;
+    //Easy Access to ScreenSize
+    uniform ivec2 u_ScreenSize;
+    // Lets us store up to 32 bool flags in one value
+    uniform uint  u_Flags;
+
+    //clipping planes
+    uniform float u_ZNear;
+	uniform float u_ZFar;
+
 };
 
 // Stores uniforms that change every object/instance
