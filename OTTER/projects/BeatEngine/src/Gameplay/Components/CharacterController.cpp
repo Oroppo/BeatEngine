@@ -186,7 +186,7 @@ void CharacterController::AirControl(char Direction) {
 void CharacterController::CoyoteTime(float dt) {
     if ((_OnPlatform == false)&&(_PlatformName!="BeatGem")&&(_CoyoteTimeUsed==false)) {
        
-        if (_CoyoteTimeTimer > 1.0f) {
+        if (_CoyoteTimeTimer > 0.5f) {
             _CoyoteTimeUsed = true;
             _canJump = false;
             _CoyoteTimeTimer = 0.0f;
