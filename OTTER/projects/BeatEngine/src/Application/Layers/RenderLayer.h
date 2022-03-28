@@ -42,6 +42,7 @@ public:
 		float u_ZNear;
 		float u_ZFar;
 
+
 	};
 
 	// Structure for our instance-level uniforms, matches layout from

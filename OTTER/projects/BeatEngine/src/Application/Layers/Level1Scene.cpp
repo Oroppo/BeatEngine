@@ -81,6 +81,7 @@
 
 //Testing...
 #include "SpawnFunctions.h"
+
 //Animation
 #include "Animation/MorphRenderComponent.h"
 #include "Animation/MorphAnimationManager.h"
@@ -124,6 +125,7 @@ void Level1Scene::_CreateScene()
 			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_environment_reflective.glsl" }
 		});
 		reflectiveShader->SetDebugName("Reflective");
+
 		
 		
 		 ShaderProgram::Sptr basicShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
@@ -133,7 +135,7 @@ void Level1Scene::_CreateScene()
 		basicShader->SetDebugName("Blinn-phong");
 
 		ShaderProgram::Sptr AnimatedShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
-			{ ShaderPartType::Vertex, "shaders/geometry_shader/Animation.glsl" },
+			{ ShaderPartType::Vertex, "shaders/vertex_shaders/Animation.glsl" },
 			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_blinn_phong_textured.glsl" }
 		});
 		basicShader->SetDebugName("Animated Object Material");
@@ -388,7 +390,7 @@ void Level1Scene::_CreateScene()
 			CDMaterial->Set("u_Material.Steps", 4);
 		}
 		
-		// Material::Sptr CharacterMaterial = ResourceManager::CreateAsset<Material>(AnimatedShader);
+		//Material::Sptr CharacterMaterial = ResourceManager::CreateAsset<Material>(AnimatedShader);
 		Material::Sptr CharacterMaterial = ResourceManager::CreateAsset<Material>(basicShader);
 		{
 			CharacterMaterial->Name = "Character";
@@ -671,8 +673,6 @@ void Level1Scene::_CreateScene()
 			character->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
 			character->SetScale(glm::vec3(0.7f, 0.7f, 0.7f));
 
-			// Add some behaviour that relies on the physics body
-			//character->Add<JumpBehaviour>();
 			character->Add<CharacterController>();
 
 			// Create and attach a renderer for the paddle
@@ -695,9 +695,11 @@ void Level1Scene::_CreateScene()
 			MorphRenderComponent::Sptr morph1 = character->Add<MorphRenderComponent>(CharacterMesh);
 			MorphAnimationManager::Sptr animator = character->Add<MorphAnimationManager>();
 
+			//A vector Stores Each Animation Seperately
 			std::vector<MeshResource::Sptr> RunAnim;
 			std::vector<MeshResource::Sptr> JumpAnim;
 
+			RunAnim.push_back(DiscoBotMesh1);
 			RunAnim.push_back(DiscoBotMesh2);
 			RunAnim.push_back(DiscoBotMesh3);
 			RunAnim.push_back(DiscoBotMesh4);
@@ -715,10 +717,11 @@ void Level1Scene::_CreateScene()
 			JumpAnim.push_back(BotJump6);
 			JumpAnim.push_back(BotJump7);
 
-			animator->AddAnim(RunAnim, 0.05);
+			animator->AddAnim(RunAnim, 1.00);
 			animator->AddAnim(JumpAnim, 0.25);
 			animator->SetContinuity(true);
 			animator->SetCurrentAnim(0);
+
 
 		}
 

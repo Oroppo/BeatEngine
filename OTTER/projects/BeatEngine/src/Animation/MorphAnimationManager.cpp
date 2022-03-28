@@ -15,7 +15,13 @@ MorphAnimationManager::MorphAnim::MorphAnim(const std::vector<Gameplay::MeshReso
 	}
 }
 
-MorphAnimationManager::MorphAnimationManager():IComponent() {}
+MorphAnimationManager::MorphAnimationManager():IComponent() {
+	currentlyAnimating = true,
+	futureContinuity = true,
+	hasDeclaredOrder = false,
+	toBePaused = false,
+	morphOff = false;
+}
 MorphAnimationManager::~MorphAnimationManager() = default;
 
 void MorphAnimationManager::AddAnim(const std::vector<Gameplay::MeshResource::Sptr>& meshes, float pace) {
@@ -32,7 +38,7 @@ void MorphAnimationManager::SetCurrentAnim(int newCur) {
 }
 
 void MorphAnimationManager::SetAnOrder(std::vector<int> anOrder) {
-	if (order.size()) { order.clear(); }
+	if (order.size() == anOrder.size()) { order.clear(); }
 
 	for (int i = 0; i < anOrder.size(); i++) {
 		order.push_back(anOrder[i]);
@@ -61,11 +67,11 @@ void MorphAnimationManager::Update(float deltaTime) {
 
 		if (animations[currentAnimIndex].done) {
 
-			if (toBePaused) {
-				toBePaused = false;
-				currentlyAnimating = false;
-			}
-			else {
+			//if (toBePaused) {
+			//	toBePaused = false;
+			//	currentlyAnimating = false;
+			//}
+			//else {
 				if (hasDeclaredOrder) {
 					orderIndex = (orderIndex == -1) ? 0 : orderIndex + 1;
 					if (orderIndex == order.size()) {
@@ -99,7 +105,7 @@ void MorphAnimationManager::Update(float deltaTime) {
 					animations[currentAnimIndex].index = curIdleIndex;
 					InterpolateMeshes(deltaTime);
 				}
-			}
+			//}
 
 		}
 		else {
@@ -149,14 +155,40 @@ void MorphAnimationManager::InterpolateMeshes(float deltaTime) {
 
 
 void MorphAnimationManager::RenderImGui() {
+	currentlyAnimating |= LABEL_LEFT(ImGui::Checkbox, "Is_Animating:", &currentlyAnimating);
+	int selectedItem = 0;
+	LABEL_LEFT(ImGui::Text, "Current Animation: %i" , currentAnimIndex);
+
+		//std::string prefix = "loadedanim_" + std::to_string(i);
+		//result[prefix + "_index"] = animations[i].index;
+		//result[prefix + "_interval"] = animations[i].secondsBetween;
+		//result[prefix + "_is_done"] = animations[i].done;
+		//result[prefix + "_frame_count"] = animations[i].morphFrames.size();
+		//std::string pref2 = prefix + "_frame_";
+		//for (int j = 0; j < animations[i].morphFrames.size(); j++) {
+		//	result[pref2 + std::to_string(j)] = animations[i].morphFrames[j]->GetGUID().str();
+		//}
 	
+	//_isProjectionDirty |= LABEL_LEFT(ImGui::DragFloat, "Far Plane ", &_farPlane, 0.1f, _nearPlane);
+	//
+	//_isProjectionDirty |= ImGui::Checkbox("Is Ortho", &_isOrtho);
+	//
+	//if (_isOrtho) {
+	//	_isProjectionDirty |= LABEL_LEFT(ImGui::DragFloat, "Ortho Scale", &_orthoVerticalScale, 0.01f, 0.01f);
+	//}
+	//else {
+	//	float fov_deg = glm::degrees(_fovRadians);
+	//	if (LABEL_LEFT(ImGui::SliderFloat, "FOV (deg) ", &fov_deg, 0.1f, 180.0f)) {
+	//		_fovRadians = glm::radians(fov_deg);
+	//		_isProjectionDirty |= true;
+	//	}
+	//}
 }
 
 nlohmann::json MorphAnimationManager::ToJson() const {
 	nlohmann::json result;
 
 	result["is_currently_animating"] = currentlyAnimating;
-
 	result["current_anim_index"] = currentAnimIndex;
 	result["current_idle_index"] = curIdleIndex;
 	result["order_index"] = orderIndex;
@@ -188,6 +220,8 @@ nlohmann::json MorphAnimationManager::ToJson() const {
 
 	return result;
 }
+
+MorphAnimationManager::
 
 MorphAnimationManager::Sptr MorphAnimationManager::FromJson(const nlohmann::json& blob) {
 	MorphAnimationManager::Sptr result = std::make_shared<MorphAnimationManager>();

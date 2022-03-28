@@ -27,29 +27,34 @@ MorphRenderComponent::MorphRenderComponent(const Gameplay::MeshResource::Sptr& b
 void MorphRenderComponent::UpdateVBOs(const Gameplay::MeshResource::Sptr& mesh0, const Gameplay::MeshResource::Sptr& mesh1, float t) {
 	_t = t;
 
-	VertexArrayObject::Sptr vao = mesh0->Mesh;
+	//Change your mesh1 bozo
+	VertexArrayObject::Sptr vao = VertexArrayObject::Create();
 
-
+	//Grab The Buffer Bindings attached to target mesh
 	VertexBuffer::Sptr pBuff = mesh1->Mesh->GetBufferBinding(AttribUsage::Position)->GetBuffer();
 	VertexBuffer::Sptr nBuff = mesh1->Mesh->GetBufferBinding(AttribUsage::Normal)->GetBuffer();
+	VertexBuffer::Sptr cBuff = mesh1->Mesh->GetBufferBinding(AttribUsage::Color)->GetBuffer();
 
-	
+	//find the vertex declaration helper 
 	const VertexArrayObject::VertexDeclaration& v_dec = (mesh1->Mesh->GetVDecl());
 	
-
-	BufferAttribute posBuff(4, 3, AttributeType::Float, v_dec.at(0).Stride, v_dec.at(0).Offset, AttribUsage::Position);
-	BufferAttribute norBuff(5, 3, AttributeType::Float, v_dec.at(2).Stride, v_dec.at(2).Offset, AttribUsage::Normal);
-
+	//Assign each attribute to a layout for our shader using v_decl helper and Attribute Hints
+	BufferAttribute posBuff(6, 3, AttributeType::Float, v_dec.at(0).Stride, v_dec.at(0).Offset, AttribUsage::Position);
+	BufferAttribute norBuff(7, 3, AttributeType::Float, v_dec.at(2).Stride, v_dec.at(2).Offset, AttribUsage::Normal);
+	BufferAttribute colBuff(8, 4, AttributeType::Float, v_dec.at(1).Stride, v_dec.at(1).Offset, AttribUsage::Color);
+	
+	//Package the Data to send to our Vertex Buffer
 	const std::vector<BufferAttribute> posAttributes{posBuff};
 	const std::vector<BufferAttribute> norAttributes{norBuff};
+	const std::vector<BufferAttribute> colAttributes{colBuff};
 
-	
+	//Send the data
 	vao->AddVertexBuffer(pBuff, posAttributes);
 	vao->AddVertexBuffer(nBuff, norAttributes);
+	vao->AddVertexBuffer(cBuff, colAttributes);
 
-	Application& app = Application::Get();
-	app.GetLayer<RenderLayer>();
-
+	//Swap the VAO to our new mesh
+	//if (_t >=1.0)
 	GetGameObject()->Get<RenderComponent>()->SetVAO(vao);
 }
 

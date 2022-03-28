@@ -8,6 +8,7 @@
 #include "Gameplay/Components/ComponentManager.h"
 #include "Gameplay/Components/RenderComponent.h"
 #include "Gameplay/Components/Light.h"
+#include "Animation/MorphRenderComponent.h"
 
 // GLM math library
 #include <GLM/glm.hpp>
@@ -588,6 +589,8 @@ void RenderLayer::_RenderScene(const glm::mat4& view, const glm::mat4& projectio
 			shader->Bind();
 			currentMat->Apply();
 		}
+		
+
 
 		// Grab the game object so we can do some stuff with it
 		GameObject* object = renderable->GetGameObject();
@@ -599,6 +602,12 @@ void RenderLayer::_RenderScene(const glm::mat4& view, const glm::mat4& projectio
 		instanceData.u_ModelView = view * object->GetTransform();
 		instanceData.u_NormalMatrix = glm::mat3(glm::transpose(glm::inverse(object->GetTransform())));
 		_instanceUniforms->Update();
+
+		if (object->Has<MorphRenderComponent>()) 
+		{ 
+			LOG_INFO(object->Get<MorphRenderComponent>()->_t);
+			shader->SetUniform("u_t", object->Get<MorphRenderComponent>()->_t); 
+		}
 
 		// Draw the object
 		renderable->GetMesh()->Draw();
