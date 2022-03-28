@@ -27,7 +27,9 @@ void MaterialSwap::Swap(){
 	_renderer = GetComponent<RenderComponent>();
 
 	//beat gem material swap behaviour
-	
+	//beat number is the beat that the beat gem triggers on 
+	//depending on the time of the game, the beat gem will be in a different state
+	//recolour the gem accordingly 
 		if ((beatTime >= (0.6 * beatNumber) - 0.6) && (beatTime <= 0.6 * beatNumber)) {			
 			_renderer->SetMaterial(OnMaterial);
 			//GetGameObject()->SetScale(glm::vec3(1.2f, 1.2f, 1.2f));
