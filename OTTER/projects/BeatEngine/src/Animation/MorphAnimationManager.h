@@ -6,6 +6,12 @@
 class MorphAnimationManager : public Gameplay::IComponent {
 public:
 
+	static enum Animations {
+		Run,
+		Jump,
+		Idle
+	};
+
 	class MorphAnim {
 	public:
 		int index;

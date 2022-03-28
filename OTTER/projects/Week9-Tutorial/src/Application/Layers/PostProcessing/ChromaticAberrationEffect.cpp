@@ -10,7 +10,8 @@ ChromaticAberrationEffect::ChromaticAberrationEffect() :
 ChromaticAberrationEffect::ChromaticAberrationEffect(bool enabled) :
 	PostProcessingLayer::Effect(),
 	_shader(nullptr),
-	_strength(0)
+	_strength(0),
+	New
 {
 	Name = "Chromatic Aberration";
 	//Enabled = enabled;
@@ -29,6 +30,7 @@ void ChromaticAberrationEffect::Apply(const Framebuffer::Sptr& gBuffer)
 {
 	_shader->Bind();
 	_shader->SetUniform("u_Strength", _strength);
+	_shader->SetUniform("New", New);
 }
 
 void ChromaticAberrationEffect::RenderImGui()

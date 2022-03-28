@@ -198,7 +198,7 @@ void SpawnFunctions::SpawnGem(Gameplay::Scene::Sptr scene, Gameplay::MeshResourc
 		Gem->Add<LevelMover>();
 		Gem->Add<RotatingBehaviour>();
 		Gem->Add<MaterialSwap>(BeatNum);
-		Gem->Add <BeatGem>(BeatNum);
+		Gem->Add<BeatGem>(BeatNum);
 		// Create and attach a renderer for the Object
 		RenderComponent::Sptr renderer = Gem->Add<RenderComponent>();
 		renderer->SetMesh(Mesh);
@@ -206,6 +206,14 @@ void SpawnFunctions::SpawnGem(Gameplay::Scene::Sptr scene, Gameplay::MeshResourc
 
 		TriggerVolume::Sptr volume = Gem->Add<TriggerVolume>();
 		volume->AddCollider(BoxCollider::Create(glm::vec3(0.5f, 0.5f, 0.5f)));
+
+		ParticleSystem::Sptr particles = Gem->Add<ParticleSystem>();
+
+		//For Ryan Particles. DO. Pls. MonkE.
+		//particles->AddEmitter();
+		
+
+
 		//volume->SetFlags(TriggerTypeFlags::Statics | TriggerTypeFlags::Kinematics);
 
 		// Add a dynamic rigid body to this object

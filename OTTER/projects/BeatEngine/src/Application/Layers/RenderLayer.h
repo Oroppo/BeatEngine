@@ -138,6 +138,9 @@ protected:
 	const int LIGHTING_UBO_BINDING = 2;
 	UniformBuffer<LightingUboStruct>::Sptr _lightingUbo;
 
+	//const int LIGHTING_UBO_BINDING = 3;
+	//UniformBuffer<LightingUboStruct>::Sptr _AnimationUBO;
+
 	void _InitFrameUniforms();
 	void _RenderScene(const glm::mat4& view, const glm::mat4&Projection);
 

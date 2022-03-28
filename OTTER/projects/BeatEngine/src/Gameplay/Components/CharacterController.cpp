@@ -12,6 +12,7 @@
 #include "Gameplay/InputEngine.h"
 #include "Gameplay/Components/BeatGem.h"
 #include "Application/Application.h"
+#include "Animation/MorphAnimationManager.h"
 #include "Gameplay/Scene.h"
 #include<sstream>
 #include<string.h>
@@ -166,6 +167,9 @@ void CharacterController::RespawnBeatGems(const std::vector<Gameplay::Physics::T
 
 void CharacterController::AirControl(char Direction) {
     if (_isJumping == true) {
+        GetGameObject()->Get<MorphAnimationManager>()->SetCurrentAnim(MorphAnimationManager::Jump);
+        GetGameObject()->Get<MorphAnimationManager>()->SetContinuity(false);
+        
         //if character is now travelling in a direction they were not previously travelling
         if (_Direction != Direction) {
             _Direction = Direction;
@@ -177,7 +181,13 @@ void CharacterController::AirControl(char Direction) {
                 _AirSpeed -= 0.05f;
             }
         }
-   }
+    }
+    if (_isJumping == false) {
+
+        //This how u do anims MonkaS
+        GetGameObject()->Get<MorphAnimationManager>()->SetCurrentAnim(0);
+        GetGameObject()->Get<MorphAnimationManager>()->SetContinuity(true);
+    }
    
 }
  std::vector  <Gameplay::Physics::TriggerVolume::Sptr>* CharacterController::GetBeatGemsUsed() {

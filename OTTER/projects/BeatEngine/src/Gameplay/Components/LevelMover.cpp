@@ -92,9 +92,9 @@ void LevelMover::Update(float deltaTime)
 
     Gameplay::GameObject::Sptr context = GetGameObject()->SelfRef();
     if (GetGameObject()->GetPosition().x <= -25.f && !inTrigger) {
-        if (GetGameObject()->Has<BeatGem>()) {
-          auto thingy=  GetGameObject()->GetScene()->FindObjectByName("Character/Player")->Get<CharacterController>()->GetBeatGemsUsed();
-          thingy->pop_back();
+        auto BeatGemsUsed = GetGameObject()->GetScene()->FindObjectByName("Character/Player")->Get<CharacterController>()->GetBeatGemsUsed();
+        if (GetGameObject()->Has<BeatGem>()&& !BeatGemsUsed->empty()) {
+          BeatGemsUsed->pop_back();
         }
         GetGameObject()->GetScene()->RemoveGameObject(context);
     }

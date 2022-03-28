@@ -693,7 +693,6 @@ void Level1Scene::_CreateScene()
 			volume->AddCollider(collider);
 
 			MorphRenderComponent::Sptr morph1 = character->Add<MorphRenderComponent>(CharacterMesh);
-
 			MorphAnimationManager::Sptr animator = character->Add<MorphAnimationManager>();
 
 			std::vector<MeshResource::Sptr> RunAnim;
