@@ -47,5 +47,9 @@ public:
 		glm::vec3 rot, glm::vec3 scale);
 	static void SpawnBackGroundBuilding(Gameplay::Scene::Sptr scene, Gameplay::MeshResource::Sptr Mesh, Gameplay::Material::Sptr Material, std::string ObjName, glm::vec3 pos,
 		glm::vec3 rot, glm::vec3 scale);
+	static void SpawnFallingPlat(Gameplay::Scene::Sptr scene, Gameplay::MeshResource::Sptr Mesh, Gameplay::Material::Sptr Material, std::string ObjName, glm::vec3 pos,
+		glm::vec3 rot, glm::vec3 scale);
+	static void SpawnHalfCirclePlat(Gameplay::Scene::Sptr scene, Gameplay::MeshResource::Sptr Mesh, Gameplay::Material::Sptr Material, std::string ObjName, glm::vec3 pos,
+		glm::vec3 rot, glm::vec3 scale);
 
 };

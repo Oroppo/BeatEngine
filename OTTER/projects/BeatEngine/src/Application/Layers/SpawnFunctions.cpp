@@ -76,7 +76,84 @@ void SpawnFunctions::SpawnObj(Gameplay::Scene::Sptr scene, Gameplay::MeshResourc
 		//	parent->AddChild(Startplatform);
 		//}
 	}
+
 }
+
+void SpawnFunctions::SpawnFallingPlat(Gameplay::Scene::Sptr scene, Gameplay::MeshResource::Sptr Mesh, Gameplay::Material::Sptr Material, std::string ObjName = "DeezNuts",
+	glm::vec3 pos = glm::vec3(-10.900f, 5.610f, -4.920f), glm::vec3 rot = glm::vec3(180.0f, 0.0f, 180.0f),
+	glm::vec3 scale = glm::vec3(0.350f, 0.350f, 0.350f)) {
+
+	// Tutorial Stuff
+
+	GameObject::Sptr Startplatform = scene->CreateGameObject(ObjName);
+	{
+		// Set position in the scene
+		Startplatform->SetPostion(pos);
+		Startplatform->SetRotation({ -180.0f, 0.0f, -180.0f });
+		Startplatform->SetScale(scale);
+
+		Startplatform->Add<LevelMover>();
+
+		// Create and attach a renderer for the monkey
+		RenderComponent::Sptr renderer = Startplatform->Add<RenderComponent>();
+		renderer->SetMesh(Mesh);
+		renderer->SetMaterial(Material);
+
+		// Add a dynamic rigid body to this monkey
+		RigidBody::Sptr physics = Startplatform->Add<RigidBody>(RigidBodyType::Kinematic);
+		//physics->AddCollider(BoxCollider::Create(glm::vec3(1.0f, 1.0f, 1.0f)));
+
+
+		// FIX THIS //
+		ICollider::Sptr Box1 = physics->AddCollider(BoxCollider::Create(glm::vec3(0.87f, 0.5f, 0.4f)));
+		Box1->SetPosition(glm::vec3(0.f, 0.f, 0.f));
+		Box1->SetScale(glm::vec3(1, 1, 1));
+
+		//if (parent != nullptr) {
+		//	parent->AddChild(Startplatform);
+		//}
+	}
+
+
+}
+
+void SpawnFunctions::SpawnHalfCirclePlat(Gameplay::Scene::Sptr scene, Gameplay::MeshResource::Sptr Mesh, Gameplay::Material::Sptr Material, std::string ObjName = "DeezNuts",
+	glm::vec3 pos = glm::vec3(-10.900f, 5.610f, -4.920f), glm::vec3 rot = glm::vec3(180.0f, 0.0f, 180.0f),
+	glm::vec3 scale = glm::vec3(0.350f, 0.350f, 0.350f)) {
+
+	// Tutorial Stuff
+
+	GameObject::Sptr Startplatform = scene->CreateGameObject(ObjName);
+	{
+		// Set position in the scene
+		Startplatform->SetPostion(pos);
+		Startplatform->SetRotation({ -90.0f, 0.0f, 0.0f });
+		Startplatform->SetScale(scale);
+
+		Startplatform->Add<LevelMover>();
+
+		// Create and attach a renderer for the monkey
+		RenderComponent::Sptr renderer = Startplatform->Add<RenderComponent>();
+		renderer->SetMesh(Mesh);
+		renderer->SetMaterial(Material);
+
+		// Add a dynamic rigid body to this monkey
+		RigidBody::Sptr physics = Startplatform->Add<RigidBody>(RigidBodyType::Kinematic);
+		//physics->AddCollider(BoxCollider::Create(glm::vec3(1.0f, 1.0f, 1.0f)));
+
+
+		// FIX THIS //
+		ICollider::Sptr Box1 = physics->AddCollider(BoxCollider::Create(glm::vec3(0.87f, 0.5f, 0.4f)));
+		Box1->SetPosition(glm::vec3(0.f, 0.f, 0.f));
+		Box1->SetScale(glm::vec3(1, 1, 1));
+
+		//if (parent != nullptr) {
+		//	parent->AddChild(Startplatform);
+		//}
+	}
+
+}
+
 // For spawning start/end platforms
 void SpawnFunctions::SpawnStartPlat(Gameplay::Scene::Sptr scene, Gameplay::MeshResource::Sptr Mesh, Gameplay::Material::Sptr Material, std::string ObjName = "DeezNuts",
 	glm::vec3 pos = glm::vec3(-10.900f, 5.610f, -4.920f), glm::vec3 rot = glm::vec3(180.0f, 0.0f, 180.0f),
