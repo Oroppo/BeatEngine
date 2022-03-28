@@ -54,6 +54,7 @@ CharacterController::CharacterController() :
     _canJump = true;
     _OnPlatform = false;
     _PlatformName = "";
+    _LastBodyCollided = nullptr;
 }
 
 CharacterController::~CharacterController() = default;
@@ -66,8 +67,7 @@ CharacterController::Sptr CharacterController::FromJson(const nlohmann::json & b
 
 //for collectibles
 void CharacterController::OnEnteredTrigger(const std::shared_ptr<Gameplay::Physics::TriggerVolume>&trigger) {
-    std::string name = trigger->GetGameObject()->Name;
-    
+    std::string name = trigger->GetGameObject()->Name;   
     //beat gem logic
     if ((name[0] == 'B') && (name[1] == 'e') && (name[2] == 'a') && (name[3] == 't') && (name[4] == 'G')) {
         _PlatformName = "BeatGem";
@@ -82,6 +82,8 @@ void CharacterController::OnEnteredTrigger(const std::shared_ptr<Gameplay::Physi
             SFXS->PlayEvent("event:/Coin Pickup");
         }
     }   
+
+
     //vinyl logic
     if (trigger->GetGameObject()->Name == "Vinyl") {
         score += 1000;
@@ -113,8 +115,10 @@ void CharacterController::OnTriggerVolumeEntered(const std::shared_ptr<Gameplay:
     
     //std::cout << "Trigger coord = " << body->GetGameObject()->GetPosition().z << " Player coord = " <<GetGameObject()->GetPosition().z<<std::endl;
     LOG_INFO("Body has entered our trigger volume: {}", body->GetGameObject()->Name);
-    if (_PlatformName != body->GetGameObject()->Name) {
+    if (_LastBodyCollided != body->GetGameObject()->SelfRef()) {
+        _isJumping = false;
         _canJump = true;
+        _LastBodyCollided = body->GetGameObject()->SelfRef();
         _PlatformName = body->GetGameObject()->Name;
     }
     //make certain things fall when touched
@@ -130,6 +134,7 @@ void CharacterController::OnTriggerVolumeEntered(const std::shared_ptr<Gameplay:
 }
 
 void CharacterController::OnTriggerVolumeLeaving(const std::shared_ptr<Gameplay::Physics::RigidBody>&body) {
+    _LastBodyCollided = nullptr;
     LOG_INFO("Body has left our trigger volume: {}", body->GetGameObject()->Name);
     if (body->GetGameObject()->Name == "Half Circle Platform") {
         LOG_INFO("functions");

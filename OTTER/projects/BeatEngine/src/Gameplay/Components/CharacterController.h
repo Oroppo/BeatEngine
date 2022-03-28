@@ -40,6 +40,7 @@ protected:
 	int score = 0, _VinylScore = 0, _CDScore = 0, _BeatGemHits = 0;
 	char _Direction;
 	std::string _PlatformName;
+	std::shared_ptr<Gameplay::GameObject> _LastBodyCollided;
 	glm::vec3 _impulse = glm::vec3(0, 0, 12.0);
 	Gameplay::Physics::RigidBody::Sptr _body;
 	Gameplay::Physics::RigidBody::Sptr _curvePlatform;
