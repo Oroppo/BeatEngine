@@ -707,6 +707,7 @@ void Level1Scene::_CreateScene()
 			RunAnim.push_back(DiscoBotMesh8);
 			RunAnim.push_back(DiscoBotMesh9);
 
+			JumpAnim.push_back(BotJump1);
 			JumpAnim.push_back(BotJump2);
 			JumpAnim.push_back(BotJump3);
 			JumpAnim.push_back(BotJump4);
@@ -718,7 +719,6 @@ void Level1Scene::_CreateScene()
 			animator->AddAnim(JumpAnim, 0.25);
 			animator->SetContinuity(true);
 			animator->SetCurrentAnim(0);
-
 
 		}
 
