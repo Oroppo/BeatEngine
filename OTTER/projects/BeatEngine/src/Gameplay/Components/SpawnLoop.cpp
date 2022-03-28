@@ -157,7 +157,7 @@ void SpawnLoop::SpawnBlock() {
 	Application& app = Application::Get();
 	Gameplay::Scene::Sptr scene = app.CurrentScene();
 
-	float distanceFromBlock = 22;
+	float distanceFromBlock = 30;
 
 	switch (_BlockToSpawn) {
 	case 0:
@@ -471,7 +471,7 @@ void SpawnLoop::Update(float dt) {
 	//app.CurrentScene()->SetSkyboxRotation(newRotation);
 
 	//LOG_INFO(_SpawnTimer);
-	if (_SpawnTimer >= 22) {
+	if (_SpawnTimer >= 30) {
 		ToSpawn();
 		//SpawnBlock();
 	}
