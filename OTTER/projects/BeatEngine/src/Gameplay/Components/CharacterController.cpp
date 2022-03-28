@@ -45,7 +45,7 @@ CharacterController::CharacterController() :
     IComponent()
 { 
     _CoyoteTimeUsed = true;
-    _CoyoteTime = 0.0f;
+    _CoyoteTimeTimer = 0.0f;
     _AirSpeed = 1.0f;
     _Direction = 'U';
     _isJumping = false;
@@ -108,6 +108,7 @@ void CharacterController::OnTriggerVolumeEntered(const std::shared_ptr<Gameplay:
     speed = 3.0f;
     _OnPlatform = true;
     _CoyoteTimeUsed = false;
+    std::cout << "Trigger coord = " << body->GetGameObject()->GetPosition().z << " Player coord = " <<GetGameObject()->GetPosition().z<<std::endl;
     LOG_INFO("Body has entered our trigger volume: {}", body->GetGameObject()->Name);
     if (_PlatformName != body->GetGameObject()->Name) {
         _canJump = true;
@@ -132,7 +133,10 @@ void CharacterController::OnTriggerVolumeLeaving(const std::shared_ptr<Gameplay:
         body->GetGameObject()->SetRotation(glm::vec3(-90.000f, 0.0f, 180.0f));
     }
     //to make player move faster on wall jumps so that they are eZ
-   
+    if (_PlatformName == "FallingPlatform") {
+        _canJump = true;
+        _CoyoteTimeUsed = true;
+    }
     if (_PlatformName == "Wall Jump") {
         speed = 4.0f;
     }
@@ -179,14 +183,14 @@ void CharacterController::AirControl(char Direction) {
 void CharacterController::CoyoteTime(float dt) {
     if ((_OnPlatform == false)&&(_PlatformName!="BeatGem")&&(_CoyoteTimeUsed==false)) {
        
-        if (_CoyoteTime > 1.0f) {
+        if (_CoyoteTimeTimer > 1.0f) {
             _CoyoteTimeUsed = true;
             _canJump = false;
-            _CoyoteTime = 0.0f;
+            _CoyoteTimeTimer = 0.0f;
         }
         
         else { 
-            _CoyoteTime += dt;
+            _CoyoteTimeTimer += dt;
             _body->SetLinearVelocity(glm::vec3(_body->GetLinearVelocity().x, _body->GetLinearVelocity().y, 0.0f));
         }
     }
