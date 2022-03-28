@@ -16,6 +16,7 @@
 #include<sstream>
 #include<string.h>
 #include <queue>
+
 void CharacterController::Awake()
 {
     _body = GetComponent<Gameplay::Physics::RigidBody>();
@@ -179,7 +180,9 @@ void CharacterController::AirControl(char Direction) {
    }
    
 }
-
+ std::vector  <Gameplay::Physics::TriggerVolume::Sptr>* CharacterController::GetBeatGemsUsed() {
+    return &BeatGemsUsed;
+}
 void CharacterController::CoyoteTime(float dt) {
     if ((_OnPlatform == false)&&(_PlatformName!="BeatGem")&&(_CoyoteTimeUsed==false)) {
        

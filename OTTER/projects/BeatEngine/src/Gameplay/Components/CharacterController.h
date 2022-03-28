@@ -31,6 +31,7 @@ public:
 	virtual void OnTriggerVolumeEntered(const std::shared_ptr<Gameplay::Physics::RigidBody>& body);
 	virtual void OnTriggerVolumeLeaving(const std::shared_ptr<Gameplay::Physics::RigidBody>& body);
 	void RespawnBeatGems(const std::vector<Gameplay::Physics::TriggerVolume::Sptr> trigger);
+	std::vector  <Gameplay::Physics::TriggerVolume::Sptr>* GetBeatGemsUsed();
 	void AirControl(char);
 	void CoyoteTime(float);
 protected:

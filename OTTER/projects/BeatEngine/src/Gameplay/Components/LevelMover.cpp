@@ -3,8 +3,8 @@
 #include "Gameplay/GameObject.h"
 #include "Gameplay/Scene.h"
 #include "Utils/ImGuiHelper.h"
-
-
+#include "BeatGem.h"
+#include "CharacterController.h"
 void LevelMover::OnLoad() {
 
     keypoints.push_back(GetGameObject()->GetPosition().x);
@@ -92,6 +92,10 @@ void LevelMover::Update(float deltaTime)
 
     Gameplay::GameObject::Sptr context = GetGameObject()->SelfRef();
     if (GetGameObject()->GetPosition().x <= -25.f && !inTrigger) {
+        if (GetGameObject()->Has<BeatGem>()) {
+          auto thingy=  GetGameObject()->GetScene()->FindObjectByName("Character/Player")->Get<CharacterController>()->GetBeatGemsUsed();
+          thingy->pop_back();
+        }
         GetGameObject()->GetScene()->RemoveGameObject(context);
     }
 }
