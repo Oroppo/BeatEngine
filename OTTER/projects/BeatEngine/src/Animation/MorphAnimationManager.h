@@ -3,16 +3,14 @@
 #include "Gameplay/Components//RenderComponent.h"
 #include "Animation/MorphRenderComponent.h"
 
-static enum Animations {
-	Run,
-	Jump,
-	Idle
-};
-
 class MorphAnimationManager : public Gameplay::IComponent {
 public:
 
-
+	static enum Animations {
+		Run,
+		Jump,
+		Idle
+	};
 
 	class MorphAnim {
 	public:
@@ -45,7 +43,7 @@ public:
 	void SetAnOrder(std::vector<int>);
 	void SetContinuity(bool);
 
-	
+	bool currentlyAnimating = true;
 
 
 	MAKE_TYPENAME(MorphAnimationManager);
@@ -59,12 +57,11 @@ protected:
 
 	float m_timer = 0;
 
-	bool currentlyAnimating;
-	bool isContinuous;
-	bool futureContinuity;
-	bool hasDeclaredOrder;
-	bool toBePaused;
-	bool morphOff;
+	bool isContinuous = true;
+	bool futureContinuity = true;
+	bool hasDeclaredOrder = false;
+	bool toBePaused = false;
+	bool morphOff = false;
 	
 	std::vector<MorphAnim>animations;
 };

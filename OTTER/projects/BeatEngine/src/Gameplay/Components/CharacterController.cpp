@@ -112,8 +112,7 @@ void CharacterController::OnTriggerVolumeEntered(const std::shared_ptr<Gameplay:
     speed = 3.0f;
     _OnPlatform = true;
     _CoyoteTimeUsed = false;
-    
-    //std::cout << "Trigger coord = " << body->GetGameObject()->GetPosition().z << " Player coord = " <<GetGameObject()->GetPosition().z<<std::endl;
+    std::cout << "Trigger coord = " << body->GetGameObject()->GetPosition().z << " Player coord = " <<GetGameObject()->GetPosition().z<<std::endl;
     LOG_INFO("Body has entered our trigger volume: {}", body->GetGameObject()->Name);
     if (_LastBodyCollided != body->GetGameObject()->SelfRef()) {
         _isJumping = false;
@@ -173,8 +172,8 @@ void CharacterController::RespawnBeatGems(const std::vector<Gameplay::Physics::T
 
 void CharacterController::AirControl(char Direction) {
     if (_isJumping == true) {
-        //GetGameObject()->Get<MorphAnimationManager>()->SetCurrentAnim(Animations::Jump);
-        //GetGameObject()->Get<MorphAnimationManager>()->SetContinuity(false);
+        GetGameObject()->Get<MorphAnimationManager>()->SetCurrentAnim(MorphAnimationManager::Jump);
+        GetGameObject()->Get<MorphAnimationManager>()->SetContinuity(false);
         
         //if character is now travelling in a direction they were not previously travelling
         if (_Direction != Direction) {
@@ -191,11 +190,10 @@ void CharacterController::AirControl(char Direction) {
     if (_isJumping == false) {
 
         //This how u do anims MonkaS
-        //GetGameObject()->Get<MorphAnimationManager>()->SetCurrentAnim(0);
-        //GetGameObject()->Get<MorphAnimationManager>()->SetContinuity(true);
+        GetGameObject()->Get<MorphAnimationManager>()->SetCurrentAnim(0);
+        GetGameObject()->Get<MorphAnimationManager>()->SetContinuity(true);
     }
    
-
 }
  std::vector  <Gameplay::Physics::TriggerVolume::Sptr>* CharacterController::GetBeatGemsUsed() {
     return &BeatGemsUsed;
@@ -216,7 +214,7 @@ void CharacterController::CoyoteTime(float dt) {
     }
 }
 void CharacterController::Update(float deltaTime) {
-    //std::cout << _PlatformName << std::endl;
+    std::cout << _PlatformName << std::endl;
     _GemJumpTimer = GetGameObject()->GetScene()->FindObjectByName("GameManager")->Get<BeatTimer>()->GetBeatTime();
     glm::vec3 CurrentPosition = GetGameObject()->GetPosition();
     bool _A = InputEngine::IsKeyDown(GLFW_KEY_A);

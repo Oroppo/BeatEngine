@@ -22,14 +22,12 @@ public:
 	virtual nlohmann::json ToJson() const override;
 	static MorphRenderComponent::Sptr FromJson(const nlohmann::json& data);
 	MAKE_TYPENAME(MorphRenderComponent);
-	//the interpolation value
-	float						 _t;
 
+	float						 _t;
 protected:
 	//The meshes we are currently interpolating between
 	Gameplay::MeshResource::Sptr _mesh0;
 	Gameplay::MeshResource::Sptr _mesh1;
-
-
+	//the interpolation value
 	
 };
