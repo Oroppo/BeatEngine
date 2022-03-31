@@ -1,7 +1,7 @@
 #include "Gameplay/Components/RotatingBehaviour.h"
 
 #include "Gameplay/GameObject.h"
-
+#include "Gameplay/Physics/RigidBody.h"
 #include "Utils/ImGuiHelper.h"
 #include "Utils/JsonGlmHelpers.h"
 
