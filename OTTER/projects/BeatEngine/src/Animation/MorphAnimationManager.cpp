@@ -30,7 +30,9 @@ void MorphAnimationManager::SetCurrentAnim(int newCur) {
 		currentAnimIndex = newCur;
 	}
 }
-
+int MorphAnimationManager::GetCurrentAnim() {
+	return currentAnimIndex;
+}
 void MorphAnimationManager::SetAnOrder(std::vector<int> anOrder) {
 	if (order.size()) { order.clear(); }
 

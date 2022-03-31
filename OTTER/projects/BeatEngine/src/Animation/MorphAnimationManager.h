@@ -39,6 +39,7 @@ public:
 	void InterpolateMeshes(float);
 	void AddAnim(const std::vector<Gameplay::MeshResource::Sptr>&, float);
 	void SetCurrentAnim(int);
+	int GetCurrentAnim();
 	void SetIdleIndex(int);
 	void SetAnOrder(std::vector<int>);
 	void SetContinuity(bool);

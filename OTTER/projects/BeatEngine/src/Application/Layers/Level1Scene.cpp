@@ -262,7 +262,10 @@ void Level1Scene::_CreateScene()
 		 MeshResource::Sptr BotJump5 = ResourceManager::CreateAsset<MeshResource>("CharacterAnims/jump5.obj");
 		 MeshResource::Sptr BotJump6 = ResourceManager::CreateAsset<MeshResource>("CharacterAnims/jump6.obj");
 		 MeshResource::Sptr BotJump7 = ResourceManager::CreateAsset<MeshResource>("CharacterAnims/jump7.obj");
-		
+		 MeshResource::Sptr Idle1 = ResourceManager::CreateAsset<MeshResource>("CharacterAnims/idle1.obj");
+		 MeshResource::Sptr Idle2 = ResourceManager::CreateAsset<MeshResource>("CharacterAnims/idle2.obj");
+		 MeshResource::Sptr Idle3 = ResourceManager::CreateAsset<MeshResource>("CharacterAnims/idle3.obj");
+
 		 Texture2D::Sptr StartTex = ResourceManager::CreateAsset<Texture2D>("textures/startbuildingtex.png");
 		 Texture2D::Sptr SmallTex = ResourceManager::CreateAsset<Texture2D>("textures/HaloBasicPlatformTex.png");
 		 Texture2D::Sptr VinylTex = ResourceManager::CreateAsset<Texture2D>("textures/VinylTex.png");
@@ -702,7 +705,9 @@ void Level1Scene::_CreateScene()
 
 			std::vector<MeshResource::Sptr> RunAnim;
 			std::vector<MeshResource::Sptr> JumpAnim;
+			std::vector<MeshResource::Sptr> IdleAnim;
 
+			RunAnim.push_back(DiscoBotMesh1);
 			RunAnim.push_back(DiscoBotMesh2);
 			RunAnim.push_back(DiscoBotMesh3);
 			RunAnim.push_back(DiscoBotMesh4);
@@ -720,8 +725,13 @@ void Level1Scene::_CreateScene()
 			JumpAnim.push_back(BotJump6);
 			JumpAnim.push_back(BotJump7);
 
+			IdleAnim.push_back(Idle1);
+			IdleAnim.push_back(Idle2);
+			IdleAnim.push_back(Idle3);
+
 			animator->AddAnim(RunAnim, 0.05);
 			animator->AddAnim(JumpAnim, 0.25);
+			animator->AddAnim(IdleAnim, 0.25);
 			animator->SetContinuity(true);
 			animator->SetCurrentAnim(0);
 

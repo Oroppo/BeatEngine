@@ -146,15 +146,17 @@ void CharacterController::OnTriggerVolumeEntered(const std::shared_ptr<Gameplay:
         score += 1000;
         _VinylScore++;
         SFXS->PlayEvent("event:/Coin Pickup");
-      //  body->GetGameObject()->GetScene()->RemoveGameObject(body->GetGameObject()->SelfRef());
+       // body->GetGameObject()->GetScene()->RemoveGameObject(body->GetGameObject()->SelfRef());
          body->GetGameObject()->SetPostion(glm::vec3(0.0f, -100.0f, 0.0f));
     }
+
+
     //cd logic
     if (_PlatformName == "CD") {
         score += 100;
         _CDScore++;
         SFXS->PlayEvent("event:/Coin Pickup");
-      //  body->GetGameObject()->GetScene()->RemoveGameObject(body->GetGameObject()->SelfRef());
+     //  body->GetGameObject()->GetScene()->RemoveGameObject(body->GetGameObject()->SelfRef());
         body->GetGameObject()->SetPostion(glm::vec3(0.0f, -100.0f, 0.0f));
     }
 
@@ -217,9 +219,7 @@ void CharacterController::RespawnBeatGems(const std::vector<Gameplay::Physics::R
 
 void CharacterController::AirControl(char Direction) {
     if (_isJumping == true) {
-        GetGameObject()->Get<MorphAnimationManager>()->SetCurrentAnim(MorphAnimationManager::Jump);
-        GetGameObject()->Get<MorphAnimationManager>()->SetContinuity(false);
-        
+    
         //if character is now travelling in a direction they were not previously travelling
         if (_Direction != Direction) {
             _Direction = Direction;
@@ -232,12 +232,7 @@ void CharacterController::AirControl(char Direction) {
             }
         }
     }
-    if (_isJumping == false) {
-     //   GetGameObject()->Get<MorphAnimationManager>()->
-        //This how u do anims MonkaS
-        GetGameObject()->Get<MorphAnimationManager>()->SetCurrentAnim(0);
-        GetGameObject()->Get<MorphAnimationManager>()->SetContinuity(true);
-    }
+ 
    
 }
  std::vector  <Gameplay::Physics::RigidBody::Sptr>* CharacterController::GetBeatGemsUsed() {
@@ -246,7 +241,7 @@ void CharacterController::AirControl(char Direction) {
 void CharacterController::CoyoteTime(float dt) {
     if ((_OnPlatform == false)&&(_PlatformName!="BeatGem") && (_PlatformName != "CD") && (_PlatformName != "Vinyl") &&(_CoyoteTimeUsed==false)) {
        
-        if (_CoyoteTimeTimer > 0.5f) {
+        if (_CoyoteTimeTimer > 0.25f) {
             _CoyoteTimeUsed = true;
             _canJump = false;
             _CoyoteTimeTimer = 0.0f;
@@ -265,18 +260,34 @@ void CharacterController::Update(float deltaTime) {
     bool _A = InputEngine::IsKeyDown(GLFW_KEY_A);
     bool _D = InputEngine::IsKeyDown(GLFW_KEY_D);
     bool _W = InputEngine::IsKeyDown(GLFW_KEY_SPACE);
-   
+    _body->GetGameObject()->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
+   //animations 
+
+    if (_isJumping == true) {
+        if (GetGameObject()->Get<MorphAnimationManager>()->GetCurrentAnim() != MorphAnimationManager::Jump) {
+            GetGameObject()->Get<MorphAnimationManager>()->SetCurrentAnim(MorphAnimationManager::Jump);
+            GetGameObject()->Get<MorphAnimationManager>()->SetContinuity(false);
+        }
+    }
+    if (_isJumping == false) {
+        if ((_A) || (_D)) {
+            if (GetGameObject()->Get<MorphAnimationManager>()->GetCurrentAnim() != MorphAnimationManager::Run) {
+                GetGameObject()->Get<MorphAnimationManager>()->SetCurrentAnim(MorphAnimationManager::Run);
+                GetGameObject()->Get<MorphAnimationManager>()->SetContinuity(true);
+            }
+        } 
+    }
     if (_A) {
         AirControl('A');
        _body->SetLinearVelocity(glm::vec3(-speed*_AirSpeed, _body->GetLinearVelocity().y, _body->GetLinearVelocity().z));
         SFXS->PlayEvent("event:/Walk");
-    //   _body->GetGameObject()->SetRotation({90.0f, 0.0f, 0.0f});
+       _body->GetGameObject()->SetRotation({90.0f, 0.0f, 270.0f});
     }
 
     if (_D) {  
         AirControl('D');
         _body->SetLinearVelocity(glm::vec3(speed*_AirSpeed, _body->GetLinearVelocity().y, _body->GetLinearVelocity().z));
-      //  _body->GetGameObject()->SetRotation(glm::vec3(90.0f, 0.0f, 180.0f));
+        _body->GetGameObject()->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
     }
 
     if ((_W) && (_canJump == true)) {
@@ -287,9 +298,13 @@ void CharacterController::Update(float deltaTime) {
         SFXS->PlayEvent("event:/Jump");
     }
     GetGameObject()->SetPostion({ CurrentPosition.x, 5.61f, CurrentPosition.z });
-    _body->GetGameObject()->SetRotation(glm::vec3(90.0f, 0.0f, 180.0f));
+  
     if ((!_A) && (!_D) && (!_W) && (_PlatformName != "") && (_PlatformName != "BeatGem")) {
         _body->SetLinearVelocity(glm::vec3(-1.0f, 0.0f, 0.0f));
+        if (GetGameObject()->Get<MorphAnimationManager>()->GetCurrentAnim() != MorphAnimationManager::Idle) {
+            GetGameObject()->Get<MorphAnimationManager>()->SetCurrentAnim(MorphAnimationManager::Idle);
+            GetGameObject()->Get<MorphAnimationManager>()->SetContinuity(true);
+        }
     }
 
     if (_PlatformName == "Wall Jump") {
