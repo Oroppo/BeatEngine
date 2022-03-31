@@ -143,6 +143,7 @@ void CharacterController::OnTriggerVolumeEntered(const std::shared_ptr<Gameplay:
     }
     //vinyl logic
     if (_PlatformName == "Vinyl") {
+        _CoyoteTimeUsed = true;
         score += 1000;
         _VinylScore++;
         SFXS->PlayEvent("event:/Coin Pickup");
@@ -153,6 +154,7 @@ void CharacterController::OnTriggerVolumeEntered(const std::shared_ptr<Gameplay:
 
     //cd logic
     if (_PlatformName == "CD") {
+        _CoyoteTimeUsed = true;
         score += 100;
         _CDScore++;
         SFXS->PlayEvent("event:/Coin Pickup");
@@ -191,7 +193,7 @@ void CharacterController::OnTriggerVolumeLeaving(const std::shared_ptr<Gameplay:
         _CoyoteTimeUsed = true;
     }
     //to make player move faster on wall jumps so that they are eZ
-    if (_PlatformName == "Wall Jump") {
+    if ((_PlatformName == "Wall Jump") || (_PlatformName == "Small Wall Jump") || (_PlatformName == "Super Small Wall Jump")) {
         speed = 4.0f;
     }
 
@@ -264,6 +266,7 @@ void CharacterController::Update(float deltaTime) {
    //animations 
 
     if (_isJumping == true) {
+        _CoyoteTimeUsed = true;
         if (GetGameObject()->Get<MorphAnimationManager>()->GetCurrentAnim() != MorphAnimationManager::Jump) {
             GetGameObject()->Get<MorphAnimationManager>()->SetCurrentAnim(MorphAnimationManager::Jump);
             GetGameObject()->Get<MorphAnimationManager>()->SetContinuity(false);
@@ -306,8 +309,9 @@ void CharacterController::Update(float deltaTime) {
             GetGameObject()->Get<MorphAnimationManager>()->SetContinuity(true);
         }
     }
-
-    if (_PlatformName == "Wall Jump") {
+   // Small Wall Jump
+   // Super Small Wall Jump
+    if ((_PlatformName == "Wall Jump")|| (_PlatformName == "Small Wall Jump")|| (_PlatformName == "Super Small Wall Jump")) {
         if (_body->GetLinearVelocity().z < 0) {
             _body->ApplyForce(glm::vec3(-6 * _body->GetLinearVelocity().x, 0.0f, 35.0f));
         }
