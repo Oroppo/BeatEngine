@@ -45,6 +45,7 @@
 #include "Gameplay/Components/TriggerVolumeEnterBehaviour.h"
 #include "Gameplay/Components/SimpleCameraControl.h"
 #include "Gameplay/Components/ParticleSystem.h"
+#include "Gameplay/Components/RotatingBehaviour.h"
 #include "Gameplay/Components/BeatTimer.h"
 #include "Gameplay/Components/SeekBehaviour.h"
 #include "Gameplay/Components/CharacterController.h"
@@ -245,6 +246,8 @@ void Level1Scene::_CreateScene()
 		 MeshResource::Sptr StairsLeft = ResourceManager::CreateAsset<MeshResource>("StairCaseL.obj");
 		 MeshResource::Sptr Speaker = ResourceManager::CreateAsset<MeshResource>("speaker.obj");
 		 MeshResource::Sptr SquarePlat = ResourceManager::CreateAsset<MeshResource>("SquarePlatform.obj");
+		 MeshResource::Sptr BeatBarVinylMesh = ResourceManager::CreateAsset<MeshResource>("beatbar.obj");
+		 MeshResource::Sptr NeedleMesh = ResourceManager::CreateAsset<MeshResource>("needle.obj");
 		 MeshResource::Sptr FloatingLight = ResourceManager::CreateAsset<MeshResource>("FloatingStreetLight.obj");
 		 MeshResource::Sptr DiscoBotMesh1 = ResourceManager::CreateAsset<MeshResource>("CharacterAnims/run1.obj");
 		 MeshResource::Sptr DiscoBotMesh2 = ResourceManager::CreateAsset<MeshResource>("CharacterAnims/run2.obj");
@@ -311,8 +314,8 @@ void Level1Scene::_CreateScene()
 		 Texture2D::Sptr SpeakerTex = ResourceManager::CreateAsset<Texture2D>("textures/speakertex.png");
 		 Texture2D::Sptr SquarePlatTex = ResourceManager::CreateAsset<Texture2D>("textures/SquarePlatformTex.png");
 		 Texture2D::Sptr FloatingLightTex = ResourceManager::CreateAsset<Texture2D>("textures/StreetLightTex.png");
-		 Texture2D::Sptr TexBeatBar = ResourceManager::CreateAsset<Texture2D>("textures/GUI/BeatBar.png");
-		 Texture2D::Sptr TexBeatBarTick = ResourceManager::CreateAsset<Texture2D>("textures/GUI/BeatBarTick.png");
+		 Texture2D::Sptr TexVinylBeatBar = ResourceManager::CreateAsset<Texture2D>("textures/GUI/Vinyl_Beat_Bar.png");
+		 Texture2D::Sptr TexBeatBarNeedle = ResourceManager::CreateAsset<Texture2D>("textures/GUI/needletexture.png");
 		 Texture2D::Sptr TexScoreDisplay = ResourceManager::CreateAsset<Texture2D>("textures/GUI/ScoreDisplay.png");
 		 Texture2D::Sptr TexNavigationLeftRight = ResourceManager::CreateAsset<Texture2D>("textures/GUI/NavigationLeftRight.png");
 		 Texture2D::Sptr TexNavigationUpDown = ResourceManager::CreateAsset<Texture2D>("textures/GUI/NavigationUpDown.png");
@@ -530,6 +533,20 @@ void Level1Scene::_CreateScene()
 			OvalBuildingMaterial->Name = "Oval Building";
 			OvalBuildingMaterial->Set("u_Material.Diffuse", OvalBuildingTex);
 			OvalBuildingMaterial->Set("u_Material.Shininess", 0.1f);
+		}
+
+		Material::Sptr BeatBarVinylMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+		{
+			BeatBarVinylMaterial->Name = "Beat Bar Vinyl";
+			BeatBarVinylMaterial->Set("u_Material.Diffuse", TexVinylBeatBar);
+			BeatBarVinylMaterial->Set("u_Material.Shininess", 0.1f);
+		}
+
+		Material::Sptr BeatBarNeedleMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+		{
+			BeatBarNeedleMaterial->Name = "Beat Bar Needle";
+			BeatBarNeedleMaterial->Set("u_Material.Diffuse", TexBeatBarNeedle);
+			BeatBarNeedleMaterial->Set("u_Material.Shininess", 0.1f);
 		}
 
 		// Set up the scene's camera
@@ -775,6 +792,36 @@ void Level1Scene::_CreateScene()
 			// Create and attach a renderer for the monkey
 			ShadowCamera::Sptr shadowCam = shadowCaster->Add<ShadowCamera>();
 			shadowCam->SetProjection(glm::perspective(glm::radians(120.0f), 1.0f, 0.1f, 100.0f));
+		}
+
+		GameObject::Sptr BeatBarVinyl = scene->CreateGameObject("Beat Bar Vinyl");
+		{
+			// Set position in the scene
+			BeatBarVinyl->SetPostion(glm::vec3(-1.41f, -1.5f, -0.76f));
+			BeatBarVinyl->SetRotation(glm::vec3(0.0f, 0.0f, 90.0f));
+			BeatBarVinyl->SetScale(glm::vec3(0.75f, 0.75f, 0.1f));
+
+			// Create and attach a renderer for the paddle
+			RenderComponent::Sptr renderer = BeatBarVinyl->Add<RenderComponent>();
+			renderer->SetMesh(BeatBarVinylMesh);
+			renderer->SetMaterial(BeatBarVinylMaterial);
+
+			BeatBarVinyl->Add<RotatingBehaviour>()->SetRotationSpeed(glm::vec3(0.f, 0.f, -360.f/2.4));
+
+		}
+
+		GameObject::Sptr BeatBarNeedle = scene->CreateGameObject("Beat Bar Needle");
+		{
+			// Set position in the scene
+			BeatBarNeedle->SetPostion(glm::vec3(0.5f, -0.81f, -0.9f));
+			BeatBarNeedle->SetRotation(glm::vec3(90.0f, 0.0f, 158.0f));
+			BeatBarNeedle->SetScale(glm::vec3(0.2f, 0.2f, 0.2f));
+
+			// Create and attach a renderer for the paddle
+			RenderComponent::Sptr renderer = BeatBarNeedle->Add<RenderComponent>();
+			renderer->SetMesh(NeedleMesh);
+			renderer->SetMaterial(BeatBarNeedleMaterial);
+
 		}
 
 		/////////////////////////// UI //////////////////////////////
