@@ -1173,48 +1173,6 @@ void Level1Scene::_CreateScene()
 				text->IsEnabled = true;
 		
 			}
-			
-			/*
-				{//Beat Bar
-					GameObject::Sptr button = scene->CreateGameObject("HUD Beat Bar");
-
-					RectTransform::Sptr transform = button->Add<RectTransform>();
-					transform->SetPosition({ 0, 0 });
-					transform->SetRotationDeg(0);
-					transform->SetSize({ 800 * 0.75, 300 * 0.75 });
-					transform->SetMin({ 0, 0 });
-					transform->SetMax({ 800 * 0.75, 300 * 0.75 });
-
-					GuiPanel::Sptr panel = button->Add<GuiPanel>();
-					panel->SetTexture(TexBeatBar);
-					panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-					panel->SetBorderRadius(0);
-
-
-					transform->SetPosition({ (float)windowSize.x * 0.5, (float)windowSize.y * 0.9 });
-
-				}
-
-				{//Beat Tick
-					GameObject::Sptr button = scene->CreateGameObject("HUD Beat Tick");
-
-					RectTransform::Sptr transform = button->Add<RectTransform>();
-					transform->SetPosition({ 0, 0 });
-					transform->SetRotationDeg(0);
-					transform->SetSize({ 50 * 0.75, 170 * 0.75 });
-					transform->SetMin({ 0, 0 });
-					transform->SetMax({ 50 * 0.75, 170 * 0.75 });
-
-					GuiPanel::Sptr panel = button->Add<GuiPanel>();
-					panel->SetTexture(TexBeatBarTick);
-					panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-					panel->SetBorderRadius(0);
-
-
-					transform->SetPosition({ (float)windowSize.x * 0.4, (float)windowSize.y * 0.9 });
-
-				}
-			*/
 
 		//GameObject::Sptr particles = scene->CreateGameObject("Particles");
 		//{
