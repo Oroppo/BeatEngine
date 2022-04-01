@@ -65,37 +65,54 @@ CharacterController::Sptr CharacterController::FromJson(const nlohmann::json & b
 }
 
 
-//for collectibles
-    void CharacterController::OnEnteredTrigger(const std::shared_ptr<Gameplay::Physics::TriggerVolume>&trigger) {
- //  std::string name = trigger->GetGameObject()->Name;   
- //  //beat gem logic
- //  if ((name[0] == 'B') && (name[1] == 'e') && (name[2] == 'a') && (name[3] == 't') && (name[4] == 'G')) {
- //      _PlatformName = "BeatGem";
- //      int beatNumber = trigger->GetGameObject()->Get<BeatGem>()->GetBeatNum();
- //      trigger->GetGameObject()->Get<BeatGem>()->GetBeatNum();
- //      if ((_GemJumpTimer > 0.6 * beatNumber - 0.6) && (_GemJumpTimer < 0.6 * beatNumber)) {
- //          _canJump = true;
- //          BeatGemsUsed.push_back(trigger);
- //          trigger->GetGameObject()->Get<RenderComponent>()->IsEnabled = false;
- //          _BeatGemHits++;
- //          score += 500; 
- //          SFXS->PlayEvent("event:/Coin Pickup");
- //      }
- //  }   
- //
- //
- //  std::stringstream ss;
- //  ss << score;
- //  std::string stringScore;
- //  ss >> stringScore;
- //
- //  GetGameObject()->GetScene()->FindObjectByName("HUD Score Text")->Get<GuiText>()->SetText(stringScore);
+ void CharacterController::OnEnteredTrigger(const std::shared_ptr<Gameplay::Physics::TriggerVolume>& trigger) {
 
 }
 
-//for physical platforms
 void CharacterController::OnTriggerVolumeEntered(const std::shared_ptr<Gameplay::Physics::RigidBody>&body) {
     //i hate this 
+    //std::cout << "Trigger coord = " << body->GetGameObject()->GetPosition().z << " Player coord = " << GetGameObject()->GetPosition().z << std::endl;
+    LOG_INFO("Body has entered our trigger volume: {}", body->GetGameObject()->Name);
+    if (_LastBodyCollided != body->GetGameObject()->SelfRef()) {
+        _PlatformName = body->GetGameObject()->Name;
+        _LastBodyCollided = body->GetGameObject()->SelfRef();
+
+
+
+        if ((_PlatformName != "Vinyl") && (_PlatformName != "CD") && (_PlatformName != "BeatGem")) {
+            _isJumping = false;
+            _canJump = true;
+        }
+    }
+
+    if ((_PlatformName != "BeatGem") && (_PlatformName != "CD") && (_PlatformName != "Vinyl")) {
+        speed = 3.0f;
+        _OnPlatform = true;
+        _CoyoteTimeUsed = false;
+        _CoyoteTimeTimer = 0.0f;
+    }
+
+        //vinyl logic
+    if (_PlatformName == "Vinyl") {
+        _CoyoteTimeUsed = true;
+        score += 1000;
+        _VinylScore++;
+        SFXS->PlayEvent("event:/Coin Pickup");
+        // body->GetGameObject()->GetScene()->RemoveGameObject(body->GetGameObject()->SelfRef());
+        body->GetGameObject()->SetPostion(glm::vec3(0.0f, -100.0f, 0.0f));
+    }
+
+
+    //cd logic
+    if (_PlatformName == "CD") {
+        _CoyoteTimeUsed = true;
+        score += 100;
+        _CDScore++;
+        SFXS->PlayEvent("event:/Coin Pickup");
+        // body->GetGameObject()->GetScene()->RemoveGameObject(body->GetGameObject()->SelfRef());
+        body->GetGameObject()->SetPostion(glm::vec3(0.0f, -100.0f, 0.0f));
+    }
+
     std::string name = body->GetGameObject()->Name;
     //beat gem logic
     if ((name[0] == 'B') && (name[1] == 'e') && (name[2] == 'a') && (name[3] == 't') && (name[4] == 'G')) {
@@ -113,24 +130,7 @@ void CharacterController::OnTriggerVolumeEntered(const std::shared_ptr<Gameplay:
     }
 
 
-   //animation stuffs
-    std::cout << "Trigger coord = " << body->GetGameObject()->GetPosition().z << " Player coord = " <<GetGameObject()->GetPosition().z<<std::endl;
-    LOG_INFO("Body has entered our trigger volume: {}", body->GetGameObject()->Name);
-    if (_LastBodyCollided != body->GetGameObject()->SelfRef()) {
-        _PlatformName = body->GetGameObject()->Name;
-        _LastBodyCollided = body->GetGameObject()->SelfRef();
-        if  ((_PlatformName != "Vinyl") && (_PlatformName != "CD")&&(_PlatformName!="BeatGem")) {
-            _isJumping = false;
-            _canJump = true;
-        } 
-    }
 
-    if ((_PlatformName != "BeatGem") && (_PlatformName != "CD") && (_PlatformName != "Vinyl")) {
-        speed = 3.0f;
-        _OnPlatform = true;
-        _CoyoteTimeUsed = false;
-        _CoyoteTimeTimer = 0.0f;
-    }
     //make certain things fall when touched
     if (_PlatformName == "FallingPlatform") {
         body->SetType(RigidBodyType::Dynamic);
@@ -141,31 +141,11 @@ void CharacterController::OnTriggerVolumeEntered(const std::shared_ptr<Gameplay:
         body->GetGameObject()->SetRotation(body->GetGameObject()->GetRotationEuler() + glm::vec3(0.0f, -20 * _rotPlat.x, 0.0f));
         LOG_INFO(_rotPlat.x);
     }
-    //vinyl logic
-    if (_PlatformName == "Vinyl") {
-        _CoyoteTimeUsed = true;
-        score += 1000;
-        _VinylScore++;
-        SFXS->PlayEvent("event:/Coin Pickup");
-       // body->GetGameObject()->GetScene()->RemoveGameObject(body->GetGameObject()->SelfRef());
-         body->GetGameObject()->SetPostion(glm::vec3(0.0f, -100.0f, 0.0f));
-    }
-
-
-    //cd logic
-    if (_PlatformName == "CD") {
-        _CoyoteTimeUsed = true;
-        score += 100;
-        _CDScore++;
-        SFXS->PlayEvent("event:/Coin Pickup");
-     //  body->GetGameObject()->GetScene()->RemoveGameObject(body->GetGameObject()->SelfRef());
-        body->GetGameObject()->SetPostion(glm::vec3(0.0f, -100.0f, 0.0f));
-    }
 
 
 
 
-
+    //UI i think
     std::stringstream ss;
     ss << score;
     std::string stringScore;
@@ -175,17 +155,16 @@ void CharacterController::OnTriggerVolumeEntered(const std::shared_ptr<Gameplay:
 }
 
 void CharacterController::OnTriggerVolumeLeaving(const std::shared_ptr<Gameplay::Physics::RigidBody>&body) {
-    //player is no longer on 
+    //player is no longer on platform
     _LastBodyCollided = nullptr;
-
     LOG_INFO("Body has left our trigger volume: {}", body->GetGameObject()->Name);
-
     //reset rotation 
     if (body->GetGameObject()->Name == "Half Circle Platform") {
         body->GetGameObject()->SetRotation(glm::vec3(-90.000f, 0.0f, 180.0f));
     }
     
     if (_PlatformName == "FallingPlatform") {
+        body->SetType(RigidBodyType::Dynamic);
         _canJump = true;
         _CoyoteTimeUsed = true;
     }
@@ -198,11 +177,10 @@ void CharacterController::OnTriggerVolumeLeaving(const std::shared_ptr<Gameplay:
     }
 
   //makes it so that none of these bodies are affected by the jump logic but if the body isnt one of these prepare for next jump
-    if ((_PlatformName != "BeatGem")&&(_PlatformName!="FallingPlatform")&& (_PlatformName != "Vinyl") && (_PlatformName != "CD")) {
-        _PlatformName = "";
-        _OnPlatform = false;
-    }
- 
+  // if ((_PlatformName != "BeatGem")&&(_PlatformName!="FallingPlatform")&& (_PlatformName != "Vinyl") && (_PlatformName != "CD")) {
+       _PlatformName = "";
+       _OnPlatform = false;
+  // }
 }
 
 
@@ -256,7 +234,7 @@ void CharacterController::CoyoteTime(float dt) {
     }
 }
 void CharacterController::Update(float deltaTime) {
-    std::cout << _PlatformName << std::endl;
+    std::cout << _OnPlatform << std::endl;
     _GemJumpTimer = GetGameObject()->GetScene()->FindObjectByName("GameManager")->Get<BeatTimer>()->GetBeatTime();
     glm::vec3 CurrentPosition = GetGameObject()->GetPosition();
     bool _A = InputEngine::IsKeyDown(GLFW_KEY_A);

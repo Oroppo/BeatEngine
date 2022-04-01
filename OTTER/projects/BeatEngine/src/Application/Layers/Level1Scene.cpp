@@ -693,6 +693,7 @@ void Level1Scene::_CreateScene()
 
 			// Add some behaviour that relies on the physics body
 			//character->Add<JumpBehaviour>();
+			//character->Add<JumpBehaviour>();
 			character->Add<CharacterController>();
 
 			// Create and attach a renderer for the paddle
@@ -708,7 +709,7 @@ void Level1Scene::_CreateScene()
 			TriggerVolume::Sptr volume = character->Add<TriggerVolume>();
 			volume->SetFlags(TriggerTypeFlags::Statics | TriggerTypeFlags::Kinematics);
 
-			BoxCollider::Sptr collider = BoxCollider::Create(glm::vec3(0.3f, 0.3f, 0.3f));
+			BoxCollider::Sptr collider = BoxCollider::Create(glm::vec3(0.3f, 0.3f, 0.5f));
 			collider->SetPosition(glm::vec3(0.f, 0.25f, 0.f));
 
 			BoxCollider::Sptr collider2 = BoxCollider::Create(glm::vec3(0.3f, 0.3f, 0.3f));
