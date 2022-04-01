@@ -120,12 +120,12 @@ void Level1Scene::_CreateScene()
 	else {
 		 Scene::Sptr scene = std::make_shared<Scene>();
 		
-		 ShaderProgram::Sptr reflectiveShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
+	/*	 ShaderProgram::Sptr reflectiveShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
 			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_environment_reflective.glsl" }
 		});
 		reflectiveShader->SetDebugName("Reflective");
-		
+	*/
 		
 		 ShaderProgram::Sptr basicShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
@@ -138,40 +138,52 @@ void Level1Scene::_CreateScene()
 			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_blinn_phong_textured.glsl" }
 		});
 		basicShader->SetDebugName("Animated Object Material");
-		
-		
+
+
+		ShaderProgram::Sptr deferredForward = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
+			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
+			{ ShaderPartType::Fragment, "shaders/fragment_shaders/deferred_forward.glsl" }
+		});
+	/*
 		 ShaderProgram::Sptr specShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
 			{ ShaderPartType::Fragment, "shaders/fragment_shaders/textured_specular.glsl" }
 		});
 		specShader->SetDebugName("Textured-Specular");
-		
+	*/	
+
 		 ShaderProgram::Sptr foliageShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/foliage.glsl" },
-			{ ShaderPartType::Fragment, "shaders/fragment_shaders/screendoor_transparency.glsl" }
+			{ ShaderPartType::Fragment, "shaders/fragment_shaders/deferred_forward.glsl" }
 		});
 		foliageShader->SetDebugName("Foliage");
 		
-		
+	/*
 		 ShaderProgram::Sptr toonShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
 			{ ShaderPartType::Fragment, "shaders/fragment_shaders/toon_shading.glsl" }
 		});
 		toonShader->SetDebugName("Toon Shader");
-		
+	*/
+	// This shader handles our cel shading example
+		ShaderProgram::Sptr celShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
+			{ ShaderPartType::Vertex, "shaders/vertex_shaders/displacement_mapping.glsl" },
+			{ ShaderPartType::Fragment, "shaders/fragment_shaders/cel_shader.glsl" }
+		});
+		celShader->SetDebugName("Cel Shader");
 		
 		 ShaderProgram::Sptr displacementShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/displacement_mapping.glsl" },
-			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_tangentspace_normal_maps.glsl" }
+			{ ShaderPartType::Fragment, "shaders/fragment_shaders/deferred_forward.glsl" }
 		});
 		displacementShader->SetDebugName("Displacement Mapping");
-		
+	/*
 		 ShaderProgram::Sptr tangentSpaceMapping = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
 			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_tangentspace_normal_maps.glsl" }
 		});
 		tangentSpaceMapping->SetDebugName("Tangent Space Mapping");
-		
+	*/
 		 ShaderProgram::Sptr multiTextureShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/vert_multitextured.glsl" },
 			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_multitextured.glsl" }
@@ -202,25 +214,47 @@ void Level1Scene::_CreateScene()
 			{ ShaderPartType::Fragment, "shaders/fragment_shaders/skybox_frag.glsl" }
 		});
 
+#pragma region Basic Texture Creation
+		 Texture2DDescription singlePixelDescriptor;
+		 singlePixelDescriptor.Width = singlePixelDescriptor.Height = 1;
+		 singlePixelDescriptor.Format = InternalFormat::RGB8;
+
+		 float normalMapDefaultData[3] = { 0.5f, 0.5f, 1.0f };
+		 Texture2D::Sptr normalMapDefault = ResourceManager::CreateAsset<Texture2D>(singlePixelDescriptor);
+		 normalMapDefault->LoadData(1, 1, PixelFormat::RGB, PixelType::Float, normalMapDefaultData);
+
+		 float solidBlack[3] = { 0.5f, 0.5f, 0.5f };
+		 Texture2D::Sptr solidBlackTex = ResourceManager::CreateAsset<Texture2D>(singlePixelDescriptor);
+		 solidBlackTex->LoadData(1, 1, PixelFormat::RGB, PixelType::Float, solidBlack);
+
+		 float solidGrey[3] = { 0.0f, 0.0f, 0.0f };
+		 Texture2D::Sptr solidGreyTex = ResourceManager::CreateAsset<Texture2D>(singlePixelDescriptor);
+		 solidGreyTex->LoadData(1, 1, PixelFormat::RGB, PixelType::Float, solidGrey);
+
+		 float solidWhite[3] = { 1.0f, 1.0f, 1.0f };
+		 Texture2D::Sptr solidWhiteTex = ResourceManager::CreateAsset<Texture2D>(singlePixelDescriptor);
+		 solidWhiteTex->LoadData(1, 1, PixelFormat::RGB, PixelType::Float, solidWhite);
+
+#pragma endregion 
+
 		 // Setting up our enviroment map
 		 scene->SetSkyboxTexture(testCubemap);
 		 scene->SetSkyboxShader(skyboxShader);
 		 // Since the skybox I used was for Y-up, we need to rotate it 90 deg around the X-axis to convert it to z-up 
 		 scene->SetSkyboxRotation(glm::rotate(MAT4_IDENTITY, glm::half_pi<float>(), glm::vec3(1.0f, 0.0f, 0.0f)));
-		
-		
+
 		 // Loading in a color lookup table
 		 // Warm
 		 Texture3D::Sptr lutWarm = ResourceManager::CreateAsset<Texture3D>("luts/Dawn.CUBE");
 		 // Cool
-		 Texture3D::Sptr lutCool = ResourceManager::CreateAsset<Texture3D>("luts/cool.CUBE");
+		 Texture3D::Sptr lutCool = ResourceManager::CreateAsset<Texture3D>("luts/NightCity.CUBE");
 		 // Custom
 		 Texture3D::Sptr lutCustom = ResourceManager::CreateAsset<Texture3D>("luts/shrooms.CUBE");
 
 		 // Configure the color correction LUT
-		 scene->SetColorLUT(lutCool);
+		 scene->SetColorLUT(lutCustom);
 		 //scene->SetColorLUTCool(lutWarm);
-		 //scene->SetColorLUTCustom(lutCustom);
+		// scene->SetColorLUTCustom(lutCustom);
 		 
 		 MeshResource::Sptr SmallPlatform = ResourceManager::CreateAsset<MeshResource>("HaloBasicPlatform.obj");
 		 MeshResource::Sptr WallJump = ResourceManager::CreateAsset<MeshResource>("WallJumpV6.obj");
@@ -327,14 +361,22 @@ void Level1Scene::_CreateScene()
 		 // boxMaterial->Set("s_ToonTerm", toonLut);
 		 // boxMaterial->Set("u_Material.Steps", 8);
 		
-		 Material::Sptr StartPlatformMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+	/*	 Material::Sptr StartPlatformMaterial = ResourceManager::CreateAsset<Material>(basicShader);
 		{
 			StartPlatformMaterial->Name = "StartPlatform";
 			StartPlatformMaterial->Set("u_Material.Diffuse", StartTex);
 			StartPlatformMaterial->Set("u_Material.Shininess", 0.1f);
 			StartPlatformMaterial->Set("s_ToonTerm", toonLut);
 			StartPlatformMaterial->Set("u_Material.Steps", 8);
-		}
+		}*/
+
+		 Material::Sptr StartPlatformMaterial = ResourceManager::CreateAsset<Material>(deferredForward);
+		 {
+			 StartPlatformMaterial->Name = "StartPlatform";
+			 StartPlatformMaterial->Set("u_Material.AlbedoMap", StartTex);
+			 StartPlatformMaterial->Set("u_Material.NormalMap", normalMapDefault);
+			 StartPlatformMaterial->Set("u_Material.Shininess", 0.1f);
+		 }
 		
 		 Material::Sptr UIMat = ResourceManager::CreateAsset<Material>(basicShader);
 		{
@@ -343,209 +385,235 @@ void Level1Scene::_CreateScene()
 			UIMat->Set("u_Material.Shininess", 0.1f);
 		}
 		
-		 Material::Sptr SmallPlatformMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+		Material::Sptr SmallPlatformMaterial = ResourceManager::CreateAsset<Material>(deferredForward);
 		{
 			SmallPlatformMaterial->Name = "SmallPlatform";
-			SmallPlatformMaterial->Set("u_Material.Diffuse", SmallTex);
+			SmallPlatformMaterial->Set("u_Material.AlbedoMap", SmallTex);
+			SmallPlatformMaterial->Set("u_Material.NormalMap", normalMapDefault);
 			SmallPlatformMaterial->Set("u_Material.Shininess", 0.1f);
 		}
 		
-		 Material::Sptr WallJumpMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+		Material::Sptr WallJumpMaterial = ResourceManager::CreateAsset<Material>(deferredForward);
 		{
 			WallJumpMaterial->Name = "WallJump";
-			WallJumpMaterial->Set("u_Material.Diffuse", WallJumpTex);
+			WallJumpMaterial->Set("u_Material.AlbedoMap", WallJumpTex);
+			WallJumpMaterial->Set("u_Material.NormalMap", normalMapDefault);
 			WallJumpMaterial->Set("u_Material.Shininess", 0.1f);
 		}
-		
-		 Material::Sptr BeatGemMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+
+		Material::Sptr BeatGemMaterial = ResourceManager::CreateAsset<Material>(deferredForward);
 		{
 			BeatGemMaterial->Name = "BeatGem";
-			BeatGemMaterial->Set("u_Material.Diffuse", GemTex);
+			BeatGemMaterial->Set("u_Material.AlbedoMap", GemTex);
+			BeatGemMaterial->Set("u_Material.NormalMap", normalMapDefault);
 			BeatGemMaterial->Set("u_Material.Shininess", 0.1f);
 		}
-	//	GemAnticipation	 
-		Material::Sptr BeatGemAnticipationMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+		//	GemAnticipation	 
+		Material::Sptr BeatGemAnticipationMaterial = ResourceManager::CreateAsset<Material>(deferredForward);
 		{
 			BeatGemAnticipationMaterial->Name = "BeatGemAnticipationMaterial";
-			BeatGemAnticipationMaterial->Set("u_Material.Diffuse", GemAnticipation);
+			BeatGemAnticipationMaterial->Set("u_Material.AlbedoMap", GemAnticipation);
+			BeatGemAnticipationMaterial->Set("u_Material.NormalMap", normalMapDefault);
 			BeatGemAnticipationMaterial->Set("u_Material.Shininess", 0.1f);
 		}
 
-		 Material::Sptr BeatGemOffMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+		Material::Sptr BeatGemOffMaterial = ResourceManager::CreateAsset<Material>(deferredForward);
 		{
 			BeatGemOffMaterial->Name = "BeatGemOff";
-			BeatGemOffMaterial->Set("u_Material.Diffuse", GemOff);
+			BeatGemOffMaterial->Set("u_Material.AlbedoMap", GemOff);
+			BeatGemOffMaterial->Set("u_Material.NormalMap", normalMapDefault);
 			BeatGemOffMaterial->Set("u_Material.Shininess", 0.1f);
 		}
-		
-		 Material::Sptr VinylMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+
+		Material::Sptr VinylMaterial = ResourceManager::CreateAsset<Material>(deferredForward);
 		{
 			VinylMaterial->Name = "Vinyl";
-			VinylMaterial->Set("u_Material.Diffuse", VinylTex);
+			VinylMaterial->Set("u_Material.AlbedoMap", VinylTex);
+			VinylMaterial->Set("u_Material.NormalMap", normalMapDefault);
 			VinylMaterial->Set("u_Material.Shininess", 0.1f);
-			VinylMaterial->Set("u_Material.Steps", 4);
 		}
-		
-		 Material::Sptr CDMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+
+		Material::Sptr CDMaterial = ResourceManager::CreateAsset<Material>(deferredForward);
 		{
 			CDMaterial->Name = "CD";
-			CDMaterial->Set("u_Material.Diffuse", CDTex);
+			CDMaterial->Set("u_Material.AlbedoMap", CDTex);
+			CDMaterial->Set("u_Material.NormalMap", normalMapDefault);
 			CDMaterial->Set("u_Material.Shininess", 0.1f);
-			CDMaterial->Set("u_Material.Steps", 4);
 		}
 		
-		// Material::Sptr CharacterMaterial = ResourceManager::CreateAsset<Material>(AnimatedShader);
-		Material::Sptr CharacterMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+		Material::Sptr CharacterMaterial = ResourceManager::CreateAsset<Material>(deferredForward);
 		{
 			CharacterMaterial->Name = "Character";
-			CharacterMaterial->Set("u_Material.Diffuse", CharacterTex);
+			CharacterMaterial->Set("u_Material.AlbedoMap", CharacterTex);
+			CharacterMaterial->Set("u_Material.NormalMap", normalMapDefault);
 			CharacterMaterial->Set("u_Material.Shininess", 0.1f);
 		}
-		
-		 Material::Sptr DiscoBallMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+
+		Material::Sptr DiscoBallMaterial = ResourceManager::CreateAsset<Material>(deferredForward);
 		{
 			DiscoBallMaterial->Name = "DiscoBall";
-			DiscoBallMaterial->Set("u_Material.Diffuse", DiscoBallTex);
-			DiscoBallMaterial->Set("u_Material.Shininess", -0.4f);
+			DiscoBallMaterial->Set("u_Material.AlbedoMap", DiscoBallTex);
+			DiscoBallMaterial->Set("u_Material.NormalMap", normalMapDefault);
+			DiscoBallMaterial->Set("u_Material.Shininess", 0.1f);
 		}
-		
-		 Material::Sptr LoseScreenMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+
+		Material::Sptr LoseScreenMaterial = ResourceManager::CreateAsset<Material>(deferredForward);
 		{
 			LoseScreenMaterial->Name = "Lose Screen";
-			LoseScreenMaterial->Set("u_Material.Diffuse", LoseScreenTex);
+			LoseScreenMaterial->Set("u_Material.AlbedoMap", LoseScreenTex);
+			LoseScreenMaterial->Set("u_Material.NormalMap", normalMapDefault);
 			LoseScreenMaterial->Set("u_Material.Shininess", 0.1f);
 		}
-		
-		 Material::Sptr Car1Material = ResourceManager::CreateAsset<Material>(basicShader);
+
+		Material::Sptr Car1Material = ResourceManager::CreateAsset<Material>(deferredForward);
 		{
 			Car1Material->Name = "Car1";
-			Car1Material->Set("u_Material.Diffuse", Car1Tex);
+			Car1Material->Set("u_Material.AlbedoMap", Car1Tex);
+			Car1Material->Set("u_Material.NormalMap", normalMapDefault);
 			Car1Material->Set("u_Material.Shininess", 0.1f);
 		}
-		
-		 Material::Sptr SemiTruckMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+
+		Material::Sptr SemiTruckMaterial = ResourceManager::CreateAsset<Material>(deferredForward);
 		{
 			SemiTruckMaterial->Name = "Semi1";
-			SemiTruckMaterial->Set("u_Material.Diffuse", SemiTruckTex);
+			SemiTruckMaterial->Set("u_Material.AlbedoMap", SemiTruckTex);
+			SemiTruckMaterial->Set("u_Material.NormalMap", normalMapDefault);
 			SemiTruckMaterial->Set("u_Material.Shininess", 0.1f);
 		}
-		
-		 Material::Sptr PickupTruckMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+
+		Material::Sptr PickupTruckMaterial = ResourceManager::CreateAsset<Material>(deferredForward);
 		{
 			PickupTruckMaterial->Name = "Pickup1";
-			PickupTruckMaterial->Set("u_Material.Diffuse", PickupTruckTex);
+			PickupTruckMaterial->Set("u_Material.AlbedoMap", PickupTruckTex);
+			PickupTruckMaterial->Set("u_Material.NormalMap", normalMapDefault);
 			PickupTruckMaterial->Set("u_Material.Shininess", 0.1f);
 		}
-		
-		 Material::Sptr BuildingMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+
+		Material::Sptr BuildingMaterial = ResourceManager::CreateAsset<Material>(deferredForward);
 		{
 			BuildingMaterial->Name = "Building";
-			BuildingMaterial->Set("u_Material.Diffuse", BuildingTex);
+			BuildingMaterial->Set("u_Material.AlbedoMap", BuildingTex);
+			BuildingMaterial->Set("u_Material.NormalMap", normalMapDefault);
 			BuildingMaterial->Set("u_Material.Shininess", 0.1f);
 		}
-		
-		 Material::Sptr KBuildingMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+
+		Material::Sptr KBuildingMaterial = ResourceManager::CreateAsset<Material>(deferredForward);
 		{
 			KBuildingMaterial->Name = "KBuilding";
-			KBuildingMaterial->Set("u_Material.Diffuse", KBuilding1Tex);
+			KBuildingMaterial->Set("u_Material.AlbedoMap", KBuilding1Tex);
+			KBuildingMaterial->Set("u_Material.NormalMap", normalMapDefault);
 			KBuildingMaterial->Set("u_Material.Shininess", 0.1f);
 		}
-		
-		 Material::Sptr KBuilding2Material = ResourceManager::CreateAsset<Material>(basicShader);
+
+		Material::Sptr KBuilding2Material = ResourceManager::CreateAsset<Material>(deferredForward);
 		{
 			KBuilding2Material->Name = "KBuilding2";
-			KBuilding2Material->Set("u_Material.Diffuse", KBuilding2Tex);
+			KBuilding2Material->Set("u_Material.AlbedoMap", KBuilding2Tex);
+			KBuilding2Material->Set("u_Material.NormalMap", normalMapDefault);
 			KBuilding2Material->Set("u_Material.Shininess", 0.1f);
 		}
-		
-		 Material::Sptr KBuilding3Material = ResourceManager::CreateAsset<Material>(basicShader);
+
+		Material::Sptr KBuilding3Material = ResourceManager::CreateAsset<Material>(deferredForward);
 		{
 			KBuilding3Material->Name = "KBuilding3";
-			KBuilding3Material->Set("u_Material.Diffuse", KBuilding3Tex);
+			KBuilding3Material->Set("u_Material.AlbedoMap", KBuilding3Tex);
+			KBuilding3Material->Set("u_Material.NormalMap", normalMapDefault);
 			KBuilding3Material->Set("u_Material.Shininess", 0.1f);
 		}
-		
-		 Material::Sptr SmallWallJumpMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+
+		Material::Sptr SmallWallJumpMaterial = ResourceManager::CreateAsset<Material>(deferredForward);
 		{
 			SmallWallJumpMaterial->Name = "Small Wall Jump";
-			SmallWallJumpMaterial->Set("u_Material.Diffuse", SmallWallJumpTex);
+			SmallWallJumpMaterial->Set("u_Material.AlbedoMap", SmallWallJumpTex);
+			SmallWallJumpMaterial->Set("u_Material.NormalMap", normalMapDefault);
 			SmallWallJumpMaterial->Set("u_Material.Shininess", 0.1f);
 		}
-		
-		 Material::Sptr SuperSmallWallJumpMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+
+		Material::Sptr SuperSmallWallJumpMaterial = ResourceManager::CreateAsset<Material>(deferredForward);
 		{
 			SuperSmallWallJumpMaterial->Name = "Super Small Wall Jump";
-			SuperSmallWallJumpMaterial->Set("u_Material.Diffuse", SuperSmallWallJumpTex);
+			SuperSmallWallJumpMaterial->Set("u_Material.AlbedoMap", SuperSmallWallJumpTex);
+			SuperSmallWallJumpMaterial->Set("u_Material.NormalMap", normalMapDefault);
 			SuperSmallWallJumpMaterial->Set("u_Material.Shininess", 0.1f);
 		}
-		
-		 Material::Sptr PianoMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+
+		Material::Sptr PianoMaterial = ResourceManager::CreateAsset<Material>(deferredForward);
 		{
 			PianoMaterial->Name = "Piano";
-			PianoMaterial->Set("u_Material.Diffuse", FallingPlatTex);
+			PianoMaterial->Set("u_Material.AlbedoMap", FallingPlatTex);
+			PianoMaterial->Set("u_Material.NormalMap", normalMapDefault);
 			PianoMaterial->Set("u_Material.Shininess", 0.1f);
 		}
-		
-		 Material::Sptr HalfCirclePlatMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+
+		Material::Sptr HalfCirclePlatMaterial = ResourceManager::CreateAsset<Material>(deferredForward);
 		{
 			HalfCirclePlatMaterial->Name = "Half Circle Plat";
-			HalfCirclePlatMaterial->Set("u_Material.Diffuse", HalfCirclePlatTex);
+			HalfCirclePlatMaterial->Set("u_Material.AlbedoMap", HalfCirclePlatTex);
+			HalfCirclePlatMaterial->Set("u_Material.NormalMap", normalMapDefault);
 			HalfCirclePlatMaterial->Set("u_Material.Shininess", 0.1f);
 		}
-		
-		 Material::Sptr StairsRightMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+
+		Material::Sptr StairsRightMaterial = ResourceManager::CreateAsset<Material>(deferredForward);
 		{
 			StairsRightMaterial->Name = "Stairs Right";
-			StairsRightMaterial->Set("u_Material.Diffuse", StairsRightTex);
+			StairsRightMaterial->Set("u_Material.AlbedoMap", StairsRightTex);
+			StairsRightMaterial->Set("u_Material.NormalMap", normalMapDefault);
 			StairsRightMaterial->Set("u_Material.Shininess", 0.1f);
 		}
-		
-		 Material::Sptr StairsLeftMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+
+		Material::Sptr StairsLeftMaterial = ResourceManager::CreateAsset<Material>(deferredForward);
 		{
 			StairsLeftMaterial->Name = "Stairs Left";
-			StairsLeftMaterial->Set("u_Material.Diffuse", StairsLeftTex);
+			StairsLeftMaterial->Set("u_Material.AlbedoMap", StairsLeftTex);
+			StairsLeftMaterial->Set("u_Material.NormalMap", normalMapDefault);
 			StairsLeftMaterial->Set("u_Material.Shininess", 0.1f);
 		}
-		
-		 Material::Sptr SpeakerMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+
+		Material::Sptr SpeakerMaterial = ResourceManager::CreateAsset<Material>(deferredForward);
 		{
 			SpeakerMaterial->Name = "Speaker Material";
-			SpeakerMaterial->Set("u_Material.Diffuse", SpeakerTex);
+			SpeakerMaterial->Set("u_Material.AlbedoMap", SpeakerTex);
+			SpeakerMaterial->Set("u_Material.NormalMap", normalMapDefault);
 			SpeakerMaterial->Set("u_Material.Shininess", 0.1f);
 		}
-		
-		 Material::Sptr SquarePlatMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+
+		Material::Sptr SquarePlatMaterial = ResourceManager::CreateAsset<Material>(deferredForward);
 		{
 			SquarePlatMaterial->Name = "Square Platform";
-			SquarePlatMaterial->Set("u_Material.Diffuse", SquarePlatTex);
+			SquarePlatMaterial->Set("u_Material.AlbedoMap", SquarePlatTex);
+			SquarePlatMaterial->Set("u_Material.NormalMap", normalMapDefault);
 			SquarePlatMaterial->Set("u_Material.Shininess", 0.1f);
 		}
-		
-		 Material::Sptr FloatingLightMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+
+		Material::Sptr FloatingLightMaterial = ResourceManager::CreateAsset<Material>(deferredForward);
 		{
 			FloatingLightMaterial->Name = "FLoating Light";
-			FloatingLightMaterial->Set("u_Material.Diffuse", FloatingLightTex);
+			FloatingLightMaterial->Set("u_Material.AlbedoMap", FloatingLightTex);
+			FloatingLightMaterial->Set("u_Material.NormalMap", normalMapDefault);
 			FloatingLightMaterial->Set("u_Material.Shininess", 0.1f);
 		}
-		
-		 Material::Sptr OvalBuildingMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+
+		Material::Sptr OvalBuildingMaterial = ResourceManager::CreateAsset<Material>(deferredForward);
 		{
 			OvalBuildingMaterial->Name = "Oval Building";
-			OvalBuildingMaterial->Set("u_Material.Diffuse", OvalBuildingTex);
+			OvalBuildingMaterial->Set("u_Material.AlbedoMap", OvalBuildingTex);
+			OvalBuildingMaterial->Set("u_Material.NormalMap", normalMapDefault);
 			OvalBuildingMaterial->Set("u_Material.Shininess", 0.1f);
 		}
 
-		Material::Sptr BeatBarVinylMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+		Material::Sptr BeatBarVinylMaterial = ResourceManager::CreateAsset<Material>(deferredForward);
 		{
 			BeatBarVinylMaterial->Name = "Beat Bar Vinyl";
-			BeatBarVinylMaterial->Set("u_Material.Diffuse", TexVinylBeatBar);
+			BeatBarVinylMaterial->Set("u_Material.AlbedoMap", TexVinylBeatBar);
+			BeatBarVinylMaterial->Set("u_Material.NormalMap", normalMapDefault);
 			BeatBarVinylMaterial->Set("u_Material.Shininess", 0.1f);
 		}
 
-		Material::Sptr BeatBarNeedleMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+		Material::Sptr BeatBarNeedleMaterial = ResourceManager::CreateAsset<Material>(deferredForward);
 		{
 			BeatBarNeedleMaterial->Name = "Beat Bar Needle";
-			BeatBarNeedleMaterial->Set("u_Material.Diffuse", TexBeatBarNeedle);
+			BeatBarNeedleMaterial->Set("u_Material.AlbedoMap", TexBeatBarNeedle);
+			BeatBarNeedleMaterial->Set("u_Material.NormalMap", normalMapDefault);
 			BeatBarNeedleMaterial->Set("u_Material.Shininess", 0.1f);
 		}
 
@@ -752,7 +820,6 @@ void Level1Scene::_CreateScene()
 			animator->AddAnim(IdleAnim, 0.25);
 			animator->SetContinuity(true);
 			animator->SetCurrentAnim(0);
-
 		}
 
 		GameObject::Sptr DiscoBall = scene->CreateGameObject("DiscoBall");
@@ -772,7 +839,7 @@ void Level1Scene::_CreateScene()
 		}
 
 		// Create some lights for our scene
-		GameObject::Sptr lightParent = scene->CreateGameObject("Lights");
+	/*	GameObject::Sptr lightParent = scene->CreateGameObject("Lights");
 		for (int ix = 0; ix < 50; ix++) {
 			GameObject::Sptr light = scene->CreateGameObject("Light");
 			light->SetPostion(glm::vec3(glm::diskRand(25.0f), 1.0f));
@@ -782,9 +849,22 @@ void Level1Scene::_CreateScene()
 			lightComponent->SetColor(glm::linearRand(glm::vec3(0.0f), glm::vec3(1.0f)));
 			lightComponent->SetRadius(glm::linearRand(0.1f, 10.0f));
 			lightComponent->SetIntensity(glm::linearRand(1.0f, 2.0f));
-		}
+		}*/
 
-		GameObject::Sptr shadowCaster = scene->CreateGameObject("Shadow Light");
+		// Create some lights for our scene
+		GameObject::Sptr SingleLight = scene->CreateGameObject("SingleLight");
+
+
+		GameObject::Sptr Slight = scene->CreateGameObject("Light");
+		Slight->SetPostion(glm::vec3(0.0f, 0.0f, 0.0f));
+		SingleLight->AddChild(Slight);
+
+		Light::Sptr SlightComponent = Slight->Add<Light>();
+		SlightComponent->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+		SlightComponent->SetRadius(30.f);
+		SlightComponent->SetIntensity(30.0f);
+
+	/*	GameObject::Sptr shadowCaster = scene->CreateGameObject("Shadow Light");
 		{
 			// Set position in the scene
 			shadowCaster->SetPostion(glm::vec3(3.0f, 3.0f, 5.0f)); 
@@ -793,7 +873,7 @@ void Level1Scene::_CreateScene()
 			// Create and attach a renderer for the monkey
 			ShadowCamera::Sptr shadowCam = shadowCaster->Add<ShadowCamera>();
 			shadowCam->SetProjection(glm::perspective(glm::radians(120.0f), 1.0f, 0.1f, 100.0f));
-		}
+		}*/
 
 		GameObject::Sptr BeatBarVinyl = scene->CreateGameObject("Beat Bar Vinyl");
 		{

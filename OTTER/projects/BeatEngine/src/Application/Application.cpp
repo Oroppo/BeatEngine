@@ -170,6 +170,7 @@ void Application::SaveSettings()
 	FileHelpers::WriteContentsToFile(settingsPath.string(), _appSettings.dump(1, '\t'));
 }
 
+
 // key toggle variable
 float toggleKeys = 10.0f;
 float Application::keyboard()
@@ -226,6 +227,7 @@ float Application::keyboard()
 
 	return toggleKeys;
 }
+
 
 
 
@@ -455,7 +457,7 @@ void Application::_PreRender()
 		}
 	}
 }
-
+/*
 void Application::_RenderScene() {
 
 	Framebuffer::Sptr result = nullptr;
@@ -500,6 +502,26 @@ void Application::_PostRender() {
 		_renderOutput->Bind(FramebufferBinding::Read);
 		glBindFramebuffer(*FramebufferBinding::Write, 0);
 		Framebuffer::Blit({ 0, 0, _renderOutput->GetWidth(), _renderOutput->GetHeight() }, viewportMinMax, BufferFlags::All, MagFilter::Nearest);
+	}
+}
+*/
+void Application::_RenderScene() {
+
+	Framebuffer::Sptr result = nullptr;
+	for (const auto& layer : _layers) {
+		if (layer->Enabled && *(layer->Overrides & AppLayerFunctions::OnRender)) {
+			layer->OnRender(result);
+		}
+	}
+}
+
+void Application::_PostRender() {
+	// Note that we use a reverse iterator for post render
+	for (auto it = _layers.begin(); it != _layers.end(); it++) {
+		const auto& layer = *it;
+		if (layer->Enabled && *(layer->Overrides & AppLayerFunctions::OnPostRender)) {
+			layer->OnPostRender();
+		}
 	}
 }
 

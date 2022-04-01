@@ -12,7 +12,7 @@ layout(location = 6) in vec3 inPosition2;
 layout(location = 7) in vec3 inNormal2;
 
 // Standard vertex shader outputs
-layout(location = 0) out vec3 outWorldPos;
+layout(location = 0) out vec3 outViewPos;
 layout(location = 1) out vec3 outColor;
 layout(location = 2) out vec3 outNormal;
 layout(location = 3) out vec2 outUV;

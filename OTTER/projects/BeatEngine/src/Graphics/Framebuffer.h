@@ -110,7 +110,7 @@ public:
 	 * @param slot       The texture slot to bind to 
 	 */
 	bool BindAttachment(RenderTargetAttachment attachment, int slot) const;
-
+	
 	/**
 	 * Binds this framebuffer to the given framebuffer binding slot
 	 * 

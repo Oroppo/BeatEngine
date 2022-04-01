@@ -63,12 +63,8 @@ vec3 CalcPointLightContribution(vec3 worldPos, vec3 normal, vec3 viewDir, Light 
 
 	// Halfway vector between light normal and direction to camera
 	vec3 halfDir     = normalize(toLight + viewDir);
-	// For Phong Model - doesn't use halfway vector instead uses normal and light direction
-	//vec3 reflectedRay = reflect(normal, toLight);
 
-	// Calculate our specular power (Phong Model)
-	//float specPower  = pow(max(dot(viewDir, reflectedRay), 0.0), pow(256, shininess));
-	// Calculate our specular power (blinn-Phong Model)
+	// Calculate our specular power
 	float specPower  = pow(max(dot(normal, halfDir), 0.0), pow(256, shininess));
 	// Calculate specular color
 	vec3 specularOut = specPower * light.ColorAttenuation.rgb;
@@ -82,54 +78,7 @@ vec3 CalcPointLightContribution(vec3 worldPos, vec3 normal, vec3 viewDir, Light 
 	// We add the one to prevent divide by zero errors
 	float attenuation = clamp(1.0 / (1.0 + light.ColorAttenuation.w * pow(dist, 2)), 0, 1);
 
-	
-	//// Custom LUT Grading
-	//	if (keyTog == 0.0)
-	//	{
-	//		return (diffuseOut + specularOut) * attenuation;
-	//	}
-	//	// ambient only
-	//	if (keyTog == 2.0)
-	//	{
-	//		return AmbientColAndNumLights.rgb;
-	//		//return diffuseOut;
-	//	}
-	//	// specular only
-	//	if (keyTog == 3.0)
-	//	{
-	//		return specularOut * attenuation;
-	//	}
-	//	if (keyTog == 4.0)
-	//	{
-	//		return AmbientColAndNumLights.rgb + specularOut * attenuation;
-	//	}
-	//	// return amibent + specular for Toon shader
-	//	if (keyTog == 5.0)
-	//	{
-	//		return AmbientColAndNumLights.rgb + specularOut * attenuation;
-	//	}
-	//	// Return regular lighting for Luts
-	//	if (keyTog == 8.0)
-	//	{
-	//		return (diffuseOut + specularOut) * attenuation;
-	//	}
-	//	// Return regular lighting for Luts
-	//	if (keyTog == 9.0)
-	//	{
-	//		return (diffuseOut + specularOut) * attenuation;
-	//	}
-	//	// Return regular lighting after pressing SPACEBAR
-	//	if (keyTog == 10.0)
-	//	{
-	//		return (diffuseOut + specularOut) * attenuation;
-	//	}
-	//	else
-	//	{
-			return (diffuseOut + specularOut) * attenuation;
-		
-		
-		
-	//return (diffuseOut + specularOut) * attenuation;
+	return (diffuseOut + specularOut) * attenuation;
 }
 
 /*

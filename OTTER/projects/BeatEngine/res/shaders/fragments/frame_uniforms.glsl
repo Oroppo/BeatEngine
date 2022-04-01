@@ -12,17 +12,14 @@ layout (std140, binding = 0) uniform b_FrameLevelUniforms {
     uniform float u_Time;    
     // The time in seconds since the last frame
     uniform float u_DeltaTime;
-    // For Lighting Debug Keys
-    uniform float u_toggleKeys;
-    //Easy Access to ScreenSize
-    uniform ivec2 u_ScreenSize;
     // Lets us store up to 32 bool flags in one value
     uniform uint  u_Flags;
-
-    //clipping planes
+    // Camera's near plane
     uniform float u_ZNear;
-	uniform float u_ZFar;
+    // Camera's far plane
+    uniform float u_ZFar;
 
+    uniform float u_toggleKeys;
 };
 
 // Stores uniforms that change every object/instance
@@ -31,6 +28,8 @@ layout (std140, binding = 1) uniform b_InstanceLevelUniforms {
     uniform mat4 u_ModelViewProjection;
     // Just the model transform, we'll do worldspace lighting
     uniform mat4 u_Model;
+    // Just the model * view, for converting to view space
+    uniform mat4 u_ModelView;
     // Normal Matrix for transforming normals
     uniform mat4 u_NormalMatrix;
 };
@@ -39,4 +38,8 @@ layout (std140, binding = 1) uniform b_InstanceLevelUniforms {
 
 bool IsFlagSet(uint flag) {
     return (u_Flags & flag) != 0;
+}
+
+float linearize(float depth) {
+    return (2 * u_ZNear) / (u_ZFar + u_ZNear - depth * (u_ZFar - u_ZNear));
 }

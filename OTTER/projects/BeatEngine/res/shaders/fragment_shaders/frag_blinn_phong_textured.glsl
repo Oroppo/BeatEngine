@@ -44,23 +44,7 @@ void main() {
 
 	// combine for the final result
 	vec3 result = lightAccumulation  * inColor * textureColor.rgb;
-
-	// Toon Shadeing
-	if (u_toggleKeys == 5.0)
-	{
-		result.r = texture(s_ToonTerm, result.r).r;
-		result.g = texture(s_ToonTerm, result.g).g;
-		result.b = texture(s_ToonTerm, result.b).b;
 	
 		frag_color = vec4(ColorCorrect(result), textureColor.a);
-	}
-
-	else
-	{
-		frag_color = vec4(ColorCorrect(result), textureColor.a);
-	}
-	//if (u_toggleKeys == 0.0f)
-	//{
-	//	frag_color = vec4(ColorCorrect(result), textureColor.a);
-	//}
+	
 }

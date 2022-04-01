@@ -9,7 +9,7 @@ OutlineEffect::OutlineEffect() :
 	_outlineColor(glm::vec4(0, 0, 0, 1)),
 	_scale(1.0f),
 	_depthThreshold(0.1f),
-	_normalThreshold(0.4f),
+	_normalThreshold(0.560f),
 	_depthNormalThreshold(0.4f),
 	_depthNormalThresholdScale(4)
 {
