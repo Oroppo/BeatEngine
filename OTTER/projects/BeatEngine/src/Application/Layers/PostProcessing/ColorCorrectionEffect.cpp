@@ -10,7 +10,9 @@ ColorCorrectionEffect::ColorCorrectionEffect(bool defaultLut) :
 	PostProcessingLayer::Effect(),
 	_shader(nullptr),
 	_strength(1.0f),
-	Lut(nullptr)
+	Lut(nullptr),
+	checked(false),
+	Lut2(nullptr)
 {
 	Name = "Color Correction";
 	_format = RenderTargetType::ColorRgb8;
@@ -22,6 +24,7 @@ ColorCorrectionEffect::ColorCorrectionEffect(bool defaultLut) :
 
 	if (defaultLut) {
 		Lut = ResourceManager::CreateAsset<Texture3D>("luts/cool.cube");
+		Lut2 = ResourceManager::CreateAsset<Texture3D>("luts/LessSaturationGreenRed.cube");
 	}
 }
 
@@ -30,13 +33,22 @@ ColorCorrectionEffect::~ColorCorrectionEffect() = default;
 void ColorCorrectionEffect::Apply(const Framebuffer::Sptr& gBuffer)
 {
 	_shader->Bind();
-	Lut->Bind(1);
+	if (checked == false)
+	{
+		Lut->Bind(1);
+	}
+	else
+	{
+		Lut2->Bind(1);
+	}
 	_shader->SetUniform("u_Strength", _strength);
 }
 
 void ColorCorrectionEffect::RenderImGui()
 {
+	ImGui::Checkbox("Swap LUT", &checked);
 	LABEL_LEFT(ImGui::LabelText, "LUT", Lut ? Lut->GetDebugName().c_str() : "none");
+	LABEL_LEFT(ImGui::LabelText, "LUT2", Lut2 ? Lut2->GetDebugName().c_str() : "none");
 	LABEL_LEFT(ImGui::SliderFloat, "Strength", &_strength, 0, 1);
 }
 
