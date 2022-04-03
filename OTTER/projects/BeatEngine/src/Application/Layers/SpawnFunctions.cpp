@@ -486,9 +486,9 @@ void SpawnFunctions::SpawnStairsRight(Gameplay::Scene::Sptr scene, Gameplay::Mes
 		RigidBody::Sptr physics = StairsRight->Add<RigidBody>(RigidBodyType::Kinematic);
 		// For Wall Jump Colliders, X = Left/Right Y = towards/away, z = Up/Down
 		ICollider::Sptr CollectCollider = physics->AddCollider(BoxCollider::Create(glm::vec3(0.100f, 0.200f, 0.800f)));
-		CollectCollider->SetPosition(glm::vec3(-0.120f, 0.460f, -0.900f));
+		CollectCollider->SetPosition(glm::vec3(-0.120f, 0.460f, 1.030f));
 		CollectCollider->SetScale(glm::vec3(13.138, 7.218, 0.5));
-		CollectCollider->SetRotation(glm::vec3(68.00f, 180.00f, 0.00f));
+		CollectCollider->SetRotation(glm::vec3(68.0f, 0.000f, 0.00f));
 	}
 }
 // For spawning Left facing stairs
@@ -516,9 +516,9 @@ void SpawnFunctions::SpawnStairsLeft(Gameplay::Scene::Sptr scene, Gameplay::Mesh
 		RigidBody::Sptr physics = StairsLeft->Add<RigidBody>(RigidBodyType::Kinematic);
 		// For Wall Jump Colliders, X = Left/Right Y = towards/away, z = Up/Down
 		ICollider::Sptr CollectCollider = physics->AddCollider(BoxCollider::Create(glm::vec3(0.100f, 0.200f, 0.800f)));
-		CollectCollider->SetPosition(glm::vec3(-0.120f, 0.460f, -0.900f));
+		CollectCollider->SetPosition(glm::vec3(-0.120f, 0.460f, 1.030f));
 		CollectCollider->SetScale(glm::vec3(13.138, 7.218, 0.5));
-		CollectCollider->SetRotation(glm::vec3(68.0f, 180.000f, 0.00f));
+		CollectCollider->SetRotation(glm::vec3(68.0f, 0.000f, 0.00f));
 	}
 }
 // For spawning small speakers
