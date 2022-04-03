@@ -8,6 +8,7 @@ layout(location = 1) out vec4 normal_metallic;
 layout(location = 2) out vec4 emissive;
 layout(location = 3) out vec3 view_pos;
 
+
 // Represents a collection of attributes that would define a material
 // For instance, you can think of this like material settings in 
 // Unity
@@ -36,9 +37,11 @@ void main() {
 		discard;
 	}
 
+
 	// Extract albedo from material, and store shininess
-	albedo_specPower = vec4(albedoColor.rgb, 1.0f);//lightingParams.x);
-	
+	albedo_specPower = vec4(albedoColor.rgb, 1.0f);
+	//lightingParams.x);
+
 	// Normalize our input normal
     // Read our tangent from the map, and convert from the [0,1] range to [-1,1] range
     vec3 normal = texture(u_Material.NormalMap, inUV).rgb;

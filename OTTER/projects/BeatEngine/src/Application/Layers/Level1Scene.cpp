@@ -600,13 +600,14 @@ void Level1Scene::_CreateScene()
 			OvalBuildingMaterial->Set("u_Material.NormalMap", normalMapDefault);
 			OvalBuildingMaterial->Set("u_Material.Shininess", 0.1f);
 		}
-
 		Material::Sptr BeatBarVinylMaterial = ResourceManager::CreateAsset<Material>(deferredForward);
 		{
 			BeatBarVinylMaterial->Name = "Beat Bar Vinyl";
 			BeatBarVinylMaterial->Set("u_Material.AlbedoMap", TexVinylBeatBar);
 			BeatBarVinylMaterial->Set("u_Material.NormalMap", normalMapDefault);
 			BeatBarVinylMaterial->Set("u_Material.Shininess", 0.1f);
+			BeatBarVinylMaterial->Set("u_Material.IsLit", true);
+
 		}
 
 		Material::Sptr BeatBarNeedleMaterial = ResourceManager::CreateAsset<Material>(deferredForward);
@@ -850,13 +851,13 @@ void Level1Scene::_CreateScene()
 
 
 		GameObject::Sptr Slight = scene->CreateGameObject("Light");
-		Slight->SetPostion(glm::vec3(0.0f, 0.0f, 0.0f));
+		Slight->SetPostion(glm::vec3(0.0f, -3.0f, 0.0f));
 		SingleLight->AddChild(Slight);
 
 		Light::Sptr SlightComponent = Slight->Add<Light>();
 		SlightComponent->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-		SlightComponent->SetRadius(30.f);
-		SlightComponent->SetIntensity(30.0f);
+		SlightComponent->SetRadius(5.0f);
+		SlightComponent->SetIntensity(5.0f);
 
 	/*	GameObject::Sptr shadowCaster = scene->CreateGameObject("Shadow Light");
 		{
@@ -872,9 +873,9 @@ void Level1Scene::_CreateScene()
 		GameObject::Sptr BeatBarVinyl = scene->CreateGameObject("Beat Bar Vinyl");
 		{
 			// Set position in the scene
-			BeatBarVinyl->SetPostion(glm::vec3(-1.41f, -1.5f, -0.76f));
-			BeatBarVinyl->SetRotation(glm::vec3(0.0f, 0.0f, 90.0f));
-			BeatBarVinyl->SetScale(glm::vec3(0.75f, 0.75f, 0.1f));
+			BeatBarVinyl->SetPostion(glm::vec3(-1.41f, -1.45f, -0.76f));
+			BeatBarVinyl->SetRotation(glm::vec3(0.0f, -79.0f, 90.0f));
+			BeatBarVinyl->SetScale(glm::vec3(0.5f, 0.5f, 0.1f));
 
 			// Create and attach a renderer for the paddle
 			RenderComponent::Sptr renderer = BeatBarVinyl->Add<RenderComponent>();
@@ -888,9 +889,9 @@ void Level1Scene::_CreateScene()
 		GameObject::Sptr BeatBarNeedle = scene->CreateGameObject("Beat Bar Needle");
 		{
 			// Set position in the scene
-			BeatBarNeedle->SetPostion(glm::vec3(0.5f, -0.81f, -0.9f));
-			BeatBarNeedle->SetRotation(glm::vec3(90.0f, 0.0f, 158.0f));
-			BeatBarNeedle->SetScale(glm::vec3(0.2f, 0.2f, 0.2f));
+			BeatBarNeedle->SetPostion(glm::vec3(0.02f, -1.53f, 0.32f));
+			BeatBarNeedle->SetRotation(glm::vec3(26.0f, 16.0f, 173.0f));
+			BeatBarNeedle->SetScale(glm::vec3(0.1f, 0.1f, 0.1f));
 
 			// Create and attach a renderer for the paddle
 			RenderComponent::Sptr renderer = BeatBarNeedle->Add<RenderComponent>();
