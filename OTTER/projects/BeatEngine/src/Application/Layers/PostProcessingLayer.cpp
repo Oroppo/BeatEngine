@@ -10,6 +10,7 @@
 #include "PostProcessing/NightVisionEffect.h"
 #include "PostProcessing/CelShaderEffect.h"
 #include "PostProcessing/ChromaticAberrationEffect.h"
+#include "PostProcessing/PixellationEffect.h"
 
 PostProcessingLayer::PostProcessingLayer() :
 	ApplicationLayer()
@@ -39,8 +40,10 @@ void PostProcessingLayer::OnAppLoad(const nlohmann::json& config)
 	_effects.push_back(std::make_shared<BoxFilter5x5>());
 	_effects.push_back(std::make_shared<CelShaderEffect>());
 	_effects.push_back(std::make_shared<OutlineEffect>());
+	_effects.push_back(std::make_shared<PixellationEffect>());
 	_effects.push_back(std::make_shared<ChromaticAberrationEffect>());
 	_effects.push_back(std::make_shared<NightVisionEffect>());
+
 
 	Application& app = Application::Get();
 	const glm::uvec4& viewport = app.GetPrimaryViewport();
