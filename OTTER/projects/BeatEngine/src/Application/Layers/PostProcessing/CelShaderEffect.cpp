@@ -25,7 +25,9 @@ CelShaderEffect::~CelShaderEffect() = default;
 void CelShaderEffect::Apply(const Framebuffer::Sptr& gBuffer)
 {
 	_shader->Bind();
+	_ToonTerm->Bind(1);
 	_shader->SetUniform("u_Discard", _Discard);
+
 	gBuffer->BindAttachment(RenderTargetAttachment::Depth, 1);
 
 	//Can Link Buffers if we want :o
