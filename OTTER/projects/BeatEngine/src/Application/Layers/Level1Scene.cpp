@@ -133,11 +133,11 @@ void Level1Scene::_CreateScene()
 		});
 		basicShader->SetDebugName("Blinn-phong");
 
-		ShaderProgram::Sptr AnimatedShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
-			{ ShaderPartType::Vertex, "shaders/geometry_shader/Animation.glsl" },
-			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_blinn_phong_textured.glsl" }
-		});
-		basicShader->SetDebugName("Animated Object Material");
+		//ShaderProgram::Sptr AnimatedShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
+		//	{ ShaderPartType::Vertex, "shaders/geometry_shader/Animation.glsl" },
+		//	{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_blinn_phong_textured.glsl" }
+		//});
+		//basicShader->SetDebugName("Animated Object Material");
 
 
 		ShaderProgram::Sptr deferredForward = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
@@ -207,7 +207,7 @@ void Level1Scene::_CreateScene()
 		toonLut->SetWrap(WrapMode::ClampToEdge);
 		
 		
-		 TextureCube::Sptr testCubemap = ResourceManager::CreateAsset<TextureCube>("cubemaps/city/skybox.jpg");
+		 TextureCube::Sptr testCubemap = ResourceManager::CreateAsset<TextureCube>("cubemaps/skybox/skybox.png");
 		
 		 ShaderProgram::Sptr      skyboxShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/skybox_vert.glsl" },

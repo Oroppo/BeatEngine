@@ -88,7 +88,7 @@ void RenderLayer::OnPreRender()
 	app.CurrentScene()->DrawPhysicsDebug();
 
 	//_InitFrameUniforms();
-
+	
 	// Upload frame level uniforms
 	auto& frameData = _frameUniforms->GetData();
 	frameData.u_Projection = camera->GetProjection();
@@ -103,6 +103,7 @@ void RenderLayer::OnPreRender()
 	frameData.u_toggleKeys = app.keyboard();
 	frameData.u_ScreenSize = app.GetWindowSize();
 	_frameUniforms->Update();
+	
 }
 
 

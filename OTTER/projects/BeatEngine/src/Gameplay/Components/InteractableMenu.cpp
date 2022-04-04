@@ -66,9 +66,10 @@ void InteractableMenu::Update(float deltaTime) {
 
     switch (_selection) {
     case 0:
-        _MenuItems[0]->Get<GuiPanel>()->SetColor({1,1,1,1});
-        if(InputEngine::GetKeyState(GLFW_KEY_ENTER) == ButtonState::Pressed)
+        _MenuItems[0]->Get<GuiPanel>()->SetColor({ 1,1,1,1 });
+        if (InputEngine::GetKeyState(GLFW_KEY_ENTER) == ButtonState::Pressed)
             LOG_INFO(app.LoadScene("Level1.json"));
+        app.LoadScene("Level1.json");
         break;
     case 1:
         _MenuItems[1]->Get<GuiPanel>()->SetColor({1,1,1,1});

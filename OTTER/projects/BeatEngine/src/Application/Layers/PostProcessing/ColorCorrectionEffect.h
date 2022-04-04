@@ -9,9 +9,12 @@ public:
 	MAKE_PTRS(ColorCorrectionEffect);
 	Texture3D::Sptr Lut;
 	Texture3D::Sptr Lut2;
+	Texture3D::Sptr Lut3;
 
 	bool Enabled = true;
-	bool checked;
+	bool checked1;
+	bool checked2;
+	bool checked3;
 
 	ColorCorrectionEffect();
 	ColorCorrectionEffect(bool defaultLut);

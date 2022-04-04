@@ -149,9 +149,6 @@ void SpawnLoop::CreateList(const nlohmann::json& blob) {
 		MeshList.insert(std::pair<std::string, Guid>(Mesh->Filename, Mesh->GetGUID()));
 
 		});
-
-
-
 }
 
 void SpawnLoop::SpawnBlock() {
@@ -161,7 +158,7 @@ void SpawnLoop::SpawnBlock() {
 	Application& app = Application::Get();
 	Gameplay::Scene::Sptr scene = app.CurrentScene();
 
-	float distanceFromBlock = 30;
+	float distanceFromBlock = 30.0;
 
 	switch (_BlockToSpawn) {
 	case 0:
@@ -424,8 +421,8 @@ void SpawnLoop::SpawnBlock() {
 }
 
 void SpawnLoop::ToSpawn() {
-	_SpawnTimer = 0;
-	_BlockToSpawn = rand() % 10;
+	_SpawnTimer -= 30;
+	_BlockToSpawn = rand() % 8;
 	SpawnBlock();
 
 
@@ -436,7 +433,6 @@ void SpawnLoop::RenderImGui(){
 	//ImGui::Separator();
 	//ImGui::Text("Currently Spawning:	%s", _BlockToSpawn);
 	//ImGui::Text("Time to Next Spawn:	%s", _SpawnTimer);
-
 }
 float SpawnLoop::GetSpawnTimer() {
 	return _SpawnTimer;

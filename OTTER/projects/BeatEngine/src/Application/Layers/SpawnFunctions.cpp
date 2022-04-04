@@ -365,6 +365,15 @@ void SpawnFunctions::SpawnCD(Gameplay::Scene::Sptr scene, Gameplay::MeshResource
 		physics->SetCollisionGroup(1);
 		//TriggerVolume::Sptr volume = CD->Add<TriggerVolume>();
 		//volume->AddCollider(BoxCollider::Create(glm::vec3(0.5f, 0.5f, 0.5f)));
+		/*
+		GameObject::Sptr CDChild = scene->CreateGameObject(ObjName);
+		RenderComponent::Sptr renderer = CD->Add<RenderComponent>();
+		renderer->SetMesh(Mesh);
+		renderer->SetMaterial(Material);
+		CDChild->Add<RotatingBehaviourCD>();
+		CDChild->SetPostion(glm::vec3(0.0f,0.0f,0.0f));
+		CDChild->SetRotation(glm::vec3(0.0f, 0.0f, 0.0f));
+		*/
 	}
 }
 // For spawning Wall Jump Platforms

@@ -172,7 +172,7 @@ void Application::SaveSettings()
 
 
 // key toggle variable
-float toggleKeys = 10.0f;
+float toggleKeys = 3.0f;
 float Application::keyboard()
 {
 	// for key 0 regular lighting + custom LUT
@@ -227,9 +227,6 @@ float Application::keyboard()
 
 	return toggleKeys;
 }
-
-
-
 
 void Application::_Run()
 {
