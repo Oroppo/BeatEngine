@@ -101,8 +101,10 @@ void RenderLayer::OnPreRender()
 	frameData.u_ZNear = camera->GetNearPlane();
 	frameData.u_ZFar = camera->GetFarPlane();
 	frameData.u_toggleKeys = app.keyboard();
+	frameData.u_ScreenSize = app.GetWindowSize();
 	_frameUniforms->Update();
 }
+
 
 void RenderLayer::OnRender(const Framebuffer::Sptr & prevLayer)
 {
@@ -132,6 +134,7 @@ void RenderLayer::OnRender(const Framebuffer::Sptr & prevLayer)
 
 	// Disable blending, we want to override any existing colors
 	glDisable(GL_BLEND);
+
 
 	// Render all our objects
 	app.CurrentScene()->Components().Each<RenderComponent>([&](const RenderComponent::Sptr& renderable) {

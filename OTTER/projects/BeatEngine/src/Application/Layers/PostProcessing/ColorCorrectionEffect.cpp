@@ -44,6 +44,8 @@ void ColorCorrectionEffect::Apply(const Framebuffer::Sptr& gBuffer)
 	_shader->SetUniform("u_Strength", _strength);
 }
 
+
+
 void ColorCorrectionEffect::RenderImGui()
 {
 	ImGui::Checkbox("Swap LUT", &checked);

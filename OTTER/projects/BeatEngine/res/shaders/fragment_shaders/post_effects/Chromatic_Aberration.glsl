@@ -10,9 +10,9 @@ uniform float u_Strength;
 
 void main() {
     
-    float rValue = texture(s_Image, inUV - u_Strength*0.019).r;  
-    float gValue = texture(s_Image, inUV - u_Strength*0.006).g;
-    float bValue = texture(s_Image, inUV - u_Strength*-0.026).b;  
+    float rValue = texture(s_Image, inUV - u_Strength*0.00019).r;  
+    float gValue = texture(s_Image, inUV - u_Strength*0.00006).g;
+    float bValue = texture(s_Image, inUV - u_Strength*-0.00026).b;  
 
     // Combine the offset colors.
     outColor = vec4(rValue, gValue, bValue, 1.0);

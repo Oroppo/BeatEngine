@@ -10,7 +10,7 @@ ChromaticAberrationEffect::ChromaticAberrationEffect() :
 ChromaticAberrationEffect::ChromaticAberrationEffect(bool enabled) :
 	PostProcessingLayer::Effect(),
 	_shader(nullptr),
-	_strength(400)
+	_strength(3)
 {
 	Name = "Chromatic Aberration";
 	Enabled = enabled;
@@ -33,7 +33,7 @@ void ChromaticAberrationEffect::Apply(const Framebuffer::Sptr& gBuffer)
 
 void ChromaticAberrationEffect::RenderImGui()
 {
-	LABEL_LEFT(ImGui::SliderFloat, "Strength", &_strength, 0, 1000000);
+	LABEL_LEFT(ImGui::SliderFloat, "Strength", &_strength, -100, 100);
 }
 
 ChromaticAberrationEffect::Sptr ChromaticAberrationEffect::FromJson(const nlohmann::json& data)

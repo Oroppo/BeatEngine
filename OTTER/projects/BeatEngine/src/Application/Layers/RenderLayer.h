@@ -44,6 +44,7 @@ public:
 
 	};
 
+
 	// Structure for our instance-level uniforms, matches layout from
 	// fragments/frame_uniforms.glsl
 	// For use with a UBO.

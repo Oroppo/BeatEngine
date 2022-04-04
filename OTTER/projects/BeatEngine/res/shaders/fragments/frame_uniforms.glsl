@@ -20,6 +20,8 @@ layout (std140, binding = 0) uniform b_FrameLevelUniforms {
     uniform float u_ZFar;
 
     uniform float u_toggleKeys;
+
+    uniform ivec2 u_ScreenSize;
 };
 
 // Stores uniforms that change every object/instance
