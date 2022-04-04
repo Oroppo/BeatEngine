@@ -869,12 +869,13 @@ void Level1Scene::_CreateScene()
 			shadowCam->SetProjection(glm::perspective(glm::radians(120.0f), 1.0f, 0.1f, 100.0f));
 		}*/
 
+
 		GameObject::Sptr BeatBarVinyl = scene->CreateGameObject("Beat Bar Vinyl");
 		{
 			// Set position in the scene
-			BeatBarVinyl->SetPostion(glm::vec3(-1.41f, -1.45f, -0.76f));
-			BeatBarVinyl->SetRotation(glm::vec3(0.0f, -79.0f, 90.0f));
-			BeatBarVinyl->SetScale(glm::vec3(0.5f, 0.5f, 0.1f));
+			BeatBarVinyl->SetPostion(glm::vec3(-1.41f, -1.5f, -0.76f));
+			BeatBarVinyl->SetRotation(glm::vec3(0.0f, 0.0f, 90.0f));
+			BeatBarVinyl->SetScale(glm::vec3(0.75f, 0.75f, 0.1f));
 
 			// Create and attach a renderer for the paddle
 			RenderComponent::Sptr renderer = BeatBarVinyl->Add<RenderComponent>();
@@ -888,9 +889,9 @@ void Level1Scene::_CreateScene()
 		GameObject::Sptr BeatBarNeedle = scene->CreateGameObject("Beat Bar Needle");
 		{
 			// Set position in the scene
-			BeatBarNeedle->SetPostion(glm::vec3(0.02f, -1.53f, 0.32f));
-			BeatBarNeedle->SetRotation(glm::vec3(26.0f, 16.0f, 173.0f));
-			BeatBarNeedle->SetScale(glm::vec3(0.1f, 0.1f, 0.1f));
+			BeatBarNeedle->SetPostion(glm::vec3(0.5f, -0.81f, -0.9f));
+			BeatBarNeedle->SetRotation(glm::vec3(90.0f, 0.0f, 158.0f));
+			BeatBarNeedle->SetScale(glm::vec3(0.2f, 0.2f, 0.2f));
 
 			// Create and attach a renderer for the paddle
 			RenderComponent::Sptr renderer = BeatBarNeedle->Add<RenderComponent>();
