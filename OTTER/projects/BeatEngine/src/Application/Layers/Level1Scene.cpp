@@ -257,6 +257,8 @@ void Level1Scene::_CreateScene()
 		// scene->SetColorLUTCustom(lutCustom);
 		 
 		 MeshResource::Sptr SmallPlatform = ResourceManager::CreateAsset<MeshResource>("HaloBasicPlatform.obj");
+		 MeshResource::Sptr WallJumpBuilding = ResourceManager::CreateAsset<MeshResource>("walljumpbuilding.obj");
+		 MeshResource::Sptr WallJumpSign = ResourceManager::CreateAsset<MeshResource>("walljumpsign.obj");
 		 MeshResource::Sptr WallJump = ResourceManager::CreateAsset<MeshResource>("WallJumpV6.obj");
 		 MeshResource::Sptr BeatGem = ResourceManager::CreateAsset<MeshResource>("Gem.obj");
 		 MeshResource::Sptr Vinyl = ResourceManager::CreateAsset<MeshResource>("VinylV2.obj");
@@ -305,6 +307,8 @@ void Level1Scene::_CreateScene()
 
 		 Texture2D::Sptr StartTex = ResourceManager::CreateAsset<Texture2D>("textures/startbuildingtex.png");
 		 Texture2D::Sptr SmallTex = ResourceManager::CreateAsset<Texture2D>("textures/HaloBasicPlatformTex.png");
+		 Texture2D::Sptr WallJumpBuildingTex = ResourceManager::CreateAsset<Texture2D>("textures/walljumpbuildingTEX.png");
+		 Texture2D::Sptr WallJumpSignTex = ResourceManager::CreateAsset<Texture2D>("textures/walljumpsignTEX.png");
 		 Texture2D::Sptr VinylTex = ResourceManager::CreateAsset<Texture2D>("textures/VinylTex.png");
 		 Texture2D::Sptr CDTex = ResourceManager::CreateAsset<Texture2D>("textures/CDTex.png");
 		 Texture2D::Sptr GemTex = ResourceManager::CreateAsset<Texture2D>("textures/Gem.png");
@@ -376,6 +380,22 @@ void Level1Scene::_CreateScene()
 			 StartPlatformMaterial->Set("u_Material.AlbedoMap", StartTex);
 			 StartPlatformMaterial->Set("u_Material.NormalMap", normalMapDefault);
 			 StartPlatformMaterial->Set("u_Material.Shininess", 0.1f);
+		 }
+
+		 Material::Sptr WallJumpBuildingMaterial = ResourceManager::CreateAsset<Material>(deferredForward);
+		 {
+			 WallJumpBuildingMaterial->Name = "WallJumpBuilding";
+			 WallJumpBuildingMaterial->Set("u_Material.AlbedoMap", WallJumpBuildingTex);
+			 WallJumpBuildingMaterial->Set("u_Material.NormalMap", normalMapDefault);
+			 WallJumpBuildingMaterial->Set("u_Material.Shininess", 0.1f);
+		 }
+
+		 Material::Sptr WallJumpSignMaterial = ResourceManager::CreateAsset<Material>(deferredForward);
+		 {
+			 WallJumpSignMaterial->Name = "WallJumpSign";
+			 WallJumpSignMaterial->Set("u_Material.AlbedoMap", WallJumpSignTex);
+			 WallJumpSignMaterial->Set("u_Material.NormalMap", normalMapDefault);
+			 WallJumpSignMaterial->Set("u_Material.Shininess", 0.1f);
 		 }
 		
 		 Material::Sptr UIMat = ResourceManager::CreateAsset<Material>(basicShader);
@@ -666,13 +686,13 @@ void Level1Scene::_CreateScene()
 		SpawnFunctions::SpawnObj(scene, SmallPlatform, SmallPlatformMaterial, "Small Platform", glm::vec3(-11.640f, 5.610f, -4.150f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.350f, 0.350f, 0.350f));
 		SpawnFunctions::SpawnObj(scene, SmallPlatform, SmallPlatformMaterial, "Small Platform", glm::vec3(-8.620f, 5.610f, -2.200f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.350f, 0.350f, 0.350f));
 		SpawnFunctions::SpawnObj(scene, SmallPlatform, SmallPlatformMaterial, "Small Platform", glm::vec3(-5.290f, 5.610f, -4.040f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.350f, 0.350f, 0.350f));
-		SpawnFunctions::SpawnObj(scene, SmallPlatform, SmallPlatformMaterial, "Small Platform", glm::vec3(0.340f, 5.610f, 5.440f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.350f, 0.350f, 0.350f));
-		SpawnFunctions::SpawnObj(scene, SmallPlatform, SmallPlatformMaterial, "Small Platform", glm::vec3(1.150f, 5.610f, -4.850f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.350f, 0.350f, 0.350f));
-		SpawnFunctions::SpawnObj(scene, SmallPlatform, SmallPlatformMaterial, "Small Platform", glm::vec3(4.360f, 5.610f, -4.850f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.350f, 0.350f, 0.350f));
-		SpawnFunctions::SpawnWallJump(scene, WallJump, WallJumpMaterial, "Wall Jump", glm::vec3(-3.270f, 5.610f, 3.070f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.210f, 1.500f));
-		SpawnFunctions::SpawnWallJump(scene, WallJump, WallJumpMaterial, "Wall Jump", glm::vec3(-1.100f, 5.610f, 2.010f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.210f, 1.500f));
-		SpawnFunctions::SpawnGem(scene, BeatGem, BeatGemMaterial, BeatGemOffMaterial, "BeatGem", 4, glm::vec3(-2.280f, 5.610f, -2.450f), glm::vec3(90.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.500f, 0.500f));
-		SpawnFunctions::SpawnCollectable(scene, Vinyl, VinylMaterial, "Vinyl", glm::vec3(0.180f, 5.610f, 6.010f), glm::vec3(90.000f, 0.0f, 90.000f), glm::vec3(1.000f, 1.000f, 1.000f));
+		SpawnFunctions::SpawnObj(scene, SmallPlatform, SmallPlatformMaterial, "Small Platform", glm::vec3(1.460f, 5.610f, 4.400f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.350f, 0.350f, 0.350f));
+		SpawnFunctions::SpawnObj(scene, SmallPlatform, SmallPlatformMaterial, "Small Platform", glm::vec3(1.320f, 5.610f, -5.530f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.350f, 0.350f, 0.350f));
+		SpawnFunctions::SpawnObj(scene, SmallPlatform, SmallPlatformMaterial, "Small Platform", glm::vec3(4.680f, 5.610f, -4.590f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.350f, 0.350f, 0.350f));
+		SpawnFunctions::SpawnWallJumpBuilding(scene, WallJumpBuilding, WallJumpBuildingMaterial, "WallJump", glm::vec3(-0.590f, 5.610f, -0.660f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.070f, 0.090f, 0.090f));
+		SpawnFunctions::SpawnWallJumpSign(scene, WallJumpSign, WallJumpSignMaterial, "WallJump", glm::vec3(-0.800f, 5.610f, -0.170f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.070f, 0.090f, 0.090f));
+		SpawnFunctions::SpawnGem(scene, BeatGem, BeatGemMaterial, BeatGemOffMaterial, "BeatGem", 4, glm::vec3(-2.410f, 5.610f, -5.460f), glm::vec3(90.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.500f, 0.500f));
+		SpawnFunctions::SpawnCollectable(scene, Vinyl, VinylMaterial, "Vinyl", glm::vec3(1.430f, 5.610f, 4.960f), glm::vec3(90.000f, 0.0f, 90.000f), glm::vec3(1.000f, 1.000f, 1.000f));
 		SpawnFunctions::SpawnStartPlat(scene, StartPlatform, StartPlatformMaterial, "EndPlatform", glm::vec3(9.180f, 5.610f, -9.10f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.350f, 0.350f, 0.350f));
 		SpawnFunctions::SpawnBackGroundCar(scene, Car1Mesh, Car1Material, "Car1", glm::vec3(14.870f, 9.80f, 2.7f), glm::vec3(90.0f, 0.0f, -90.0f), glm::vec3(0.250f, 0.250f, 0.250f));
 		SpawnFunctions::SpawnBackGroundCar(scene, SemiTruckMesh, SemiTruckMaterial, "Semi1", glm::vec3(28.870f, 9.80f, 2.7f), glm::vec3(90.0f, 0.0f, -90.0f), glm::vec3(0.250f, 0.250f, 0.250f));
@@ -697,6 +717,8 @@ void Level1Scene::_CreateScene()
 		SpawnFunctions::SpawnCD(scene, CD, CDMaterial, "CD", glm::vec3(-3.770f + adjustment, 5.610f, -3.190f), glm::vec3(90.000f, 0.0f, 90.000f), glm::vec3(1.000f, 1.000f, 1.000f));
 		SpawnFunctions::SpawnCD(scene, CD, CDMaterial, "CD", glm::vec3(-0.620f + adjustment, 5.610f, -2.380f), glm::vec3(90.000f, 0.0f, 90.000f), glm::vec3(1.000f, 1.000f, 1.000f));
 		SpawnFunctions::SpawnCD(scene, CD, CDMaterial, "CD", glm::vec3(2.140f + adjustment, 5.610f, -0.770f), glm::vec3(90.000f, 0.0f, 90.000f), glm::vec3(1.000f, 1.000f, 1.000f));
+
+		
 
 		//// 10th Block
 		//SpawnFunctions::SpawnStartPlat(scene, StartPlatform, StartPlatformMaterial, "StartPlatform", glm::vec3(-15.820f , 5.610f, -9.10f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.350f, 0.350f, 0.350f));
@@ -862,8 +884,8 @@ void Level1Scene::_CreateScene()
 
 		Light::Sptr SlightComponent = Slight->Add<Light>();
 		SlightComponent->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-		SlightComponent->SetRadius(5.0f);
-		SlightComponent->SetIntensity(5.0f);
+		SlightComponent->SetRadius(30.0f);
+		SlightComponent->SetIntensity(30.0f);
 
 	/*	GameObject::Sptr shadowCaster = scene->CreateGameObject("Shadow Light");
 		{

@@ -51,6 +51,8 @@ private:
 	//This is Disgusting.
 	
 	Gameplay::MeshResource::Sptr monkeyMesh;
+	Gameplay::MeshResource::Sptr WallJumpBuilding;
+	Gameplay::MeshResource::Sptr WallJumpSign;
 	Gameplay::MeshResource::Sptr SmallPlatform;
 	Gameplay::MeshResource::Sptr WallJump;
 	Gameplay::MeshResource::Sptr BeatGem;
@@ -94,6 +96,8 @@ private:
 	Gameplay::MeshResource::Sptr BotJump7;
 
 	Gameplay::Material::Sptr StartPlatformMaterial;
+	Gameplay::Material::Sptr WallJumpBuildingMaterial;
+	Gameplay::Material::Sptr WallJumpSignMaterial;
 	Gameplay::Material::Sptr UIMat;
 	Gameplay::Material::Sptr SmallPlatformMaterial;
 	Gameplay::Material::Sptr WallJumpMaterial;
