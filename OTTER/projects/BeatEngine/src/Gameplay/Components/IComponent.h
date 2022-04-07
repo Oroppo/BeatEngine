@@ -31,6 +31,7 @@ namespace Gameplay {
 	class IComponent : public IResource {
 	public:
 		typedef std::shared_ptr<IComponent> Sptr;
+		//typedef std::weak_ptr<IComponent>   Wptr;
 
 		/// <summary>
 		/// True when this component is enabled and should perform update and 
@@ -118,6 +119,7 @@ namespace Gameplay {
 		/// Gets the gameobject that this component is attached to
 		/// </summary>
 		GameObject* GetGameObject() const;
+
 
 		/// <summary>
 		/// Checks whether this component's gameobject has a component of the given type

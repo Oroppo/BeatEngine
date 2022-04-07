@@ -191,7 +191,7 @@ void CharacterController::RespawnBeatGems(const std::vector<Gameplay::Physics::R
             if (trigger[i]->GetGameObject()->Get<RenderComponent>()) {
                 trigger[i]->GetGameObject()->Get<RenderComponent>()->IsEnabled = true;
             }   
-           }
+        }
         BeatGemsUsed.clear();
     }
    
@@ -216,7 +216,8 @@ void CharacterController::AirControl(char Direction) {
    
 }
  std::vector  <Gameplay::Physics::RigidBody::Sptr>* CharacterController::GetBeatGemsUsed() {
-    return &BeatGemsUsed;
+  // std::vector  <Gameplay::Physics::RigidBody::Wptr>* CharacterController::GetBeatGemsUsed() {
+        return &BeatGemsUsed;
 }
 void CharacterController::CoyoteTime(float dt) {
     if ((_OnPlatform == false)&&(_PlatformName!="BeatGem") && (_PlatformName != "CD") && (_PlatformName != "Vinyl") &&(_CoyoteTimeUsed==false)) {

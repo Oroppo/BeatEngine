@@ -46,6 +46,7 @@ protected:
 	Gameplay::Physics::RigidBody::Sptr _curvePlatform;
 	//vector to store which gems have been used so that they may be reactivated upon respawn 
 	std::vector  <Gameplay::Physics::RigidBody::Sptr> BeatGemsUsed;
+	//std::vector  <Gameplay::Physics::RigidBody::Wptr> BeatGemsUsed;
 	glm::vec3 _rotPlat = glm::vec3(0.0f, 0.0f, 0.0f);
 	int _LoadSceneC = 0;
 

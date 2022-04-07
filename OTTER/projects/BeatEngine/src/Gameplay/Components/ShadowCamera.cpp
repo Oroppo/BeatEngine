@@ -29,6 +29,10 @@ const glm::vec4& ShadowCamera::GetColor() const {
 	return _color;
 }
 
+void ShadowCamera::SetShadowIntensity(float value) {
+	Intensity = value;
+}
+
 void ShadowCamera::SetBufferResolution(const glm::ivec2& value) {
 	LOG_ASSERT(value.x * value.y > 0, "Buffer size must be > 0");
 	_bufferResolution = value;

@@ -44,6 +44,8 @@ public:
 	/// </summary>
 	const glm::vec4& GetColor() const;
 
+	void SetShadowIntensity(float value);
+
 	/// <summary>
 	/// Resizes this light's depth buffer, both dimensions must be non-zero
 	/// </summary>

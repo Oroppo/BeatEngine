@@ -87,26 +87,10 @@ void RenderLayer::OnPreRender()
 	// Draw physics debug
 	app.CurrentScene()->DrawPhysicsDebug();
 
-	//_InitFrameUniforms();
-	
-	// Upload frame level uniforms
-	auto& frameData = _frameUniforms->GetData();
-	frameData.u_Projection = camera->GetProjection();
-	frameData.u_View = camera->GetView();
-	frameData.u_ViewProjection = camera->GetViewProjection();
-	frameData.u_CameraPos = glm::vec4(camera->GetGameObject()->GetPosition(), 1.0f);
-	frameData.u_Time = static_cast<float>(Timing::Current().TimeSinceSceneLoad());
-	frameData.u_DeltaTime = Timing::Current().DeltaTime();
-	frameData.u_RenderFlags = _renderFlags;
-	frameData.u_ZNear = camera->GetNearPlane();
-	frameData.u_ZFar = camera->GetFarPlane();
-	frameData.u_toggleKeys = app.keyboard();
-	frameData.u_ScreenSize = app.GetWindowSize();
-	_frameUniforms->Update();
-	
+	_InitFrameUniforms();
 }
-
-
+// On render previous
+/*
 void RenderLayer::OnRender(const Framebuffer::Sptr & prevLayer)
 {
 	using namespace Gameplay;
@@ -179,6 +163,33 @@ void RenderLayer::OnRender(const Framebuffer::Sptr & prevLayer)
 		// Draw the object
 		renderable->GetMesh()->Draw();
 		});
+
+	// Use our cubemap to draw our skybox
+	app.CurrentScene()->DrawSkybox();
+
+	VertexArrayObject::Unbind();
+}
+*/
+
+void RenderLayer::OnRender(const Framebuffer::Sptr& prevLayer)
+{
+	using namespace Gameplay;
+
+	Application& app = Application::Get();
+
+	// Make sure depth testing and culling are re-enabled
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+	glDepthMask(true);
+
+	// Disable blending, we want to override any existing colors
+	glDisable(GL_BLEND);
+
+	// Grab shorthands to the camera and shader from the scene
+	Camera::Sptr camera = app.CurrentScene()->MainCamera;
+
+	// We can now render all our scene elements via the helper function
+	_RenderScene(camera->GetView(), camera->GetProjection(), _primaryFBO->GetSize());
 
 	// Use our cubemap to draw our skybox
 	app.CurrentScene()->DrawSkybox();
@@ -302,8 +313,6 @@ void RenderLayer::_AccumulateLighting()
 		_fullscreenQuad->Draw();
 	}
 
-	// using shadow related code gives error : C2664 void ShaderProgram::SetUniform(int, const float *, int)': cannot convert argument 2 from 'const T*' to 'const float *'
-	/*
 	// Re-render the scene for shadows
 	app.CurrentScene()->Components().Each<ShadowCamera>([&](const ShadowCamera::Sptr& shadowCam) {
 		// Bind the shadow camera's depth buffer and clear it
@@ -311,7 +320,7 @@ void RenderLayer::_AccumulateLighting()
 		glClear(GL_DEPTH_BUFFER_BIT);
 		glViewport(0, 0, shadowCam->GetBufferResolution().x, shadowCam->GetBufferResolution().y);
 
-		_RenderScene(shadowCam->GetGameObject()->GetInverseTransform(), shadowCam->GetProjection());
+		_RenderScene(shadowCam->GetGameObject()->GetInverseTransform(), shadowCam->GetProjection(), shadowCam->GetDepthBuffer()->GetSize());
 
 		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 		});
@@ -334,6 +343,7 @@ void RenderLayer::_AccumulateLighting()
 
 	// Add each shadow casting light to the lighting buffers
 	app.CurrentScene()->Components().Each<ShadowCamera>([&](const ShadowCamera::Sptr& shadowCam) {
+
 		// This gets us the light -> view space matrix, which we'll inverse to go from view space to light space
 		glm::mat4 lightSpaceMatrix = camera->GetView() * shadowCam->GetGameObject()->GetTransform();
 
@@ -360,7 +370,7 @@ void RenderLayer::_AccumulateLighting()
 		_shadowShader->SetUniform("u_LightDirViewspace", lightDirViewSpace);
 		_shadowShader->SetUniform("u_ShadowBias", shadowCam->Bias);
 		_shadowShader->SetUniform("u_NormalBias", shadowCam->NormalBias);
-		_shadowShader->SetUniform("u_Attenuation", 1/shadowCam->Range);
+		_shadowShader->SetUniform("u_Attenuation", 1 / shadowCam->Range);
 		_shadowShader->SetUniform("u_Intensity", shadowCam->Intensity);
 		_shadowShader->SetUniform("u_LightColor", (glm::vec3)color);
 		_shadowShader->SetUniform("u_LightPosViewspace", lightPosViewSpace);
@@ -369,7 +379,6 @@ void RenderLayer::_AccumulateLighting()
 		// Draw the fullscreen quad to accumulate the lights
 		_fullscreenQuad->Draw();
 		});
-	*/
 
 	// Unbind the lighting FBO so we can read its textures
 	_lightingFBO->Unbind();
@@ -517,13 +526,11 @@ void RenderLayer::OnAppLoad(const nlohmann::json & config)
 	_clearShader->LoadShaderPartFromFile("shaders/fragment_shaders/clear.glsl", ShaderPartType::Fragment);
 	_clearShader->Link();
 
-	// shadows related code
-	/*
 	_shadowShader = ShaderProgram::Create();
 	_shadowShader->LoadShaderPartFromFile("shaders/vertex_shaders/fullscreen_quad.glsl", ShaderPartType::Vertex);
 	_shadowShader->LoadShaderPartFromFile("shaders/fragment_shaders/shadow_composite.glsl", ShaderPartType::Fragment);
 	_shadowShader->Link();
-	*/
+
 	// We need a mesh for drawing fullscreen quads
 
 	glm::vec2 positions[6] = {
@@ -585,4 +592,129 @@ const Framebuffer::Sptr& RenderLayer::GetGBuffer() const
 {
 	return _primaryFBO;
 }
+
+void RenderLayer::_InitFrameUniforms()
+{
+	using namespace Gameplay;
+
+	Application& app = Application::Get();
+
+	// Grab shorthands to the camera and shader from the scene
+	Camera::Sptr camera = app.CurrentScene()->MainCamera;
+
+	// Cache the camera's viewprojection
+	glm::mat4 viewProj = camera->GetViewProjection();
+	glm::mat4 view = camera->GetView();
+
+	// Upload frame level uniforms
+	auto& frameData = _frameUniforms->GetData();
+	frameData.u_Projection = camera->GetProjection();
+	frameData.u_InvProjection = glm::inverse(camera->GetProjection());
+	frameData.u_View = camera->GetView();
+	frameData.u_ViewProjection = camera->GetViewProjection();
+	frameData.u_CameraPos = glm::vec4(camera->GetGameObject()->GetPosition(), 1.0f);
+	frameData.u_Time = static_cast<float>(Timing::Current().TimeSinceSceneLoad());
+	frameData.u_DeltaTime = Timing::Current().DeltaTime();
+	frameData.u_RenderFlags = _renderFlags;
+	frameData.u_ZNear = camera->GetNearPlane();
+	frameData.u_ZFar = camera->GetFarPlane();
+	frameData.u_toggleKeys = app.keyboard();
+	frameData.u_ScreenSize = app.GetWindowSize();
+	frameData.u_Viewport = { 0.0f, 0.0f, _primaryFBO->GetWidth(), _primaryFBO->GetHeight() };
+
+	frameData.u_Aperture = camera->Aperture;
+	frameData.u_LensDepth = camera->LensDepth;
+	frameData.u_FocalDepth = camera->FocalDepth;
+	_frameUniforms->Update();
+}
+
+void RenderLayer::_RenderScene(const glm::mat4& view, const glm::mat4& projection, const glm::ivec2& screenSize)
+{
+	using namespace Gameplay;
+
+	Application& app = Application::Get();
+
+	glm::mat4 viewProj = projection * view;
+
+	// The current material that is bound for rendering
+	Material::Sptr currentMat = nullptr;
+	ShaderProgram::Sptr shader = nullptr;
+
+	Material::Sptr defaultMat = app.CurrentScene()->DefaultMaterial;
+
+	auto& frameData = _frameUniforms->GetData();
+	frameData.u_Projection = projection;
+	frameData.u_View = view;
+	frameData.u_ViewProjection = viewProj;
+	frameData.u_CameraPos = view * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+	frameData.u_Viewport = { 0.0f, 0.0f, screenSize.x, screenSize.y };
+	_frameUniforms->Update();
+
+	// Render all our objects
+	app.CurrentScene()->Components().Each<RenderComponent>([&](const RenderComponent::Sptr& renderable) {
+		// Early bail if mesh not set
+		if (renderable->GetMesh() == nullptr) {
+			return;
+		}
+
+		// If we don't have a material, try getting the scene's fallback material
+		// If none exists, do not draw anything
+		if (renderable->GetMaterial() == nullptr) {
+			if (defaultMat != nullptr) {
+				renderable->SetMaterial(defaultMat);
+			}
+			else {
+				return;
+			}
+		}
+
+		// If the material has changed, we need to bind the new shader and set up our material and frame data
+		// Note: This is a good reason why we should be sorting the render components in ComponentManager
+		if (renderable->GetMaterial() != currentMat) {
+			currentMat = renderable->GetMaterial();
+			shader = currentMat->GetShader();
+
+			shader->Bind();
+			currentMat->Apply();
+		}
+
+		// Grab the game object so we can do some stuff with it
+		GameObject* object = renderable->GetGameObject();
+
+		// Use our uniform buffer for our instance level uniforms
+		auto& instanceData = _instanceUniforms->GetData();
+		instanceData.u_Model = object->GetTransform();
+		instanceData.u_ModelViewProjection = viewProj * object->GetTransform();
+		instanceData.u_ModelView = view * object->GetTransform();
+		instanceData.u_NormalMatrix = glm::mat3(glm::transpose(glm::inverse(object->GetTransform())));
+		_instanceUniforms->Update();
+
+		// Draw the object
+		renderable->GetMesh()->Draw();
+
+		});
+
+}
+
+const UniformBuffer<RenderLayer::FrameLevelUniforms>::Sptr& RenderLayer::GetFrameUniforms() const
+{
+	return _frameUniforms;
+}
+
+/*
+// Upload frame level uniforms
+	auto& frameData = _frameUniforms->GetData();
+	frameData.u_Projection = camera->GetProjection();
+	frameData.u_View = camera->GetView();
+	frameData.u_ViewProjection = camera->GetViewProjection();
+	frameData.u_CameraPos = glm::vec4(camera->GetGameObject()->GetPosition(), 1.0f);
+	frameData.u_Time = static_cast<float>(Timing::Current().TimeSinceSceneLoad());
+	frameData.u_DeltaTime = Timing::Current().DeltaTime();
+	frameData.u_RenderFlags = _renderFlags;
+	frameData.u_ZNear = camera->GetNearPlane();
+	frameData.u_ZFar = camera->GetFarPlane();
+	frameData.u_toggleKeys = app.keyboard();
+	frameData.u_ScreenSize = app.GetWindowSize();
+	_frameUniforms->Update();
+*/
 

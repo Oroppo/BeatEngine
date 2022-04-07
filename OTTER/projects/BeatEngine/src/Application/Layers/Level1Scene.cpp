@@ -223,15 +223,16 @@ void Level1Scene::_CreateScene()
 		 Texture2D::Sptr normalMapDefault = ResourceManager::CreateAsset<Texture2D>(singlePixelDescriptor);
 		 normalMapDefault->LoadData(1, 1, PixelFormat::RGB, PixelType::Float, normalMapDefaultData);
 
-		 float solidBlack[3] = { 0.5f, 0.5f, 0.5f };
+		 float solidGrey[3] = { 0.5f, 0.5f, 0.5f };
+		 float solidBlack[3] = { 0.0f, 0.0f, 0.0f };
+		 float solidWhite[3] = { 1.0f, 1.0f, 1.0f };
+
 		 Texture2D::Sptr solidBlackTex = ResourceManager::CreateAsset<Texture2D>(singlePixelDescriptor);
 		 solidBlackTex->LoadData(1, 1, PixelFormat::RGB, PixelType::Float, solidBlack);
 
-		 float solidGrey[3] = { 0.0f, 0.0f, 0.0f };
 		 Texture2D::Sptr solidGreyTex = ResourceManager::CreateAsset<Texture2D>(singlePixelDescriptor);
 		 solidGreyTex->LoadData(1, 1, PixelFormat::RGB, PixelType::Float, solidGrey);
 
-		 float solidWhite[3] = { 1.0f, 1.0f, 1.0f };
 		 Texture2D::Sptr solidWhiteTex = ResourceManager::CreateAsset<Texture2D>(singlePixelDescriptor);
 		 solidWhiteTex->LoadData(1, 1, PixelFormat::RGB, PixelType::Float, solidWhite);
 
@@ -840,7 +841,7 @@ void Level1Scene::_CreateScene()
 			lightComponent->SetRadius(glm::linearRand(0.1f, 10.0f));
 			lightComponent->SetIntensity(glm::linearRand(1.0f, 2.0f));
 		}*/
-
+		/*
 		// Create some lights for our scene
 		GameObject::Sptr SingleLight = scene->CreateGameObject("SingleLight");
 
@@ -853,18 +854,21 @@ void Level1Scene::_CreateScene()
 		SlightComponent->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 		SlightComponent->SetRadius(30.0f);
 		SlightComponent->SetIntensity(30.0f);
-
-	/*	GameObject::Sptr shadowCaster = scene->CreateGameObject("Shadow Light");
+		*/
+		// Game Currently uses a shadow light (still needs to be fixed)
+		// to use our previous light comment shadow light and uncomment SLight above ^
+		GameObject::Sptr shadowCaster = scene->CreateGameObject("Shadow Light");
 		{
 			// Set position in the scene
-			shadowCaster->SetPostion(glm::vec3(3.0f, 3.0f, 5.0f)); 
+			shadowCaster->SetPostion(glm::vec3(0.240f, -4.119f, 16.0f));
+			shadowCaster->SetRotation(glm::vec3(65.0f, 0.0f, 1.0f));
 			shadowCaster->LookAt(glm::vec3(0.0f));
 
 			// Create and attach a renderer for the monkey
 			ShadowCamera::Sptr shadowCam = shadowCaster->Add<ShadowCamera>();
 			shadowCam->SetProjection(glm::perspective(glm::radians(120.0f), 1.0f, 0.1f, 100.0f));
-		}*/
-
+			shadowCam->SetShadowIntensity(10.0f);
+		}
 
 		GameObject::Sptr BeatBarVinyl = scene->CreateGameObject("Beat Bar Vinyl");
 		{
