@@ -47,6 +47,8 @@ struct Texture2DDescription {
 	/// </summary>
 	uint8_t        MultisampleCount;
 
+	bool           EnableShadowSampling;
+
 	/// <summary>
 	/// The path to the source file for the image, or an empty string if the file has been
 	/// generated
@@ -71,7 +73,8 @@ struct Texture2DDescription {
 		GenerateMipMaps(true),
 		MultisampleCount(1),
 		Filename(""),
-		FormatHint(PixelFormat::RGBA)
+		FormatHint(PixelFormat::RGBA),
+		EnableShadowSampling(false)
 	{ }
 };
 
@@ -79,8 +82,8 @@ class Texture2D : public ITexture {
 public:
 	DEFINE_RESOURCE(Texture2D)
 
-	// Make sure we mark our destructor as virtual so base class is called
-	virtual ~Texture2D() = default;
+		// Make sure we mark our destructor as virtual so base class is called
+		virtual ~Texture2D() = default;
 
 public:
 	Texture2D(const std::string& filePath);

@@ -139,11 +139,12 @@ void Level1Scene::_CreateScene()
 		//});
 		//basicShader->SetDebugName("Animated Object Material");
 
-
+		// Basic gbuffer generation with no vertex manipulation
 		ShaderProgram::Sptr deferredForward = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
 			{ ShaderPartType::Fragment, "shaders/fragment_shaders/deferred_forward.glsl" }
 		});
+		deferredForward->SetDebugName("Deferred - GBuffer Generation");
 	/*
 		 ShaderProgram::Sptr specShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
@@ -639,6 +640,16 @@ void Level1Scene::_CreateScene()
 			BeatBarNeedleMaterial->Set("u_Material.Shininess", 0.1f);
 		}
 
+		
+		// This will be our box material, with no environment reflections
+		Material::Sptr boxMaterial = ResourceManager::CreateAsset<Material>(deferredForward);
+		{
+			boxMaterial->Name = "Box";
+			boxMaterial->Set("u_Material.AlbedoMap", boxTexture);
+			boxMaterial->Set("u_Material.Shininess", 0.1f);
+			boxMaterial->Set("u_Material.NormalMap", normalMapDefault);
+		}
+		/*
 		// Set up the scene's camera
 		GameObject::Sptr camera = scene->CreateGameObject("Main Camera");
 		{
@@ -655,7 +666,7 @@ void Level1Scene::_CreateScene()
 			// Make sure that the camera is set as the scene's main camera!
 			scene->MainCamera = cam;
 		}
-
+		*/
 		//This is a game object built purely to manage game systems i.e. Scene Swaps
 		//Level Spawning, Score Counting, and a few miscellaneous systems
 		GameObject::Sptr GameManager = scene->CreateGameObject("GameManager");
@@ -867,7 +878,7 @@ void Level1Scene::_CreateScene()
 			// Create and attach a renderer for the monkey
 			ShadowCamera::Sptr shadowCam = shadowCaster->Add<ShadowCamera>();
 			shadowCam->SetProjection(glm::perspective(glm::radians(120.0f), 1.0f, 0.1f, 100.0f));
-			shadowCam->SetShadowIntensity(10.0f);
+			//shadowCam->SetShadowIntensity(10.0f);
 		}
 
 		GameObject::Sptr BeatBarVinyl = scene->CreateGameObject("Beat Bar Vinyl");

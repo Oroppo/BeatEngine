@@ -89,87 +89,6 @@ void RenderLayer::OnPreRender()
 
 	_InitFrameUniforms();
 }
-// On render previous
-/*
-void RenderLayer::OnRender(const Framebuffer::Sptr & prevLayer)
-{
-	using namespace Gameplay;
-
-	Application& app = Application::Get();
-
-
-	// Grab shorthands to the camera and shader from the scene
-	Camera::Sptr camera = app.CurrentScene()->MainCamera;
-
-	glm::mat4 view = camera->GetView();
-
-	// Cache the camera's viewprojection
-	glm::mat4 viewProj = camera->GetViewProjection();
-
-	// The current material that is bound for rendering
-	Material::Sptr currentMat = nullptr;
-	ShaderProgram::Sptr shader = nullptr;
-
-	Material::Sptr defaultMat = app.CurrentScene()->DefaultMaterial;
-
-	// Make sure depth testing and culling are re-enabled
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
-	glDepthMask(true);
-
-	// Disable blending, we want to override any existing colors
-	glDisable(GL_BLEND);
-
-
-	// Render all our objects
-	app.CurrentScene()->Components().Each<RenderComponent>([&](const RenderComponent::Sptr& renderable) {
-		// Early bail if mesh not set
-		if (renderable->GetMesh() == nullptr) {
-			return;
-		}
-
-		// If we don't have a material, try getting the scene's fallback material
-		// If none exists, do not draw anything
-		if (renderable->GetMaterial() == nullptr) {
-			if (defaultMat != nullptr) {
-				renderable->SetMaterial(defaultMat);
-			}
-			else {
-				return;
-			}
-		}
-
-		// If the material has changed, we need to bind the new shader and set up our material and frame data
-		// Note: This is a good reason why we should be sorting the render components in ComponentManager
-		if (renderable->GetMaterial() != currentMat) {
-			currentMat = renderable->GetMaterial();
-			shader = currentMat->GetShader();
-
-			shader->Bind();
-			currentMat->Apply();
-		}
-
-		// Grab the game object so we can do some stuff with it
-		GameObject* object = renderable->GetGameObject();
-
-		// Use our uniform buffer for our instance level uniforms
-		auto& instanceData = _instanceUniforms->GetData();
-		instanceData.u_Model = object->GetTransform();
-		instanceData.u_ModelViewProjection = viewProj * object->GetTransform();
-		instanceData.u_ModelView = view * object->GetTransform();
-		instanceData.u_NormalMatrix = glm::mat3(glm::transpose(glm::inverse(object->GetTransform())));
-		_instanceUniforms->Update();
-
-		// Draw the object
-		renderable->GetMesh()->Draw();
-		});
-
-	// Use our cubemap to draw our skybox
-	app.CurrentScene()->DrawSkybox();
-
-	VertexArrayObject::Unbind();
-}
-*/
 
 void RenderLayer::OnRender(const Framebuffer::Sptr& prevLayer)
 {
@@ -700,21 +619,4 @@ const UniformBuffer<RenderLayer::FrameLevelUniforms>::Sptr& RenderLayer::GetFram
 {
 	return _frameUniforms;
 }
-
-/*
-// Upload frame level uniforms
-	auto& frameData = _frameUniforms->GetData();
-	frameData.u_Projection = camera->GetProjection();
-	frameData.u_View = camera->GetView();
-	frameData.u_ViewProjection = camera->GetViewProjection();
-	frameData.u_CameraPos = glm::vec4(camera->GetGameObject()->GetPosition(), 1.0f);
-	frameData.u_Time = static_cast<float>(Timing::Current().TimeSinceSceneLoad());
-	frameData.u_DeltaTime = Timing::Current().DeltaTime();
-	frameData.u_RenderFlags = _renderFlags;
-	frameData.u_ZNear = camera->GetNearPlane();
-	frameData.u_ZFar = camera->GetFarPlane();
-	frameData.u_toggleKeys = app.keyboard();
-	frameData.u_ScreenSize = app.GetWindowSize();
-	_frameUniforms->Update();
-*/
 

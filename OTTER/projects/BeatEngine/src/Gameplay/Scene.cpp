@@ -36,7 +36,10 @@ namespace Gameplay {
 	{
 		GameObject::Sptr mainCam = CreateGameObject("Main Camera");		
 		MainCamera = mainCam->Add<Camera>();
-
+		mainCam->SetPostion(glm::vec3(-1.880, -5.320, 0.700));
+		mainCam->LookAt(glm::vec3(0.0f));
+		mainCam->SetRotation(glm::vec3(90, 0, 0));
+		MainCamera->SetFovRadians(1.39626f);
 		_InitPhysics();
 
 	}

@@ -81,6 +81,5 @@ void main() {
     }
 
     outDiffuse = vec4(diffuse, 1);
-
     outSpecular = vec4(specular, 1);
 }

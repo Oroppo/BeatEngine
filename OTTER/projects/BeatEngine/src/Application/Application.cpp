@@ -235,7 +235,7 @@ void Application::_Run()
 	//_layers.push_back(std::make_shared<DefaultSceneLayer>());
 	//_layers.push_back(std::make_shared<PauseMenuScene>());
 	//_layers.push_back(std::make_shared<GameOverScene>());
-	_layers.push_back(std::make_shared<Level1Scene>());
+	//_layers.push_back(std::make_shared<Level1Scene>());
 	//_layers.push_back(std::make_shared<MainMenuScene>());
 	
 	_layers.push_back(std::make_shared<LogicUpdateLayer>());
@@ -249,6 +249,9 @@ void Application::_Run()
 	if (_isEditor) {
 		_layers.push_back(std::make_shared<ImGuiDebugLayer>());
 	}
+
+	_layers.push_back(std::make_shared<Level1Scene>());
+
 
 	// Either load the settings, or use the defaults
 	_ConfigureSettings();

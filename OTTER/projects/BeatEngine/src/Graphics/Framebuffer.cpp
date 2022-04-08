@@ -60,7 +60,7 @@ void Framebuffer::Resize(uint32_t width, uint32_t height) {
 	// We'll only do the heavy lifting if the dimensions have changed
 	if (width != _description.Width || height != _description.Height) {
 		// Update the description
-		_description.Width  = width;
+		_description.Width = width;
 		_description.Height = height;
 
 		// Re-attach all our rendertargets (releasing our references and re-creating them)
@@ -100,8 +100,8 @@ void Framebuffer::_AddAttachment(RenderTargetAttachment attachment, const Render
 	if (buffer.IsRenderBuffer) {
 		RenderbufferDescription descriptor = RenderbufferDescription();
 		// Per-framebuffer parameters
-		descriptor.Width            = _description.Width;
-		descriptor.Height           = _description.Height;
+		descriptor.Width = _description.Width;
+		descriptor.Height = _description.Height;
 
 		// Per-attachment parameters
 		descriptor.Format = target.Format;
@@ -114,17 +114,19 @@ void Framebuffer::_AddAttachment(RenderTargetAttachment attachment, const Render
 	else {
 		Texture2DDescription descriptor = Texture2DDescription();
 		// Per-framebuffer parameters
-		descriptor.Width            = _description.Width;
-		descriptor.Height           = _description.Height;
+		descriptor.Width = _description.Width;
+		descriptor.Height = _description.Height;
 
 		// Per-attachment parameters
 		descriptor.Format = (InternalFormat)target.Format;
 
+		descriptor.EnableShadowSampling = target.IsShadow;
+
 		// Common parameters
-		descriptor.GenerateMipMaps    = false;
+		descriptor.GenerateMipMaps = false;
 		descriptor.MinificationFilter = MinFilter::Linear;
-		descriptor.HorizontalWrap     = WrapMode::ClampToEdge;
-		descriptor.VerticalWrap       = WrapMode::ClampToEdge;
+		descriptor.HorizontalWrap = WrapMode::ClampToEdge;
+		descriptor.VerticalWrap = WrapMode::ClampToEdge;
 
 		// Create image and store in the buffer
 		Texture2D::Sptr image = std::make_shared<Texture2D>(descriptor);
@@ -140,27 +142,27 @@ bool Framebuffer::Validate() {
 	GLenum result = glCheckNamedFramebufferStatus(_rendererId, GL_FRAMEBUFFER);
 	if (result != GL_FRAMEBUFFER_COMPLETE) {
 		switch (result) {
-			case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
-				LOG_ERROR("Rendertarget failed to validate. One of the attachment points is framebuffer incomplete."); break;
-			case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
-				LOG_ERROR("Rendertarget failed to validate. There are no attachments!"); break;
-			case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:
-				LOG_ERROR("Rendertarget failed to validate. Draw buffer is incomplete."); break;
-			case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER:
-				LOG_ERROR("Rendertarget failed to validate. Read buffer is incomplete."); break;
-			case GL_FRAMEBUFFER_UNSUPPORTED:
-				LOG_ERROR("Rendertarget failed to validate. Check the formats of the attached targets"); break;
-			case GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE:
-				LOG_ERROR("Rendertarget failed to validate. Check the multisampling parameters on all attached targets"); break;
-			case GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS:
-				LOG_ERROR("Rendertarget failed to validate for unknown reason!"); break;
-			case GL_FRAMEBUFFER_INCOMPLETE_VIEW_TARGETS_OVR:
-				LOG_ERROR("Rendertarget failed to validate. Multiview targets issue!"); break;
-			default: LOG_ERROR("Rendertarget failed to validate for unknown reason!");
+		case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
+			LOG_ERROR("Rendertarget failed to validate. One of the attachment points is framebuffer incomplete."); break;
+		case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
+			LOG_ERROR("Rendertarget failed to validate. There are no attachments!"); break;
+		case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:
+			LOG_ERROR("Rendertarget failed to validate. Draw buffer is incomplete."); break;
+		case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER:
+			LOG_ERROR("Rendertarget failed to validate. Read buffer is incomplete."); break;
+		case GL_FRAMEBUFFER_UNSUPPORTED:
+			LOG_ERROR("Rendertarget failed to validate. Check the formats of the attached targets"); break;
+		case GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE:
+			LOG_ERROR("Rendertarget failed to validate. Check the multisampling parameters on all attached targets"); break;
+		case GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS:
+			LOG_ERROR("Rendertarget failed to validate for unknown reason!"); break;
+		case GL_FRAMEBUFFER_INCOMPLETE_VIEW_TARGETS_OVR:
+			LOG_ERROR("Rendertarget failed to validate. Multiview targets issue!"); break;
+		default: LOG_ERROR("Rendertarget failed to validate for unknown reason!");
 		}
 		_isValid = false;
 		return false;
-	} 
+	}
 	else {
 		_isValid = true;
 		return true;
@@ -199,23 +201,23 @@ void Framebuffer::Blit(const Sptr& source, const Sptr& dest, BufferFlags flags /
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, dest ? dest->GetHandle() : 0);
 
 	// Figure out bounds of the framebuffers
-	glm::ivec4 srcBounds; 
+	glm::ivec4 srcBounds;
 	if (source != nullptr) {
-		srcBounds ={ 0, 0, source->GetWidth(), source->GetHeight() };
+		srcBounds = { 0, 0, source->GetWidth(), source->GetHeight() };
 	}
 	else {
-		int dimensions[4] ={ 0 };
+		int dimensions[4] = { 0 };
 		glGetIntegerv(GL_VIEWPORT, dimensions);
-		srcBounds ={ dimensions[0], dimensions[1], dimensions[2], dimensions[3] };
+		srcBounds = { dimensions[0], dimensions[1], dimensions[2], dimensions[3] };
 	}
 	glm::ivec4 dstBounds;
 	if (dest != nullptr) {
-		dstBounds ={ 0, 0, dest->GetWidth(), dest->GetHeight() };
-	} 
+		dstBounds = { 0, 0, dest->GetWidth(), dest->GetHeight() };
+	}
 	else {
-		int dimensions[4] ={ 0 };
+		int dimensions[4] = { 0 };
 		glGetIntegerv(GL_VIEWPORT, dimensions);
-		dstBounds ={ dimensions[0], dimensions[1], dimensions[2], dimensions[3] };
+		dstBounds = { dimensions[0], dimensions[1], dimensions[2], dimensions[3] };
 	}
 
 	// Blit depth and stencil
@@ -261,7 +263,7 @@ GlResourceType Framebuffer::GetResourceClass() const {
 }
 
 nlohmann::json Framebuffer::ToJson() const {
-	nlohmann::json result ={
+	nlohmann::json result = {
 		{ "width", _description.Width },
 		{ "height", _description.Height },
 		{ "attachments", nlohmann::json() }
@@ -283,7 +285,7 @@ nlohmann::json Framebuffer::ToJson() const {
 
 Framebuffer::Sptr Framebuffer::FromJson(const nlohmann::json& blob) {
 	FramebufferDescriptor result = FramebufferDescriptor();
-	result.Width  = JsonGet(blob, "width", 0);
+	result.Width = JsonGet(blob, "width", 0);
 	result.Height = JsonGet(blob, "height", 0);
 
 	if (blob.contains("attachments") && blob["attachments"].is_object()) {

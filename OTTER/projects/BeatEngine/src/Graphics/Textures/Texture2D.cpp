@@ -37,7 +37,7 @@ nlohmann::json Texture2D::ToJson() const {
 		if (_description.Width * _description.Height > 0 && _description.FormatHint != PixelFormat::Unknown) {
 			size_t dataSize = GetTexelSize(_description.FormatHint, _pixelType) * _description.Width * _description.Height;
 			uint8_t* dataStore = new uint8_t[dataSize];
-			glGetTextureImage(_rendererId, 0, *_description.Format, *_pixelType, dataSize, dataStore);
+			glGetTextureImage(_rendererId, 0, *_description.FormatHint, *_pixelType, dataSize, dataStore);
 			result["data"] = Base64::Encode(dataStore, dataSize);
 		}
 	}
@@ -50,11 +50,11 @@ Texture2D::Sptr Texture2D::FromJson(const nlohmann::json& data)
 	Texture2DDescription descr = Texture2DDescription();
 	descr.Filename = data["filename"];
 	descr.HorizontalWrap = JsonParseEnum(WrapMode, data, "wrap_s", WrapMode::ClampToEdge);
-	descr.VerticalWrap   = JsonParseEnum(WrapMode, data, "wrap_t", WrapMode::ClampToEdge);
-	descr.MinificationFilter  = JsonParseEnum(MinFilter, data, "filter_min", MinFilter::NearestMipNearest);
+	descr.VerticalWrap = JsonParseEnum(WrapMode, data, "wrap_t", WrapMode::ClampToEdge);
+	descr.MinificationFilter = JsonParseEnum(MinFilter, data, "filter_min", MinFilter::NearestMipNearest);
 	descr.MagnificationFilter = JsonParseEnum(MagFilter, data, "filter_mag", MagFilter::Linear);
-	descr.MaxAnisotropic      = JsonGet(data, "anisotropic", 0.0f);
-	descr.GenerateMipMaps     = JsonGet(data, "generate_mipmaps", false);
+	descr.MaxAnisotropic = JsonGet(data, "anisotropic", 0.0f);
+	descr.GenerateMipMaps = JsonGet(data, "generate_mipmaps", false);
 
 	Texture2D::Sptr result = std::make_shared<Texture2D>(descr);
 
@@ -73,7 +73,7 @@ Texture2D::Sptr Texture2D::FromJson(const nlohmann::json& data)
 	return result;
 }
 
-Texture2D::Texture2D(const Texture2DDescription& description) : 
+Texture2D::Texture2D(const Texture2DDescription& description) :
 	ITexture(TextureType::_2D),
 	_description(description),
 	_pixelType(PixelType::Unknown)
@@ -84,7 +84,7 @@ Texture2D::Texture2D(const Texture2DDescription& description) :
 	}
 }
 
-Texture2D::Texture2D(const std::string& filePath) : 
+Texture2D::Texture2D(const std::string& filePath) :
 	ITexture(TextureType::_2D),
 	_description(Texture2DDescription()),
 	_pixelType(PixelType::Unknown)
@@ -108,7 +108,8 @@ void Texture2D::SetMagFilter(MagFilter value) {
 	if (_description.MultisampleCount == 1) {
 		_description.MagnificationFilter = value;
 		glTextureParameteri(_rendererId, GL_TEXTURE_MAG_FILTER, *_description.MagnificationFilter);
-	} else {
+	}
+	else {
 		LOG_WARN("Attempted to set magnification filter on a multisampled texture, ignoring");
 	}
 }
@@ -161,7 +162,7 @@ void Texture2D::_LoadDataFromFile() {
 		// If we could not load any data, warn and return null
 		if (data == nullptr) {
 			LOG_WARN("STBI Failed to load image from \"{}\"", _description.Filename);
-			return ;
+			return;
 		}
 
 		// We should estimate a good format for our data
@@ -195,7 +196,7 @@ void Texture2D::_LoadDataFromFile() {
 		// We now have data in the image, we can clear the STBI data
 		stbi_image_free(data);
 	}
-	
+
 	SetDebugName(_description.Filename);
 }
 
@@ -232,6 +233,15 @@ void Texture2D::_SetTextureParams() {
 
 		glTextureParameteri(_rendererId, GL_TEXTURE_WRAP_S, (GLenum)_description.HorizontalWrap);
 		glTextureParameteri(_rendererId, GL_TEXTURE_WRAP_T, (GLenum)_description.VerticalWrap);
+
+		if (_description.EnableShadowSampling && (
+			_description.Format == InternalFormat::Depth16 ||
+			_description.Format == InternalFormat::Depth24 ||
+			_description.Format == InternalFormat::Depth32)
+			) {
+			glTextureParameteri(_rendererId, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);
+			glTextureParameteri(_rendererId, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
+		}
 	}
 }
 
