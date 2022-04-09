@@ -259,6 +259,8 @@ void Level1Scene::_CreateScene()
 		// scene->SetColorLUTCustom(lutCustom);
 		 
 		 MeshResource::Sptr SmallPlatform = ResourceManager::CreateAsset<MeshResource>("HaloBasicPlatform.obj");
+		 MeshResource::Sptr TutorialSign = ResourceManager::CreateAsset<MeshResource>("TutorialSign.obj");
+		 MeshResource::Sptr TutorialSign2 = ResourceManager::CreateAsset<MeshResource>("TutorialSign2.obj");
 		 MeshResource::Sptr WallJumpBuilding = ResourceManager::CreateAsset<MeshResource>("walljumpbuilding.obj");
 		 MeshResource::Sptr WallJumpSign = ResourceManager::CreateAsset<MeshResource>("walljumpsign.obj");
 		 MeshResource::Sptr WallJump = ResourceManager::CreateAsset<MeshResource>("WallJumpV6.obj");
@@ -308,6 +310,9 @@ void Level1Scene::_CreateScene()
 		 MeshResource::Sptr Idle3 = ResourceManager::CreateAsset<MeshResource>("CharacterAnims/idle3.obj");
 
 		 Texture2D::Sptr StartTex = ResourceManager::CreateAsset<Texture2D>("textures/startbuildingtex.png");
+		 Texture2D::Sptr MoveControls = ResourceManager::CreateAsset<Texture2D>("textures/MoveControlsTEX.png");
+		 Texture2D::Sptr VinylTutorial = ResourceManager::CreateAsset<Texture2D>("textures/VinylTutorialTEX.png");
+		 Texture2D::Sptr BeatGemTutorial = ResourceManager::CreateAsset<Texture2D>("textures/BeatGemTutorial.png");
 		 Texture2D::Sptr SmallTex = ResourceManager::CreateAsset<Texture2D>("textures/HaloBasicPlatformTex.png");
 		 Texture2D::Sptr WallJumpBuildingTex = ResourceManager::CreateAsset<Texture2D>("textures/walljumpbuildingTEX.png");
 		 Texture2D::Sptr WallJumpSignTex = ResourceManager::CreateAsset<Texture2D>("textures/walljumpsignTEX.png");
@@ -382,6 +387,30 @@ void Level1Scene::_CreateScene()
 			 StartPlatformMaterial->Set("u_Material.AlbedoMap", StartTex);
 			 StartPlatformMaterial->Set("u_Material.NormalMap", normalMapDefault);
 			 StartPlatformMaterial->Set("u_Material.Shininess", 0.1f);
+		 }
+
+		 Material::Sptr MoveControlsMaterial = ResourceManager::CreateAsset<Material>(deferredForward);
+		 {
+			 MoveControlsMaterial->Name = "TutorialSign";
+			 MoveControlsMaterial->Set("u_Material.AlbedoMap", MoveControls);
+			 MoveControlsMaterial->Set("u_Material.NormalMap", normalMapDefault);
+			 MoveControlsMaterial->Set("u_Material.Shininess", 0.1f);
+		 }
+
+		 Material::Sptr VinylTutorialMaterial = ResourceManager::CreateAsset<Material>(deferredForward);
+		 {
+			 VinylTutorialMaterial->Name = "TutorialSign";
+			 VinylTutorialMaterial->Set("u_Material.AlbedoMap", VinylTutorial);
+			 VinylTutorialMaterial->Set("u_Material.NormalMap", normalMapDefault);
+			 VinylTutorialMaterial->Set("u_Material.Shininess", 0.1f);
+		 }
+
+		 Material::Sptr BeatGemTutorialMaterial = ResourceManager::CreateAsset<Material>(deferredForward);
+		 {
+			 BeatGemTutorialMaterial->Name = "TutorialSign";
+			 BeatGemTutorialMaterial->Set("u_Material.AlbedoMap", BeatGemTutorial);
+			 BeatGemTutorialMaterial->Set("u_Material.NormalMap", normalMapDefault);
+			 BeatGemTutorialMaterial->Set("u_Material.Shininess", 0.1f);
 		 }
 
 		 Material::Sptr WallJumpBuildingMaterial = ResourceManager::CreateAsset<Material>(deferredForward);
@@ -695,6 +724,9 @@ void Level1Scene::_CreateScene()
 		
 		// Tutorial
 		SpawnFunctions::SpawnStartPlat(scene, StartPlatform, StartPlatformMaterial, "StartPlatform", glm::vec3(-15.820f, 5.610f, -9.10f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.350f, 0.350f, 0.350f));
+		SpawnFunctions::SpawnTutorialSign(scene, TutorialSign, MoveControlsMaterial, "TutorialSign", glm::vec3(-17.480f, 12.880f, -2.050f), glm::vec3(-180.0f, -180.0f, 0.0f), glm::vec3(2.000f, 1.000f, 2.200f));
+		SpawnFunctions::SpawnTutorialSign(scene, TutorialSign, VinylTutorialMaterial, "TutorialSign", glm::vec3(8.710f, 12.880f, 8.760f), glm::vec3(-180.0f, -180.0f, 0.0f), glm::vec3(2.000f, 1.000f, 2.200f));
+		SpawnFunctions::SpawnTutorialSign(scene, TutorialSign, BeatGemTutorialMaterial, "TutorialSign", glm::vec3(-5.430f, 12.880f, -5.590f), glm::vec3(-180.0f, -180.0f, 0.0f), glm::vec3(2.000f, 1.000f, 2.200f));
 		SpawnFunctions::SpawnObj(scene, SmallPlatform, SmallPlatformMaterial, "Small Platform", glm::vec3(-11.640f, 5.610f, -4.150f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.350f, 0.350f, 0.350f));
 		SpawnFunctions::SpawnObj(scene, SmallPlatform, SmallPlatformMaterial, "Small Platform", glm::vec3(-8.620f, 5.610f, -2.200f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.350f, 0.350f, 0.350f));
 		SpawnFunctions::SpawnObj(scene, SmallPlatform, SmallPlatformMaterial, "Small Platform", glm::vec3(-5.290f, 5.610f, -4.040f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.350f, 0.350f, 0.350f));
@@ -871,7 +903,7 @@ void Level1Scene::_CreateScene()
 		GameObject::Sptr shadowCaster = scene->CreateGameObject("Shadow Light");
 		{
 			// Set position in the scene
-			shadowCaster->SetPostion(glm::vec3(0.240f, -4.119f, 16.0f));
+			shadowCaster->SetPostion(glm::vec3(0.240f, -4.119f, 17.150));
 			shadowCaster->SetRotation(glm::vec3(65.0f, 0.0f, 1.0f));
 			shadowCaster->LookAt(glm::vec3(0.0f));
 

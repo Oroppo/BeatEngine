@@ -52,6 +52,8 @@ private:
 	
 	Gameplay::MeshResource::Sptr monkeyMesh;
 	Gameplay::MeshResource::Sptr WallJumpBuilding;
+	Gameplay::MeshResource::Sptr TutorialSign;
+	Gameplay::MeshResource::Sptr TutorialSign2;
 	Gameplay::MeshResource::Sptr WallJumpSign;
 	Gameplay::MeshResource::Sptr SmallPlatform;
 	Gameplay::MeshResource::Sptr WallJump;
@@ -96,6 +98,8 @@ private:
 	Gameplay::MeshResource::Sptr BotJump7;
 
 	Gameplay::Material::Sptr StartPlatformMaterial;
+	Gameplay::Material::Sptr MoveControlsMaterial;
+	Gameplay::Material::Sptr VinylTutorialMaterial;
 	Gameplay::Material::Sptr WallJumpBuildingMaterial;
 	Gameplay::Material::Sptr WallJumpSignMaterial;
 	Gameplay::Material::Sptr UIMat;

@@ -46,6 +46,8 @@ void SpawnLoop::Awake() {
 	
 	//Meshes
 	monkeyMesh = ResourceManager::Get<MeshResource>(MeshList.find("Monkey.obj")->second);
+	TutorialSign = ResourceManager::Get<MeshResource>(MeshList.find("TutorialSign.obj")->second);
+	TutorialSign2 = ResourceManager::Get<MeshResource>(MeshList.find("TutorialSign2.obj")->second);
 	SmallPlatform = ResourceManager::Get<MeshResource>(MeshList.find("HaloBasicPlatform.obj")->second);
 	WallJumpBuilding = ResourceManager::Get<MeshResource>(MeshList.find("walljumpbuilding.obj")->second);
 	WallJumpSign = ResourceManager::Get<MeshResource>(MeshList.find("walljumpsign.obj")->second);
@@ -92,6 +94,8 @@ void SpawnLoop::Awake() {
 
 	//Materials
 	StartPlatformMaterial = ResourceManager::Get<Material>(MaterialList.find("StartPlatform")->second);
+	MoveControlsMaterial = ResourceManager::Get<Material>(MaterialList.find("TutorialSign")->second);
+	VinylTutorialMaterial = ResourceManager::Get<Material>(MaterialList.find("TutorialSign")->second);
 	WallJumpBuildingMaterial = ResourceManager::Get<Material>(MaterialList.find("WallJumpBuilding")->second);
 	WallJumpSignMaterial = ResourceManager::Get<Material>(MaterialList.find("WallJumpSign")->second);
 	UIMat = ResourceManager::Get<Material>(MaterialList.find("UIButton")->second);
