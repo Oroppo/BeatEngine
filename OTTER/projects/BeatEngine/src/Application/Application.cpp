@@ -20,6 +20,7 @@
 #include "Graphics/ShaderProgram.h"
 #include "Graphics/Textures/Texture1D.h"
 #include "Graphics/Textures/Texture2D.h"
+#include "Graphics/Textures/Texture2DArray.h"
 #include "Graphics/Textures/Texture3D.h"
 #include "Graphics/Textures/TextureCube.h"
 #include "Graphics/VertexTypes.h"
@@ -227,21 +228,19 @@ float Application::keyboard()
 
 	return toggleKeys;
 }
-
-void Application::_Run()
-{
-	// TODO: Register layers
-	_layers.push_back(std::make_shared<GLAppLayer>());
-	//_layers.push_back(std::make_shared<DefaultSceneLayer>());
+//_layers.push_back(std::make_shared<DefaultSceneLayer>());
 	//_layers.push_back(std::make_shared<PauseMenuScene>());
 	//_layers.push_back(std::make_shared<GameOverScene>());
 	//_layers.push_back(std::make_shared<Level1Scene>());
 	//_layers.push_back(std::make_shared<MainMenuScene>());
-	
+	//_layers.push_back(std::make_shared<InstancedRenderingTestLayer>());
+void Application::_Run()
+{
+	// TODO: Register layers
+	_layers.push_back(std::make_shared<GLAppLayer>());
 	_layers.push_back(std::make_shared<LogicUpdateLayer>());
 	_layers.push_back(std::make_shared<RenderLayer>());
 	_layers.push_back(std::make_shared<ParticleLayer>());
-	//_layers.push_back(std::make_shared<InstancedRenderingTestLayer>());
 	_layers.push_back(std::make_shared<PostProcessingLayer>());
 	_layers.push_back(std::make_shared<InterfaceLayer>());
 
@@ -366,6 +365,7 @@ void Application::_RegisterClasses()
 	// Register all our resource types so we can load them from manifest files
 	ResourceManager::RegisterType<Texture1D>();
 	ResourceManager::RegisterType<Texture2D>();
+	ResourceManager::RegisterType<Texture2DArray>();
 	ResourceManager::RegisterType<Texture3D>();
 	ResourceManager::RegisterType<TextureCube>();
 	ResourceManager::RegisterType<ShaderProgram>();

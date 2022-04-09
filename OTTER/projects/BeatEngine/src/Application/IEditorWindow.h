@@ -12,7 +12,7 @@ ENUM_FLAGS(EditorWindowRequirements, uint32_t,
 );
 
 /**
- * The editor window interface allows us to separate implementation for 
+ * The editor window interface allows us to separate implementation for
  * editor or debug windows
  */
 class IEditorWindow {
@@ -28,8 +28,9 @@ public:
 	std::string Name;
 	std::string ParentName;
 	ImGuiID     DockId;
+	ImGuiWindowFlags_ WindowFlags;
 
-	virtual ~IEditorWindow() =default;
+	virtual ~IEditorWindow() = default;
 
 	virtual void Render() { };
 	virtual void RenderMenuBar() { }

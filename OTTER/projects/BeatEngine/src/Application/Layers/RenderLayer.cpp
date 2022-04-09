@@ -173,13 +173,13 @@ void RenderLayer::_AccumulateLighting()
 		{ ambient, 1.0f },         // diffuse (multiplicative)
 		{ 0.0f, 0.0f, 0.0f, 1.0f } // specular (additive)
 	};
-	
+	_lightingFBO->Bind();
 	_ClearFramebuffer(_lightingFBO, colors, 2);
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 
-	// Bind our shader for processing lighting
+	// Bind our shader for processing lighting 
 	_lightAccumulationShader->Bind();
 
 	// Bind our G-Buffer textures so that they're readable
@@ -189,10 +189,9 @@ void RenderLayer::_AccumulateLighting()
 	_primaryFBO->GetTextureAttachment(RenderTargetAttachment::Color2)->Bind(3); // emissive
 	_primaryFBO->GetTextureAttachment(RenderTargetAttachment::Color3)->Bind(4); // view pos
 
-	//const glm::mat4& view = scene->MainCamera->GetView();
 
 	// Send in how many active lights we have and the global lighting settings
-	data.AmbientCol = glm::vec3(0.5f);
+	data.AmbientCol = glm::vec3(0.1f);
 	int ix = 0;
 	app.CurrentScene()->Components().Each<Light>([&](const Light::Sptr& light) {
 		// Get the light's position in view space, since we're doing view space lighting
@@ -219,7 +218,7 @@ void RenderLayer::_AccumulateLighting()
 
 			ix = 0;
 		}
-		});
+	});
 
 	// If we have lights left over that haven't been drawn, draw them now
 	if (ix > 0) {
@@ -242,7 +241,7 @@ void RenderLayer::_AccumulateLighting()
 		_RenderScene(shadowCam->GetGameObject()->GetInverseTransform(), shadowCam->GetProjection(), shadowCam->GetDepthBuffer()->GetSize());
 
 		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-		});
+	});
 
 	// Restore frame level uniforms
 	_InitFrameUniforms();
@@ -297,7 +296,7 @@ void RenderLayer::_AccumulateLighting()
 
 		// Draw the fullscreen quad to accumulate the lights
 		_fullscreenQuad->Draw();
-		});
+	});
 
 	// Unbind the lighting FBO so we can read its textures
 	_lightingFBO->Unbind();
@@ -611,7 +610,7 @@ void RenderLayer::_RenderScene(const glm::mat4& view, const glm::mat4& projectio
 		// Draw the object
 		renderable->GetMesh()->Draw();
 
-		});
+	});
 
 }
 

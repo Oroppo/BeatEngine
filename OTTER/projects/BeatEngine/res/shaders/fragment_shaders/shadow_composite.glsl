@@ -191,9 +191,9 @@ void main() {
     if (shadowPos.x < 0 || shadowPos.x > 1 || 
         shadowPos.y < 0 || shadowPos.y > 1 || 
         shadowPos.z < 0 || shadowPos.z > 1) {
-       // outDiffuse  = vec4(1, 0, 0, 1);
-       // outSpecular = vec4(1, 0, 0, 1);
-       // return;
+        //outDiffuse  = vec4(1, 0, 0, 1);
+        //outSpecular = vec4(1, 0, 0, 1);
+        //return;
         discard;
     }
 
@@ -207,8 +207,8 @@ void main() {
     vec3 specular = vec3(0);
 
     // We can skip lighting calculation if the pixel is fully in shadow!
-    if (lightContrib > 0) {
-
+    if (lightContrib > 0)
+    {
         // Create a light structure we can pass to the CalcDirectionalLightContribution function
         Light l;
         l.PositionIntensity = vec4(u_LightPosViewspace, u_Intensity);

@@ -16,12 +16,12 @@ layout (std140, binding = 0) uniform b_FrameLevelUniforms {
     uniform float u_DeltaTime;
     // Lets us store up to 32 bool flags in one value
     uniform uint  u_Flags;
+    uniform float u_toggleKeys;
+    uniform ivec2 u_ScreenSize;
     // Camera's near plane
     uniform float u_ZNear;
     // Camera's far plane
     uniform float u_ZFar;
-    uniform float u_toggleKeys;
-    uniform ivec2 u_ScreenSize;
     
     // NEW FOR DOF
 

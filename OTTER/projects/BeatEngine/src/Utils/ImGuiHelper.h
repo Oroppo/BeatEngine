@@ -8,6 +8,7 @@
 #include <EnumToString.h>
 #include "Graphics/ShaderProgram.h"
 #include "Graphics/Textures/Texture2D.h"
+#include "Graphics/Textures/Texture2DArray.h"
 
 // Will be included in the CPP to avoid header bloat
 struct GLFWwindow;
@@ -42,11 +43,11 @@ public:
 	/// <param name="text">The text on the button</param>
 	/// <param name="size">The optional size of the button</param>
 	/// <returns>True if the button was pressed, false if otherwise</returns>
-	static bool WarningButton(const char* text, const ImVec2& size = ImVec2(0,0));
+	static bool WarningButton(const char* text, const ImVec2& size = ImVec2(0, 0));
 
 	template <typename T, typename BT>
 	static bool DrawEnumCombo(const char* label, T* value, const std::map<BT, std::string>& nameMap) {
-		bool result = false; 
+		bool result = false;
 		if (ImGui::BeginCombo(label, (~*value).c_str())) {
 			bool selected = false;
 			for (const auto& [key, str] : nameMap) {
@@ -85,6 +86,8 @@ public:
 
 	static void DrawLinearDepthTexture(const Texture2D::Sptr& image, const glm::ivec2& size, float zNear, float zFar);
 
+	static void DrawTextureArraySlice(const Texture2DArray::Sptr& image, uint32_t slice, const glm::ivec2& size, const ImVec4& border = ImVec4(0, 0, 0, 0));
+
 	/// <summary>
 	/// Notifies ImGui that a new frame has begun
 	/// Call at start of render loop
@@ -99,10 +102,13 @@ public:
 
 	static void HeaderCheckbox(ImGuiID headerId, bool* value);
 
+	static bool HeaderMoveButtons(ImGuiID headerId, int* delta);
+
 protected:
 	ImGuiHelper() = default;
 
 	static GLFWwindow* _window;
 
 	static ShaderProgram::Sptr _linearDepthShader;
+	static ShaderProgram::Sptr _arraySliceShader;
 };

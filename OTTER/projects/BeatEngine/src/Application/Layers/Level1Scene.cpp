@@ -17,6 +17,7 @@
 #include "Graphics/ShaderProgram.h"
 #include "Graphics/Textures/Texture2D.h"
 #include "Graphics/Textures/TextureCube.h"
+#include "Graphics/Textures/Texture2DArray.h"
 #include "Graphics/VertexTypes.h"
 #include "Graphics/Font.h"
 #include "Graphics/GuiBatcher.h"
@@ -37,6 +38,7 @@
 #include "Gameplay/Material.h"
 #include "Gameplay/GameObject.h"
 #include "Gameplay/Scene.h"
+#include "Gameplay/Components/Light.h"
 
 // Components
 #include "Gameplay/Components/IComponent.h"
@@ -58,7 +60,6 @@
 #include "Gameplay/Components/BuildingAnim.h"
 #include "Gameplay/Components/SpawnLoop.h"
 #include "Gameplay/Components/ShadowCamera.h"
-#include "Gameplay/Components/Light.h"
 
 // Physics
 #include "Gameplay/Physics/RigidBody.h"
@@ -126,13 +127,13 @@ void Level1Scene::_CreateScene()
 		});
 		reflectiveShader->SetDebugName("Reflective");
 	*/
-		
+		/*
 		 ShaderProgram::Sptr basicShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
 			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_blinn_phong_textured.glsl" }
 		});
 		basicShader->SetDebugName("Blinn-phong");
-
+		*/
 		//ShaderProgram::Sptr AnimatedShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
 		//	{ ShaderPartType::Vertex, "shaders/geometry_shader/Animation.glsl" },
 		//	{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_blinn_phong_textured.glsl" }
@@ -202,8 +203,6 @@ void Level1Scene::_CreateScene()
 		leafTex->SetMinFilter(MinFilter::Nearest);
 		leafTex->SetMagFilter(MagFilter::Nearest);
 		
-		
-		
 		 Texture1D::Sptr toonLut = ResourceManager::CreateAsset<Texture1D>("luts/toon-1D.png");
 		toonLut->SetWrap(WrapMode::ClampToEdge);
 		
@@ -214,6 +213,8 @@ void Level1Scene::_CreateScene()
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/skybox_vert.glsl" },
 			{ ShaderPartType::Fragment, "shaders/fragment_shaders/skybox_frag.glsl" }
 		});
+
+		 Texture2DArray::Sptr particleTex = ResourceManager::CreateAsset<Texture2DArray>("textures/particles.png", 2, 2);
 
 #pragma region Basic Texture Creation
 		 Texture2DDescription singlePixelDescriptor;
@@ -429,7 +430,7 @@ void Level1Scene::_CreateScene()
 			 WallJumpSignMaterial->Set("u_Material.Shininess", 0.1f);
 		 }
 		
-		 Material::Sptr UIMat = ResourceManager::CreateAsset<Material>(basicShader);
+		 Material::Sptr UIMat = ResourceManager::CreateAsset<Material>(deferredForward);
 		{
 			UIMat->Name = "UIButton";
 			UIMat->Set("u_Material.Diffuse", StartTex);
@@ -708,6 +709,24 @@ void Level1Scene::_CreateScene()
 			//LevelSpawningComponent
 			//Scene Swapper
 		}
+	//
+	//GameObject::Sptr plane = scene->CreateGameObject("Plane");
+	//{
+	//	// Make a big tiled mesh
+	//	MeshResource::Sptr tiledMesh = ResourceManager::CreateAsset<MeshResource>();
+	//	tiledMesh->AddParam(MeshBuilderParam::CreatePlane(ZERO, UNIT_Z, UNIT_X, glm::vec2(100.0f), glm::vec2(20.0f)));
+	//	tiledMesh->GenerateMesh();
+	//
+	//	// Create and attach a RenderComponent to the object to draw our mesh
+	//	RenderComponent::Sptr renderer = plane->Add<RenderComponent>();
+	//	renderer->SetMesh(tiledMesh);
+	//	renderer->SetMaterial(boxMaterial);
+	//
+	//	// Attach a plane collider that extends infinitely along the X/Y axis
+	//	RigidBody::Sptr physics = plane->Add<RigidBody>(/*static by default*/);
+	//	physics->AddCollider(BoxCollider::Create(glm::vec3(50.0f, 50.0f, 1.0f)))->SetPosition({ 0,0,-1 });
+	//}
+
 
 		//float const distanceFromBlock = 20.f;
 
@@ -1293,11 +1312,28 @@ void Level1Scene::_CreateScene()
 		
 			}
 
-		//GameObject::Sptr particles = scene->CreateGameObject("Particles");
-		//{
-		//	ParticleSystem::Sptr particleManager = particles->Add<ParticleSystem>();
-		//	particleManager->AddEmitter(glm::vec3(0.0f), glm::vec3(0.0f, -1.0f, 10.0f), 10.0f, glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
-		//}
+			GameObject::Sptr particles = scene->CreateGameObject("Particles");
+			{
+				particles->SetPostion({ -2.0f, 0.0f, 2.0f });
+
+				ParticleSystem::Sptr particleManager = particles->Add<ParticleSystem>();
+				particleManager->Atlas = particleTex;
+
+				ParticleSystem::ParticleData emitter;
+				emitter.Type = ParticleType::SphereEmitter;
+				emitter.TexID = 2;
+				emitter.Position = glm::vec3(0.0f);
+				emitter.Color = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
+				emitter.Lifetime = 0.0f;
+				emitter.SphereEmitterData.Timer = 1.0f / 50.0f;
+				emitter.SphereEmitterData.Velocity = 0.5f;
+				emitter.SphereEmitterData.LifeRange = { 1.0f, 4.0f };
+				emitter.SphereEmitterData.Radius = 1.0f;
+				emitter.SphereEmitterData.SizeRange = { 0.5f, 1.5f };
+
+				particleManager->AddEmitter(emitter);
+			}
+
 
 		GuiBatcher::SetDefaultTexture(ResourceManager::CreateAsset<Texture2D>("textures/ui-sprite.png"));
 		GuiBatcher::SetDefaultBorderRadius(8);
