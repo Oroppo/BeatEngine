@@ -339,22 +339,22 @@ void MainMenuScene::_CreateScene()
 
 		
 
-		//GameObject::Sptr MenuParent = scene->CreateGameObject("INTERACTABLE MENU ITEMS");
-		//{		
-		//	//Even Parents must own a RectTransform :) 
-		//	RectTransform::Sptr transform = MenuParent->Add<RectTransform>();
-		//	transform->SetPosition({ 0, 0 });
-		//	transform->SetRotationDeg(0);
-		//	transform->SetMin({ 0, 0 });
-		//
-		//	MenuParent->AddChild(PlayButton);
-		//	MenuParent->AddChild(OptionsButton);
-		//	MenuParent->AddChild(MusicButton);
-		//	MenuParent->AddChild(CreditsButton);
-		//	MenuParent->AddChild(QuitButton);
-		//
-		//	MenuParent->Add<InteractableMenu>();
-		//}
+		GameObject::Sptr MenuParent = scene->CreateGameObject("INTERACTABLE MENU ITEMS");
+		{		
+			//Even Parents must own a RectTransform :) 
+			RectTransform::Sptr transform = MenuParent->Add<RectTransform>();
+			transform->SetPosition({ 0, 0 });
+			transform->SetRotationDeg(0);
+			transform->SetMin({ 0, 0 });
+		
+			MenuParent->AddChild(PlayButton);
+			MenuParent->AddChild(OptionsButton);
+			MenuParent->AddChild(MusicButton);
+			MenuParent->AddChild(CreditsButton);
+			MenuParent->AddChild(QuitButton);
+		
+			MenuParent->Add<InteractableMenu>();
+		}
 
 
 		
