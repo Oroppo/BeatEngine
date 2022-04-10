@@ -6,13 +6,24 @@ void AudioEngine::init()
 	Studio.LoadBank("Master.bank");
 	Studio.LoadBank("Master.strings.bank");
 	Studio.LoadBank("Level1.bank");
+	//Load all Sounds you use here
+	AudioEngine::GetContextBanks()->LoadEvent("event:/Music");
+	AudioEngine::GetContextBanks()->LoadEvent("event:/MenuMusic");
+	AudioEngine::GetContextBanks()->LoadEvent("event:/GameOverMusic");
+	AudioEngine::GetContextBanks()->LoadEvent("event:/Ambience");
+	AudioEngine::GetContextBanks()->LoadEvent("event:/DopplerCar");
+	AudioEngine::GetContextBanks()->LoadEvent("event:/Coin Pickup");
+	AudioEngine::GetContextBanks()->LoadEvent("event:/Jump");
+	AudioEngine::GetContextBanks()->LoadEvent("event:/Death");
+	AudioEngine::GetContextBanks()->LoadEvent("event:/Walk");
+	AudioEngine::GetContextBanks()->SetVolume("event:/Music", 0.8f);
 }
 void AudioEngine::SetEventParameters(const std::string eventName, const std::string parameterName, float parameterValue) {
 	Banks.SetEventParameter(eventName, parameterName, parameterValue);
 }
 
 void AudioEngine::setPitch(const float pitch) {
-	
+	//this does nothing woohoo
 }
 
 ToneFire::FMODStudio* AudioEngine::GetContext()

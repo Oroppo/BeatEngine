@@ -9,8 +9,11 @@
 #include "Application/Application.h"
 
 // Constructor Initializes Values for LERP and Set Position but Only SetPosition is being used atm
-InteractableMenu::InteractableMenu()  : IComponent()
-{ }
+InteractableMenu::InteractableMenu(int MenuIndex) : IComponent()
+{
+    _MenuIndex = MenuIndex;
+}
+
 InteractableMenu::~InteractableMenu() = default;
 
 //Move this from Awake if you want to dynamically add Menu Items
@@ -20,6 +23,7 @@ void InteractableMenu::Awake()
     for (auto& child : GetGameObject()->GetChildren()) {
         _MenuItems.push_back(child);
     }
+
 }
 
 
@@ -40,6 +44,10 @@ InteractableMenu::Sptr InteractableMenu::FromJson(const nlohmann::json & blob) {
 void InteractableMenu::RenderImGui() {
 
 }
+void InteractableMenu::HandleSelection() {
+
+
+}
 
 void InteractableMenu::Update(float deltaTime) {
     //Check if it's above a given element by grabbing element's position from the list
@@ -47,59 +55,68 @@ void InteractableMenu::Update(float deltaTime) {
     //for (auto& element : _MenuItems) {
         //      Do the thing     
     //}
-    
-    //Controlled by a Switch Statement for now, will not be final Product, will be used in tandem with mouse control :)
+
+
     if (InputEngine::GetKeyState(GLFW_KEY_LEFT)==ButtonState::Pressed) {
         _selection-=1;
         if (_selection < 0)
-            _selection=4;
+            _selection = _MenuItems.size() - 1;
     }
     if (InputEngine::GetKeyState(GLFW_KEY_RIGHT)==ButtonState::Pressed) {
         _selection += 1;
-        if (_selection > 4)
+        if (_selection > _MenuItems.size() - 1)
             _selection = 0;
-    }
-    Application& app = Application::Get();
-
-    //These DON'T all have to Load a scene! they could simply Enable/Disable Menu Items! 
-    //this will be our approach for future implementation
-
-    switch (_selection) {
-    case 0:
-        _MenuItems[0]->Get<GuiPanel>()->SetColor({ 1,1,1,1 });
-        if (InputEngine::GetKeyState(GLFW_KEY_ENTER) == ButtonState::Pressed)
-            LOG_INFO(app.LoadScene("Level1.json"));
-        app.LoadScene("Level1.json");
-        break;
-    case 1:
-        _MenuItems[1]->Get<GuiPanel>()->SetColor({1,1,1,1});
-        if (InputEngine::GetKeyState(GLFW_KEY_ENTER) == ButtonState::Pressed)
-            app.LoadScene("Level1.json");
-        break;
-    case 2:
-        _MenuItems[2]->Get<GuiPanel>()->SetColor({1,1,1,1});
-        if (InputEngine::GetKeyState(GLFW_KEY_ENTER) == ButtonState::Pressed)
-            app.LoadScene("Level1.json");
-        break;
-    case 3:
-        _MenuItems[3]->Get<GuiPanel>()->SetColor({1,1,1,1});
-        if (InputEngine::GetKeyState(GLFW_KEY_ENTER) == ButtonState::Pressed)
-            
-            app.LoadScene("Level1.json");
-        break;
-    case 4:
-        _MenuItems[4]->Get<GuiPanel>()->SetColor({ 1,1,1,1 });
-        if (InputEngine::GetKeyState(GLFW_KEY_ENTER) == ButtonState::Pressed)
-            app.Quit();
-        break;
-    default:
-        LOG_WARN("Menu Items out of Selection Range!");
-        break;
     }
 
     for (int i = 0; i < _MenuItems.size();i++) {
         if (i != _selection)
             _MenuItems[i]->Get<GuiPanel>()->SetColor({ 1,1,1,0.6 });
+        else
+            _MenuItems[i]->Get<GuiPanel>()->SetColor({ 1,1,1,1 });      
+    }
+
+    Application& app = Application::Get();
+
+    //These DON'T all have to Load a scene! they could simply Enable/Disable Menu Items! 
+    //this will be our approach for future implementation
+
+    //MAIN MENU
+    if ((InputEngine::GetKeyState(GLFW_KEY_ENTER) == ButtonState::Pressed) && (_MenuIndex == 0)) {
+
+        switch (_selection) {
+        case 0:
+            app.LoadScene("Level1.json");
+            break;
+        case 1:
+
+            break;
+        case 2:
+
+            break;
+        case 3:
+
+            break;
+        case 4:
+            app.Quit();
+            break;
+        default:
+            LOG_WARN("Menu Items out of Selection Range!");
+            break;
+        }
+    }
+    // GAME OVER MENU
+    if ((InputEngine::GetKeyState(GLFW_KEY_ENTER) == ButtonState::Pressed) && (_MenuIndex == 1)) {
+        switch (_selection) {
+        case 0:
+            app.LoadScene("MainMenu.json");
+            break;
+        case 1:
+            app.Quit();
+            break;
+        default:
+            LOG_WARN("Menu Items out of Selection Range!");
+            break;
+        }
     }
 
 

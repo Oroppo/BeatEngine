@@ -5,13 +5,13 @@ layout(location = 0) out vec4 outColor;
 
 uniform layout(binding = 0) sampler2D s_Image;
 
-uniform float u_PixelSize;
+uniform float u_PixelNumber;
 
 #include "../../fragments/frame_uniforms.glsl"
 
 void main() {
 
-        float Pixels = u_PixelSize;
+        float Pixels = u_PixelNumber;
         float dx = 15.0 * (1.0 / Pixels);
         float dy = 10.0 * (1.0 / Pixels);
         vec2 Coord = vec2(dx * floor(inUV.x / dx),

@@ -7,9 +7,6 @@
 void BackgroundMover::Awake()
 {
     _body = GetComponent<Gameplay::Physics::RigidBody>();
-    if (_body == nullptr) {
-        IsEnabled = false;
-    }
 
 }
 
@@ -54,9 +51,6 @@ void BackgroundMover::Update(float deltaTime)
 void BackgroundBuildingMover::Awake()
 {
     _body = GetComponent<Gameplay::Physics::RigidBody>();
-    if (_body == nullptr) {
-        IsEnabled = false;
-    }
 
 }
 

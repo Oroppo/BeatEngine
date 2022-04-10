@@ -5,7 +5,7 @@
 #include "Utils/ImGuiHelper.h"
 #include "Utils/JsonGlmHelpers.h"
 #include "Gameplay/GameObject.h"
-#include "Application/Application.h"
+#include "Application/application.h"
 
 std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> StringConvert;
 
@@ -117,18 +117,6 @@ void GuiText::RenderImGui()
 	}
 }
 
-void GuiText::Update(float deltaTime) {
-
-	//Get Window Size
-	Application& app = Application::Get();
-	glm::vec2 windowSize = app.GetWindowSize();
-
-	//Update the GUI to dynamically move to the correct percent position of the screen. For example, an element dead center (50%, 50%) on a 1080p screen will stay centered when rescaled to 4k 
-	GetGameObject()->Get<RectTransform>()->SetPosition({ windowSize.x * _percentOfScreenX, windowSize.y * _percentOfScreenY });
-	GetGameObject()->Get<GuiText>()->SetTextScale( _scale * (windowSize.y / 1080));
-
-}
-
 nlohmann::json GuiText::ToJson() const {
 	return {
 		{ "color", _color },
@@ -138,11 +126,24 @@ nlohmann::json GuiText::ToJson() const {
 	};
 }
 
+void GuiText::Update(float deltaTime) {
+
+	//Get Window Size
+	Application& app = Application::Get();
+	glm::vec2 windowSize = app.GetWindowSize();
+
+	//Update the GUI to dynamically move to the correct percent position of the screen. For example, an element dead center (50%, 50%) on a 1080p screen will stay centered when rescaled to 4k 
+	GetGameObject()->Get<RectTransform>()->SetPosition({ windowSize.x * _percentOfScreenX, windowSize.y * _percentOfScreenY });
+	GetGameObject()->Get<GuiText>()->SetTextScale(_scale * (windowSize.y / 1080));
+
+}
+
 GuiText::Sptr GuiText::FromJson(const nlohmann::json& blob) {
 	GuiText::Sptr result = std::make_shared<GuiText>();
 	result->_color     = JsonGet(blob, "color", result->_color);
 	result->_textScale = JsonGet(blob, "scale", 1.0f);
 	result->_text      = JsonGet<std::wstring>(blob, "text", LR"()");
 	result->_font      = ResourceManager::Get<Font>(Guid(JsonGet<std::string>(blob, "font", "null")));
+	result->SetFont(result->_font);
 	return result;
 }

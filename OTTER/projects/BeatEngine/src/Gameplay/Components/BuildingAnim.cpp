@@ -8,12 +8,6 @@
 void BuildingAnim::Awake()
 {
     _body = GetComponent<Gameplay::Physics::RigidBody>();
-
-
-
-    if (_body == nullptr) {
-        IsEnabled = false;
-    }
     // glm::vec2 ScaleXY = { GetGameObject()->GetScale().x, GetGameObject()->GetScale().y };
 
   //  keypoints.push_back(ScaleXY + glm::vec2{ 1,0 });

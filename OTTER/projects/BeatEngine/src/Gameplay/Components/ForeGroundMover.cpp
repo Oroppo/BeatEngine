@@ -7,9 +7,6 @@
 void ForeGroundMover::Awake()
 {
     _body = GetComponent<Gameplay::Physics::RigidBody>();
-    if (_body == nullptr) {
-        IsEnabled = false;
-    }
 
 }
 

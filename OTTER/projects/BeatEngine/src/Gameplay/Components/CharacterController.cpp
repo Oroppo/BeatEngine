@@ -21,9 +21,8 @@
 void CharacterController::Awake()
 {
     _body = GetComponent<Gameplay::Physics::RigidBody>();
-    if (_body == nullptr) {
-        IsEnabled = false;
-    }
+    _body->SetLinearDamping(0);
+    _body->SetAngularDamping(0);
 
 
     SFXS->SetVolume("event:/Coin Pickup", 0.25f);
@@ -63,13 +62,13 @@ CharacterController::Sptr CharacterController::FromJson(const nlohmann::json & b
     CharacterController::Sptr result = std::make_shared<CharacterController>();
     return result;
 }
+using namespace Gameplay::Physics;
 
-
- void CharacterController::OnEnteredTrigger(const std::shared_ptr<Gameplay::Physics::TriggerVolume>& trigger) {
+ void CharacterController::OnEnteredTrigger(const TriggerVolume::Sptr trigger) {
 
 }
 
-void CharacterController::OnTriggerVolumeEntered(const std::shared_ptr<Gameplay::Physics::RigidBody>&body) {
+void CharacterController::OnTriggerVolumeEntered(const RigidBody::Sptr body) {
     //i hate this 
     //std::cout << "Trigger coord = " << body->GetGameObject()->GetPosition().z << " Player coord = " << GetGameObject()->GetPosition().z << std::endl;
     LOG_INFO("Body has entered our trigger volume: {}", body->GetGameObject()->Name);
@@ -154,7 +153,7 @@ void CharacterController::OnTriggerVolumeEntered(const std::shared_ptr<Gameplay:
     GetGameObject()->GetScene()->FindObjectByName("HUD Score Text")->Get<GuiText>()->SetText(stringScore);
 }
 
-void CharacterController::OnTriggerVolumeLeaving(const std::shared_ptr<Gameplay::Physics::RigidBody>&body) {
+void CharacterController::OnTriggerVolumeLeaving(const RigidBody::Sptr body) {
     //player is no longer on platform
     _LastBodyCollided = nullptr;
     LOG_INFO("Body has left our trigger volume: {}", body->GetGameObject()->Name);
@@ -215,9 +214,9 @@ void CharacterController::AirControl(char Direction) {
  
    
 }
- std::vector  <Gameplay::Physics::RigidBody::Sptr>* CharacterController::GetBeatGemsUsed() {
+ std::vector<RigidBody::Sptr> CharacterController::GetBeatGemsUsed() {
   // std::vector  <Gameplay::Physics::RigidBody::Wptr>* CharacterController::GetBeatGemsUsed() {
-        return &BeatGemsUsed;
+        return BeatGemsUsed;
 }
 void CharacterController::CoyoteTime(float dt) {
     if ((_OnPlatform == false)&&(_PlatformName!="BeatGem") && (_PlatformName != "CD") && (_PlatformName != "Vinyl") &&(_CoyoteTimeUsed==false)) {
@@ -235,12 +234,14 @@ void CharacterController::CoyoteTime(float dt) {
     }
 }
 void CharacterController::Update(float deltaTime) {
+
     std::cout << _OnPlatform << std::endl;
     _GemJumpTimer = GetGameObject()->GetScene()->FindObjectByName("GameManager")->Get<BeatTimer>()->GetBeatTime();
     glm::vec3 CurrentPosition = GetGameObject()->GetPosition();
     bool _A = InputEngine::IsKeyDown(GLFW_KEY_A);
     bool _D = InputEngine::IsKeyDown(GLFW_KEY_D);
     bool _W = InputEngine::IsKeyDown(GLFW_KEY_SPACE);
+
     _body->GetGameObject()->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
    //animations 
 
@@ -302,11 +303,12 @@ void CharacterController::Update(float deltaTime) {
     if (GetGameObject()->GetPosition().z <= -14.5f)
     {
         SFXS->PlayEvent("event:/Death");
-    
-          RespawnBeatGems(BeatGemsUsed);
         
-      
+        //broken so disabling for now
+        RespawnBeatGems(BeatGemsUsed);
+
         // Activate GameOver U.I. When the player dies!
+        
         //GetGameObject()->GetScene()->FindObjectByName("GameOver Dimmed Background")->Get<GuiPanel>()->IsEnabled = (GetGameObject()->GetScene()->FindObjectByName("GameOver Dimmed Background")->Get<GuiPanel>()->IsEnabled) = true;
         //GetGameObject()->GetScene()->FindObjectByName("GameOver Text")->Get<GuiPanel>()->IsEnabled = (GetGameObject()->GetScene()->FindObjectByName("GameOver Text")->Get<GuiPanel>()->IsEnabled) = true;
         //GetGameObject()->GetScene()->FindObjectByName("GameOver Score Breakdown")->Get<GuiPanel>()->IsEnabled = GetGameObject()->GetScene()->FindObjectByName("GameOver Score Breakdown")->Get<GuiPanel>()->IsEnabled = true;
@@ -319,7 +321,6 @@ void CharacterController::Update(float deltaTime) {
         score = 0;
         _body->SetLinearVelocity(glm::vec3(0.0f, 0.0f, 0.0f));
 
-        
 
         Application& app = Application::Get();
         //Change this to GameOver.Json once it exists :^)

@@ -111,7 +111,7 @@ void MainMenuScene::_CreateScene()
 
 	bool loadScene = false;
 	// For now we can use a toggle to generate our scene vs load from file
-	if (loadScene && std::filesystem::exists("scene.json")) {
+	if (loadScene && std::filesystem::exists("MainMenu.json")) {
 
 		//NOTE This method of Scene loading is prone to breaking! 
 		//For future me, if you ever have trouble loading this way, 
@@ -119,62 +119,23 @@ void MainMenuScene::_CreateScene()
 		//Scene::Sptr scene = Scene::FromJson( /*FilenameHere*/ );
 		//app.LoadScene(scene);
 
-		app.LoadScene("scene.json");
+		app.LoadScene("MainMenu.json");
 	}
 	else {
 		Scene::Sptr scene = std::make_shared<Scene>();
 
-		ShaderProgram::Sptr reflectiveShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
+		//ShaderProgram::Sptr basicShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
+		//	{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
+		//	{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_blinn_phong_textured.glsl" }
+		//});
+		//basicShader->SetDebugName("Blinn-phong");
+
+		// Basic gbuffer generation with no vertex manipulation
+		ShaderProgram::Sptr deferredForward = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
-			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_environment_reflective.glsl" }
+			{ ShaderPartType::Fragment, "shaders/fragment_shaders/deferred_forward.glsl" }
 		});
-		reflectiveShader->SetDebugName("Reflective");
-
-
-		ShaderProgram::Sptr basicShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
-			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
-			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_blinn_phong_textured.glsl" }
-		});
-		basicShader->SetDebugName("Blinn-phong");
-
-
-		ShaderProgram::Sptr specShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
-			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
-			{ ShaderPartType::Fragment, "shaders/fragment_shaders/textured_specular.glsl" }
-		});
-		specShader->SetDebugName("Textured-Specular");
-
-		ShaderProgram::Sptr foliageShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
-			{ ShaderPartType::Vertex, "shaders/vertex_shaders/foliage.glsl" },
-			{ ShaderPartType::Fragment, "shaders/fragment_shaders/screendoor_transparency.glsl" }
-		});
-		foliageShader->SetDebugName("Foliage");
-
-
-		ShaderProgram::Sptr toonShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
-			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
-			{ ShaderPartType::Fragment, "shaders/fragment_shaders/toon_shading.glsl" }
-		});
-		toonShader->SetDebugName("Toon Shader");
-
-
-		ShaderProgram::Sptr displacementShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
-			{ ShaderPartType::Vertex, "shaders/vertex_shaders/displacement_mapping.glsl" },
-			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_tangentspace_normal_maps.glsl" }
-		});
-		displacementShader->SetDebugName("Displacement Mapping");
-
-		ShaderProgram::Sptr tangentSpaceMapping = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
-			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
-			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_tangentspace_normal_maps.glsl" }
-		});
-		tangentSpaceMapping->SetDebugName("Tangent Space Mapping");
-
-		ShaderProgram::Sptr multiTextureShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
-			{ ShaderPartType::Vertex, "shaders/vertex_shaders/vert_multitextured.glsl" },
-			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_multitextured.glsl" }
-		});
-		multiTextureShader->SetDebugName("Multitexturing");
+		deferredForward->SetDebugName("Deferred - GBuffer Generation");
 
 
 		MeshResource::Sptr monkeyMesh = ResourceManager::CreateAsset<MeshResource>("Monkey.obj");
@@ -220,7 +181,7 @@ void MainMenuScene::_CreateScene()
 		Font::Sptr FontVCR = ResourceManager::CreateAsset<Font>("fonts/VCR.ttf", 16.f);
 		FontVCR->Bake();
 
-		Material::Sptr UIMat = ResourceManager::CreateAsset<Material>(basicShader);
+		Material::Sptr UIMat = ResourceManager::CreateAsset<Material>(deferredForward);
 		{
 			UIMat->Name = "UIButton";
 			UIMat->Set("u_Material.Diffuse", StartTex);
@@ -239,7 +200,7 @@ void MainMenuScene::_CreateScene()
 			rot->SetRotationSpeed({0,0,8});
 			//cam->SetOrthoEnabled(true);
 			//cam->SetOrthoVerticalScale(19.0f);
-			//cam->SetFovRadians(105.f);
+			cam->SetFovRadians(45.f);
 			//cam->SetNearPlane(0.3);
 
 			// Make sure that the camera is set as the scene's main camera!
@@ -378,16 +339,22 @@ void MainMenuScene::_CreateScene()
 
 		
 
-		GameObject::Sptr MenuParent = scene->CreateGameObject("INTERACTABLE MENU ITEMS");
-		{	
-			MenuParent->AddChild(PlayButton);
-			MenuParent->AddChild(OptionsButton);
-			MenuParent->AddChild(MusicButton);
-			MenuParent->AddChild(CreditsButton);
-			MenuParent->AddChild(QuitButton);
-
-			MenuParent->Add<InteractableMenu>();
-		}
+		//GameObject::Sptr MenuParent = scene->CreateGameObject("INTERACTABLE MENU ITEMS");
+		//{		
+		//	//Even Parents must own a RectTransform :) 
+		//	RectTransform::Sptr transform = MenuParent->Add<RectTransform>();
+		//	transform->SetPosition({ 0, 0 });
+		//	transform->SetRotationDeg(0);
+		//	transform->SetMin({ 0, 0 });
+		//
+		//	MenuParent->AddChild(PlayButton);
+		//	MenuParent->AddChild(OptionsButton);
+		//	MenuParent->AddChild(MusicButton);
+		//	MenuParent->AddChild(CreditsButton);
+		//	MenuParent->AddChild(QuitButton);
+		//
+		//	MenuParent->Add<InteractableMenu>();
+		//}
 
 
 		
@@ -398,9 +365,9 @@ void MainMenuScene::_CreateScene()
 		GuiBatcher::SetDefaultBorderRadius(8);
 
 		// Save the asset manifest for all the resources we just loaded
-		ResourceManager::SaveManifest("scene-manifest.json");
+		ResourceManager::SaveManifest("MainMenu-manifest.json");
 		// Save the scene to a JSON file
-		scene->Save("scene.json");
+		scene->Save("MainMenu.json");
 
 		// Send the scene to the application
 		app.LoadScene(scene);

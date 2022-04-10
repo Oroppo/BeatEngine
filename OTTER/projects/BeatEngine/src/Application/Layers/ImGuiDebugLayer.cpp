@@ -15,6 +15,7 @@
 #include "../Windows/DebugWindow.h"
 #include "../Windows/GBufferPreviews.h"
 #include "../Windows/PostProcessingSettingsWindow.h"
+#include "FMOD/AudioEngine.h"
 
 #include "Graphics/DebugDraw.h"
 
@@ -303,7 +304,10 @@ void ImGuiDebugLayer::_RenderGameWindow()
 		// Save scene so it can be restored when exiting play mode
 		if (!scene->IsPlaying) {
 			_backupState = scene->ToJson();
+
 		}
+
+		AudioEngine::GetContextBanks()->PlayEvent("event:/Music");
 
 		// Toggle state
 		scene->IsPlaying = !scene->IsPlaying;

@@ -13,6 +13,7 @@ public:
 	typedef std::shared_ptr<LevelMover> Sptr;
 
 	LevelMover();
+	LevelMover(int travelTime);
 	virtual ~LevelMover();
 	virtual void OnLoad() override;
 

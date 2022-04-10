@@ -289,8 +289,9 @@ namespace Gameplay {
 		/// <param name="component">A raw pointer to the component to remove (should be called from IComponent destructor)</param>
 		/// <returns>True if the element was removed, false if not</returns>
 		inline void Remove(const IComponent* component) {
-			if (_Components.size() == 0) return;
-
+			//changed from 0 to 1 for testing
+			//if (_Components.empty()) return;
+			
 			// Make sure the component's type was one that was registered
 			LOG_ASSERT(_TypeLoadRegistry[component->_realType] != nullptr, "You must register component types before creating them!");
 
@@ -305,6 +306,7 @@ namespace Gameplay {
 			if (it != componentStore.end()) {
 				componentStore.erase(it);
 			}
+			return;
 		}
 	};
 }

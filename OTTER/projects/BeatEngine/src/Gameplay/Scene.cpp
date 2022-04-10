@@ -107,7 +107,7 @@ namespace Gameplay {
 	}
 
 	void Scene::RemoveGameObject(const GameObject::Sptr& object) {
-		_deletionQueue.push_back(object);
+		_deletionQueue.push_back(std::move(object));
 		for (const auto& child : object->_children) {
 			RemoveGameObject(child);
 		}

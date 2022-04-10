@@ -12,7 +12,8 @@ class InteractableMenu : public Gameplay::IComponent {
 public:
 	//engine stuffs
 	typedef std::shared_ptr<InteractableMenu> Sptr;
-	InteractableMenu();
+	InteractableMenu(int _MenuIndex);
+	InteractableMenu() = default;
 	virtual ~InteractableMenu();
 	virtual void Awake() override;
 	virtual void Update(float deltaTime) override;
@@ -24,10 +25,12 @@ public:
 	static InteractableMenu::Sptr FromJson(const nlohmann::json& blob);
 
 	std::vector<Gameplay::GameObject::Sptr> GetMenuItems();
+	void HandleSelection();
 
 
 private:
 	std::vector<Gameplay::GameObject::Sptr> _MenuItems;
 	int _selection=0;
+	int _MenuIndex = 0;
 	
 };

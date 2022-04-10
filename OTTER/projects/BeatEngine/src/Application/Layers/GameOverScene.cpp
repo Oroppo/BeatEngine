@@ -111,7 +111,7 @@ void GameOverScene::_CreateScene()
 
 	bool loadScene = false;
 	// For now we can use a toggle to generate our scene vs load from file
-	if (loadScene && std::filesystem::exists("scene.json")) {
+	if (loadScene && std::filesystem::exists("GameOver.json")) {
 
 		//NOTE This method of Scene loading is prone to breaking! 
 		//For future me, if you ever have trouble loading this way, 
@@ -119,75 +119,15 @@ void GameOverScene::_CreateScene()
 		//Scene::Sptr scene = Scene::FromJson( /*FilenameHere*/ );
 		//app.LoadScene(scene);
 
-		app.LoadScene("scene.json");
+		app.LoadScene("GameOver.json");
 	}
 	else {
 		Scene::Sptr scene = std::make_shared<Scene>();
-
-		ShaderProgram::Sptr reflectiveShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
-			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
-			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_environment_reflective.glsl" }
-		});
-		reflectiveShader->SetDebugName("Reflective");
-
-
 		ShaderProgram::Sptr basicShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
 			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_blinn_phong_textured.glsl" }
 		});
 		basicShader->SetDebugName("Blinn-phong");
-
-
-		ShaderProgram::Sptr specShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
-			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
-			{ ShaderPartType::Fragment, "shaders/fragment_shaders/textured_specular.glsl" }
-		});
-		specShader->SetDebugName("Textured-Specular");
-
-		ShaderProgram::Sptr foliageShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
-			{ ShaderPartType::Vertex, "shaders/vertex_shaders/foliage.glsl" },
-			{ ShaderPartType::Fragment, "shaders/fragment_shaders/screendoor_transparency.glsl" }
-		});
-		foliageShader->SetDebugName("Foliage");
-
-
-		ShaderProgram::Sptr toonShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
-			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
-			{ ShaderPartType::Fragment, "shaders/fragment_shaders/toon_shading.glsl" }
-		});
-		toonShader->SetDebugName("Toon Shader");
-
-
-		ShaderProgram::Sptr displacementShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
-			{ ShaderPartType::Vertex, "shaders/vertex_shaders/displacement_mapping.glsl" },
-			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_tangentspace_normal_maps.glsl" }
-		});
-		displacementShader->SetDebugName("Displacement Mapping");
-
-		ShaderProgram::Sptr tangentSpaceMapping = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
-			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
-			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_tangentspace_normal_maps.glsl" }
-		});
-		tangentSpaceMapping->SetDebugName("Tangent Space Mapping");
-
-		ShaderProgram::Sptr multiTextureShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
-			{ ShaderPartType::Vertex, "shaders/vertex_shaders/vert_multitextured.glsl" },
-			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_multitextured.glsl" }
-		});
-		multiTextureShader->SetDebugName("Multitexturing");
-
-
-		MeshResource::Sptr monkeyMesh = ResourceManager::CreateAsset<MeshResource>("Monkey.obj");
-
-
-		Texture2D::Sptr    boxTexture = ResourceManager::CreateAsset<Texture2D>("textures/box-diffuse.png");
-		Texture2D::Sptr    boxSpec = ResourceManager::CreateAsset<Texture2D>("textures/box-specular.png");
-		Texture2D::Sptr    monkeyTex = ResourceManager::CreateAsset<Texture2D>("textures/monkey-uvMap.png");
-		Texture2D::Sptr    leafTex = ResourceManager::CreateAsset<Texture2D>("textures/leaves.png");
-		leafTex->SetMinFilter(MinFilter::Nearest);
-		leafTex->SetMagFilter(MagFilter::Nearest);
-
-
 
 		Texture1D::Sptr toonLut = ResourceManager::CreateAsset<Texture1D>("luts/toon-1D.png");
 		toonLut->SetWrap(WrapMode::ClampToEdge);
@@ -240,7 +180,7 @@ void GameOverScene::_CreateScene()
 			rot->SetRotationSpeed({0,0,8});
 			//cam->SetOrthoEnabled(true);
 			//cam->SetOrthoVerticalScale(19.0f);
-			//cam->SetFovRadians(105.f);
+			cam->SetFovRadians(45.f);
 			//cam->SetNearPlane(0.3);
 
 			// Make sure that the camera is set as the scene's main camera!
@@ -298,9 +238,7 @@ void GameOverScene::_CreateScene()
 			panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 			panel->SetBorderRadius(0);
 			panel->IsEnabled = true;
-
 		}
-
 
 		GameObject::Sptr QuitButton = scene->CreateGameObject("GameOver Quit Button");
 		{//Quit
@@ -352,10 +290,15 @@ void GameOverScene::_CreateScene()
 
 		GameObject::Sptr MenuParent = scene->CreateGameObject("INTERACTABLE MENU ITEMS");
 		{	
+			RectTransform::Sptr transform = MenuParent->Add<RectTransform>();
+			transform->SetPosition({ 0, 0 });
+			transform->SetRotationDeg(0);
+			transform->SetMin({ 0, 0 });
+
 			MenuParent->AddChild(ContinueButton);
 			MenuParent->AddChild(QuitButton);
 
-			MenuParent->Add<InteractableMenu>();
+			MenuParent->Add<InteractableMenu>(1);
 		}
 
 
@@ -367,9 +310,9 @@ void GameOverScene::_CreateScene()
 		GuiBatcher::SetDefaultBorderRadius(8);
 
 		// Save the asset manifest for all the resources we just loaded
-		ResourceManager::SaveManifest("scene-manifest.json");
+		ResourceManager::SaveManifest("GameOver-manifest.json");
 		// Save the scene to a JSON file
-		scene->Save("scene.json");
+		scene->Save("GameOver.json");
 
 		// Send the scene to the application
 		app.LoadScene(scene);

@@ -40,6 +40,24 @@ LevelMover::LevelMover() :
 
 { }
 
+LevelMover::LevelMover(int travelTime) :
+    IComponent(),
+    _segmentIndex(0),
+    _TravelTime(travelTime),
+    _startTime(0.f),
+    _timeStored(0.f),
+    keyframe(0.f),
+    _speed(1.0f),
+    _journeyLength(0.f),
+
+    _timer(1.2f),
+    ObjY(0.0f),
+    ObjZ(0.0f),
+    ObjX(0.0f),
+    _switchIndex(true)
+
+{ }
+
 LevelMover::~LevelMover() = default;
 
 LevelMover::Sptr LevelMover::FromJson(const nlohmann::json & blob) {
@@ -93,8 +111,8 @@ void LevelMover::Update(float deltaTime)
     Gameplay::GameObject::Sptr context = GetGameObject()->SelfRef();
     if (GetGameObject()->GetPosition().x <= -25.f && !inTrigger) {
         auto BeatGemsUsed = GetGameObject()->GetScene()->FindObjectByName("Character/Player")->Get<CharacterController>()->GetBeatGemsUsed();
-        if (GetGameObject()->Has<BeatGem>()&& !BeatGemsUsed->empty()) {
-          BeatGemsUsed->pop_back();
+        if (GetGameObject()->Has<BeatGem>()&& !BeatGemsUsed.empty()) {
+          BeatGemsUsed.pop_back();
         }
         GetGameObject()->GetScene()->RemoveGameObject(context);
     }

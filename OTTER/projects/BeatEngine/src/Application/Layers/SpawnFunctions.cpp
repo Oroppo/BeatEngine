@@ -92,7 +92,7 @@ void SpawnFunctions::SpawnTutorialSign(Gameplay::Scene::Sptr scene, Gameplay::Me
 		TutorialSign->SetRotation(rot);
 		TutorialSign->SetScale(scale);
 
-		TutorialSign->Add<LevelMover>();
+		TutorialSign->Add<LevelMover>(3);
 
 		// Create and attach a renderer for the monkey
 		RenderComponent::Sptr renderer = TutorialSign->Add<RenderComponent>();
@@ -101,43 +101,6 @@ void SpawnFunctions::SpawnTutorialSign(Gameplay::Scene::Sptr scene, Gameplay::Me
 
 		// Add a dynamic rigid body to this monkey
 		RigidBody::Sptr physics = TutorialSign->Add<RigidBody>(RigidBodyType::Kinematic);
-		//physics->AddCollider(BoxCollider::Create(glm::vec3(1.0f, 1.0f, 1.0f)));
-
-
-		// FIX THIS //
-		ICollider::Sptr Box1 = physics->AddCollider(BoxCollider::Create(glm::vec3(0.87f, 0.5f, 0.4f)));
-		Box1->SetPosition(glm::vec3(0.f, 0.f, 0.f));
-		Box1->SetScale(glm::vec3(1, 1, 1));
-
-		//if (parent != nullptr) {
-		//	parent->AddChild(Startplatform);
-		//}
-	}
-
-}
-
-void SpawnFunctions::SpawnTutorialSign2(Gameplay::Scene::Sptr scene, Gameplay::MeshResource::Sptr Mesh, Gameplay::Material::Sptr Material, std::string ObjName = "DeezNuts",
-	glm::vec3 pos = glm::vec3(-10.900f, 5.610f, -4.920f), glm::vec3 rot = glm::vec3(180.0f, 0.0f, 180.0f),
-	glm::vec3 scale = glm::vec3(0.350f, 0.350f, 0.350f)) {
-
-	// Tutorial Stuff
-
-	GameObject::Sptr TutorialSign2 = scene->CreateGameObject(ObjName);
-	{
-		// Set position in the scene
-		TutorialSign2->SetPostion(pos);
-		TutorialSign2->SetRotation(rot);
-		TutorialSign2->SetScale(scale);
-
-		TutorialSign2->Add<LevelMover>();
-
-		// Create and attach a renderer for the monkey
-		RenderComponent::Sptr renderer = TutorialSign2->Add<RenderComponent>();
-		renderer->SetMesh(Mesh);
-		renderer->SetMaterial(Material);
-
-		// Add a dynamic rigid body to this monkey
-		RigidBody::Sptr physics = TutorialSign2->Add<RigidBody>(RigidBodyType::Kinematic);
 		//physics->AddCollider(BoxCollider::Create(glm::vec3(1.0f, 1.0f, 1.0f)));
 
 

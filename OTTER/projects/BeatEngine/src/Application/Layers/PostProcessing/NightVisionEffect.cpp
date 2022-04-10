@@ -19,6 +19,8 @@ NightVisionEffect::NightVisionEffect(bool defaultLut) :
 		{ ShaderPartType::Fragment, "shaders/fragment_shaders/post_effects/Night_Vision.glsl" }
 	});
 
+	Enabled = false;
+
 }
 
 NightVisionEffect::~NightVisionEffect() = default;

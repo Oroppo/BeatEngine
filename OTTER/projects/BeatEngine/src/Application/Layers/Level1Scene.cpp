@@ -102,9 +102,9 @@ Level1Scene::~Level1Scene() = default;
 
 void Level1Scene::OnAppLoad(const nlohmann::json & config) {
 	_CreateScene();
+
+
 }
-
-
 
 void Level1Scene::_CreateScene()
 {
@@ -115,8 +115,8 @@ void Level1Scene::_CreateScene()
 
 	bool loadScene = false;
 	// For now we can use a toggle to generate our scene vs load from file
-	if (loadScene && std::filesystem::exists("scene.json")) {
-		app.LoadScene("scene.json");
+	if (loadScene && std::filesystem::exists("Level1.json")) {
+		app.LoadScene("Level1.json");
 	}
 	else {
 		 Scene::Sptr scene = std::make_shared<Scene>();
@@ -127,18 +127,18 @@ void Level1Scene::_CreateScene()
 		});
 		reflectiveShader->SetDebugName("Reflective");
 	*/
-		/*
+		
 		 ShaderProgram::Sptr basicShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
 			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_blinn_phong_textured.glsl" }
 		});
 		basicShader->SetDebugName("Blinn-phong");
-		*/
-		//ShaderProgram::Sptr AnimatedShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
-		//	{ ShaderPartType::Vertex, "shaders/geometry_shader/Animation.glsl" },
-		//	{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_blinn_phong_textured.glsl" }
-		//});
-		//basicShader->SetDebugName("Animated Object Material");
+
+		ShaderProgram::Sptr AnimatedShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
+			{ ShaderPartType::Vertex, "shaders/geometry_shader/Animation.glsl" },
+			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_blinn_phong_textured.glsl" }
+		});
+		basicShader->SetDebugName("Animated Object Material");
 
 		// Basic gbuffer generation with no vertex manipulation
 		ShaderProgram::Sptr deferredForward = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
@@ -146,19 +146,12 @@ void Level1Scene::_CreateScene()
 			{ ShaderPartType::Fragment, "shaders/fragment_shaders/deferred_forward.glsl" }
 		});
 		deferredForward->SetDebugName("Deferred - GBuffer Generation");
-	/*
+	
 		 ShaderProgram::Sptr specShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
 			{ ShaderPartType::Fragment, "shaders/fragment_shaders/textured_specular.glsl" }
 		});
 		specShader->SetDebugName("Textured-Specular");
-	*/	
-
-		 ShaderProgram::Sptr foliageShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
-			{ ShaderPartType::Vertex, "shaders/vertex_shaders/foliage.glsl" },
-			{ ShaderPartType::Fragment, "shaders/fragment_shaders/deferred_forward.glsl" }
-		});
-		foliageShader->SetDebugName("Foliage");
 		
 	/*
 		 ShaderProgram::Sptr toonShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
@@ -207,7 +200,7 @@ void Level1Scene::_CreateScene()
 		toonLut->SetWrap(WrapMode::ClampToEdge);
 		
 		
-		 TextureCube::Sptr testCubemap = ResourceManager::CreateAsset<TextureCube>("cubemaps/skybox/skybox.png");
+		 TextureCube::Sptr testCubemap = ResourceManager::CreateAsset<TextureCube>("cubemaps/city/skybox.jpg");
 		
 		 ShaderProgram::Sptr      skyboxShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/skybox_vert.glsl" },
@@ -225,16 +218,15 @@ void Level1Scene::_CreateScene()
 		 Texture2D::Sptr normalMapDefault = ResourceManager::CreateAsset<Texture2D>(singlePixelDescriptor);
 		 normalMapDefault->LoadData(1, 1, PixelFormat::RGB, PixelType::Float, normalMapDefaultData);
 
-		 float solidGrey[3] = { 0.5f, 0.5f, 0.5f };
-		 float solidBlack[3] = { 0.0f, 0.0f, 0.0f };
-		 float solidWhite[3] = { 1.0f, 1.0f, 1.0f };
-
+		 float solidBlack[3] = { 0.5f, 0.5f, 0.5f };
 		 Texture2D::Sptr solidBlackTex = ResourceManager::CreateAsset<Texture2D>(singlePixelDescriptor);
 		 solidBlackTex->LoadData(1, 1, PixelFormat::RGB, PixelType::Float, solidBlack);
 
+		 float solidGrey[3] = { 0.0f, 0.0f, 0.0f };
 		 Texture2D::Sptr solidGreyTex = ResourceManager::CreateAsset<Texture2D>(singlePixelDescriptor);
 		 solidGreyTex->LoadData(1, 1, PixelFormat::RGB, PixelType::Float, solidGrey);
 
+		 float solidWhite[3] = { 1.0f, 1.0f, 1.0f };
 		 Texture2D::Sptr solidWhiteTex = ResourceManager::CreateAsset<Texture2D>(singlePixelDescriptor);
 		 solidWhiteTex->LoadData(1, 1, PixelFormat::RGB, PixelType::Float, solidWhite);
 
@@ -349,8 +341,6 @@ void Level1Scene::_CreateScene()
 		 Texture2D::Sptr TexContinueButton = ResourceManager::CreateAsset<Texture2D>("textures/GUI/BContinue.png");
 		 Texture2D::Sptr TexPauseMenu = ResourceManager::CreateAsset<Texture2D>("textures/GUI/PauseMenuBG.png");
 		 Texture2D::Sptr TexDimmedBG = ResourceManager::CreateAsset<Texture2D>("textures/GUI/DimBG.png");
-		 Texture2D::Sptr TexScoreBreakdown = ResourceManager::CreateAsset<Texture2D>("textures/GUI/ScoreBreakdown.png");
-		 Texture2D::Sptr TexGameOverText = ResourceManager::CreateAsset<Texture2D>("textures/GUI/GameOverText.png");
 		 Texture2D::Sptr TexMovementTutorial = ResourceManager::CreateAsset<Texture2D>("textures/GUI/Movement.png");
 		 Texture2D::Sptr TexWallJumpTutorial = ResourceManager::CreateAsset<Texture2D>("textures/GUI/WallJump.png");
 		 Texture2D::Sptr TexBeatGemTutorial = ResourceManager::CreateAsset<Texture2D>("textures/GUI/BeatGems.png");
@@ -683,14 +673,14 @@ void Level1Scene::_CreateScene()
 		// Set up the scene's camera
 		GameObject::Sptr camera = scene->CreateGameObject("Main Camera");
 		{
-			camera->SetPostion(glm::vec3(-1.880, -5.320, 0.700));
+			camera->SetPostion(glm::vec3(-1.410, -3.500, 2.450));
 			camera->LookAt(glm::vec3(0.0f));
-			camera->SetRotation(glm::vec3(90, 0, 0));
+			camera->SetRotation(glm::vec3(-103, 180, -180));
 
 			Camera::Sptr cam = camera->Add<Camera>();
 			//cam->SetOrthoEnabled(true);
 			//cam->SetOrthoVerticalScale(19.0f);
-			cam->SetFovRadians(1.39626f);
+			cam->SetFovRadians(105.f);
 			//cam->SetNearPlane(0.3);
 
 			// Make sure that the camera is set as the scene's main camera!
@@ -734,7 +724,7 @@ void Level1Scene::_CreateScene()
 		Give these Parents for Foreground/Background Blocks if we have enough objects to do that with!
 		SpawnFunctions::SpawnBackGroundCar(scene, Car1Mesh, Car1Material, "Car1", glm::vec3(14.870f, 7.80f, 2.7f), glm::vec3(90.0f, 0.0f, -90.0f), glm::vec3(0.250f, 0.250f, 0.250f));
 		SpawnFunctions::SpawnBackGroundCar(scene, SemiTruckMesh, SemiTruckMaterial, "Semi1", glm::vec3(28.870f, 7.80f, 2.7f), glm::vec3(90.0f, 0.0f, -90.0f), glm::vec3(0.250f, 0.250f, 0.250f));
-		SpawnFunctions::SpawnForeGroundCar(scene, Car1Mesh, Car1Material, "Car2", glm::vec3(-9.970f, 0.470f, -2.990f), glm::vec3(90.0f, 0.0f, 90.0f), glm::vec3(0.250f, 0.250f, 0.250f));
+		SpawnFunctions::SpawnForeGroundCar(scene, Car1Mesh, Car1Material, "Car2", glm::vec3(-9.970f, 0.470f, -1.90f), glm::vec3(90.0f, 0.0f, 90.0f), glm::vec3(0.250f, 0.250f, 0.250f));
 		SpawnFunctions::SpawnForeGroundCar(scene, PickupTruckMesh, PickupTruckMaterial, "Pickup1", glm::vec3(-18.970f, 0.470f, -1.90f), glm::vec3(90.0f, 0.0f, 90.0f), glm::vec3(0.250f, 0.250f, 0.250f));
 		SpawnFunctions::SpawnBackGroundBuilding(scene, KBuilding1Mesh, KBuildingMaterial, "KBuilding1", glm::vec3(-1.0f, 21.880f, -46.040f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.780f, 1.470f, 1.0f));
 		SpawnFunctions::SpawnBackGroundBuilding(scene, KBuilding2Mesh, KBuilding2Material, "KBuilding2", glm::vec3(25.670, 21.880f, -46.040f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.780f, 1.470f, 1.0f));
@@ -752,11 +742,15 @@ void Level1Scene::_CreateScene()
 		SpawnFunctions::SpawnObj(scene, SmallPlatform, SmallPlatformMaterial, "Small Platform", glm::vec3(1.460f, 5.610f, 4.400f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.350f, 0.350f, 0.350f));
 		SpawnFunctions::SpawnObj(scene, SmallPlatform, SmallPlatformMaterial, "Small Platform", glm::vec3(1.320f, 5.610f, -5.530f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.350f, 0.350f, 0.350f));
 		SpawnFunctions::SpawnObj(scene, SmallPlatform, SmallPlatformMaterial, "Small Platform", glm::vec3(4.680f, 5.610f, -4.590f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.350f, 0.350f, 0.350f));
-		SpawnFunctions::SpawnWallJumpBuilding(scene, WallJumpBuilding, WallJumpBuildingMaterial, "Wall Jump", glm::vec3(-0.590f, 5.610f, -0.660f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.070f, 0.090f, 0.090f));
-		SpawnFunctions::SpawnWallJumpSign(scene, WallJumpSign, WallJumpSignMaterial, "Wall Jump", glm::vec3(-0.800f, 5.610f, -0.170f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.070f, 0.090f, 0.090f));
+		SpawnFunctions::SpawnWallJumpBuilding(scene, WallJumpBuilding, WallJumpBuildingMaterial, "WallJump", glm::vec3(-0.590f, 5.610f, -0.660f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.070f, 0.090f, 0.090f));
+		SpawnFunctions::SpawnWallJumpSign(scene, WallJumpSign, WallJumpSignMaterial, "WallJump", glm::vec3(-0.800f, 5.610f, -0.170f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.070f, 0.090f, 0.090f));
 		SpawnFunctions::SpawnGem(scene, BeatGem, BeatGemMaterial, BeatGemOffMaterial, "BeatGem", 4, glm::vec3(-2.410f, 5.610f, -5.460f), glm::vec3(90.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.500f, 0.500f));
 		SpawnFunctions::SpawnCollectable(scene, Vinyl, VinylMaterial, "Vinyl", glm::vec3(1.430f, 5.610f, 4.960f), glm::vec3(90.000f, 0.0f, 90.000f), glm::vec3(1.000f, 1.000f, 1.000f));
 		SpawnFunctions::SpawnStartPlat(scene, StartPlatform, StartPlatformMaterial, "EndPlatform", glm::vec3(9.180f, 5.610f, -9.10f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.350f, 0.350f, 0.350f));
+		SpawnFunctions::SpawnBackGroundCar(scene, Car1Mesh, Car1Material, "Car1", glm::vec3(14.870f, 9.80f, 2.7f), glm::vec3(90.0f, 0.0f, -90.0f), glm::vec3(0.250f, 0.250f, 0.250f));
+		SpawnFunctions::SpawnBackGroundCar(scene, SemiTruckMesh, SemiTruckMaterial, "Semi1", glm::vec3(28.870f, 9.80f, 2.7f), glm::vec3(90.0f, 0.0f, -90.0f), glm::vec3(0.250f, 0.250f, 0.250f));
+		SpawnFunctions::SpawnForeGroundCar(scene, Car1Mesh, Car1Material, "Car2", glm::vec3(-9.970f, 0.470f, -1.90f), glm::vec3(90.0f, 0.0f, 90.0f), glm::vec3(0.250f, 0.250f, 0.250f));
+		SpawnFunctions::SpawnForeGroundCar(scene, PickupTruckMesh, PickupTruckMaterial, "Pickup1", glm::vec3(-18.970f, 0.470f, -1.90f), glm::vec3(90.0f, 0.0f, 90.0f), glm::vec3(0.250f, 0.250f, 0.250f));
 		float adjustment = 30;
 		
 		// 1st Block		
@@ -776,6 +770,35 @@ void Level1Scene::_CreateScene()
 		SpawnFunctions::SpawnCD(scene, CD, CDMaterial, "CD", glm::vec3(-3.770f + adjustment, 5.610f, -3.190f), glm::vec3(90.000f, 0.0f, 90.000f), glm::vec3(1.000f, 1.000f, 1.000f));
 		SpawnFunctions::SpawnCD(scene, CD, CDMaterial, "CD", glm::vec3(-0.620f + adjustment, 5.610f, -2.380f), glm::vec3(90.000f, 0.0f, 90.000f), glm::vec3(1.000f, 1.000f, 1.000f));
 		SpawnFunctions::SpawnCD(scene, CD, CDMaterial, "CD", glm::vec3(2.140f + adjustment, 5.610f, -0.770f), glm::vec3(90.000f, 0.0f, 90.000f), glm::vec3(1.000f, 1.000f, 1.000f));
+
+		
+
+		//// 10th Block
+		//SpawnFunctions::SpawnStartPlat(scene, StartPlatform, StartPlatformMaterial, "StartPlatform", glm::vec3(-15.820f , 5.610f, -9.10f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.350f, 0.350f, 0.350f));
+		//SpawnFunctions::SpawnObj(scene, SmallPlatform, SmallPlatformMaterial, "Small Platform", glm::vec3(-12.500f , 5.610f, -3.520f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.350f, 0.350f, 0.350f));
+		//SpawnFunctions::SpawnObj(scene, SmallPlatform, SmallPlatformMaterial, "Small Platform", glm::vec3(-9.250f , 5.610f, -3.520f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.350f, 0.350f, 0.350f));
+		//SpawnFunctions::SpawnFallingPlat(scene, FallingPlat, PianoMaterial, "FallingPlatform", glm::vec3(-5.870f , 5.610f, -2.670f), glm::vec3(180.000f, 0.0f, 0.0f), glm::vec3(0.350f, 0.350f, 0.350f));
+		//SpawnFunctions::SpawnObj(scene, SmallPlatform, SmallPlatformMaterial, "Small Platform", glm::vec3(-3.500f , 5.610f, 4.630f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.350f, 0.350f, 0.350f));
+		//SpawnFunctions::SpawnObj(scene, SmallPlatform, SmallPlatformMaterial, "Small Platform", glm::vec3(-0.840f , 5.610f, 3.470f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.350f, 0.350f, 0.350f));
+		//SpawnFunctions::SpawnBuilding(scene, Building, BuildingMaterial, "Building", glm::vec3(4.570f , 5.610f, -1.190f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.310f, 0.310f, 0.310f));
+		//SpawnFunctions::SpawnBuilding(scene, Building, BuildingMaterial, "Building", glm::vec3(4.570f , 5.610f, -13.170f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.310f, 0.310f, 0.310f));
+		//SpawnFunctions::SpawnGem(scene, BeatGem, BeatGemMaterial, BeatGemOffMaterial, "BeatGem", 4, glm::vec3(1.390f , 5.610f , 4.040f), glm::vec3(90.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.500f, 0.500f));
+		//SpawnFunctions::SpawnSuperSmallWallJump(scene, SuperSmallWallJump, SuperSmallWallJumpMaterial, "Super Small Wall Jump", glm::vec3(-4.870f , 5.610f, 0.090f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.210f, 1.500f));
+		//SpawnFunctions::SpawnSuperSmallWallJump(scene, SuperSmallWallJump, SuperSmallWallJumpMaterial, "Super Small Wall Jump", glm::vec3(-6.310f , 5.610f, 1.520f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.210f, 1.500f));
+		//SpawnFunctions::SpawnSuperSmallWallJump(scene, SuperSmallWallJump, SuperSmallWallJumpMaterial, "Super Small Wall Jump", glm::vec3(-4.870f , 5.610f, 3.260f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.210f, 1.500f));
+		//SpawnFunctions::SpawnSuperSmallWallJump(scene, SuperSmallWallJump, SuperSmallWallJumpMaterial, "Super Small Wall Jump", glm::vec3(-6.310f , 5.610f, 4.720f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.500f, 0.210f, 1.500f));
+		//SpawnFunctions::SpawnStartPlat(scene, StartPlatform, StartPlatformMaterial, "EndPlatform", glm::vec3(9.180f, 5.610f, -9.10f), glm::vec3(90.0f , 0.0f, 0.0f), glm::vec3(0.350f, 0.350f, 0.350f));
+		//
+		//// CDs for Block 10
+		//SpawnFunctions::SpawnCD(scene, CD, CDMaterial, "CD", glm::vec3(-12.380f , 5.610f, -2.980f), glm::vec3(90.000f, 0.0f, 90.000f), glm::vec3(1.000f, 1.000f, 1.000f));
+		//SpawnFunctions::SpawnCD(scene, CD, CDMaterial, "CD", glm::vec3(-9.160f , 5.610f, -3.070f), glm::vec3(90.000f, 0.0f, 90.000f), glm::vec3(1.000f, 1.000f, 1.000f));
+		//SpawnFunctions::SpawnCD(scene, CD, CDMaterial, "CD", glm::vec3(-5.850f , 5.610f, -2.180f), glm::vec3(90.000f, 0.0f, 90.000f), glm::vec3(1.000f, 1.000f, 1.000f));
+		//SpawnFunctions::SpawnCD(scene, CD, CDMaterial, "CD", glm::vec3(-3.450f , 5.610f, 5.070f), glm::vec3(90.000f, 0.0f, 90.000f), glm::vec3(1.000f, 1.000f, 1.000f));
+		//SpawnFunctions::SpawnCD(scene, CD, CDMaterial, "CD", glm::vec3(-0.860f , 5.610f, 3.940f), glm::vec3(90.000f, 0.0f, 90.000f), glm::vec3(1.000f, 1.000f, 1.000f));
+		//SpawnFunctions::SpawnCD(scene, CD, CDMaterial, "CD", glm::vec3(1.310f , 5.610f, 4.460f), glm::vec3(90.000f, 0.0f, 90.000f), glm::vec3(1.000f, 1.000f, 1.000f));
+		//SpawnFunctions::SpawnCD(scene, CD, CDMaterial, "CD", glm::vec3(8.470f , 5.610f, 2.110f), glm::vec3(90.000f, 0.0f, 90.000f), glm::vec3(1.000f, 1.000f, 1.000f));
+		//SpawnFunctions::SpawnCD(scene, CD, CDMaterial, "CD", glm::vec3(8.470f , 5.610f, -0.010f), glm::vec3(90.000f, 0.0f, 90.000f), glm::vec3(1.000f, 1.000f, 1.000f));
+		//SpawnFunctions::SpawnCD(scene, CD, CDMaterial, "CD", glm::vec3(8.470f , 5.610f, -2.180f), glm::vec3(90.000f, 0.0f, 90.000f), glm::vec3(1.000f, 1.000f, 1.000f));
 
 		Application& app = Application::Get();
 		glm::vec2 windowSize = app.GetWindowSize();
@@ -927,7 +950,7 @@ void Level1Scene::_CreateScene()
 			lightComponent->SetRadius(glm::linearRand(0.1f, 10.0f));
 			lightComponent->SetIntensity(glm::linearRand(1.0f, 2.0f));
 		}*/
-		/*
+
 		// Create some lights for our scene
 		GameObject::Sptr SingleLight = scene->CreateGameObject("SingleLight");
 
@@ -940,26 +963,23 @@ void Level1Scene::_CreateScene()
 		SlightComponent->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 		SlightComponent->SetRadius(30.0f);
 		SlightComponent->SetIntensity(30.0f);
-		*/
-		// Game Currently uses a shadow light (still needs to be fixed)
-		// to use our previous light comment shadow light and uncomment SLight above ^
-		GameObject::Sptr shadowCaster = scene->CreateGameObject("Shadow Light");
+
+	/*	GameObject::Sptr shadowCaster = scene->CreateGameObject("Shadow Light");
 		{
 			// Set position in the scene
-			shadowCaster->SetPostion(glm::vec3(0.240f, -4.119f, 17.150));
-			shadowCaster->SetRotation(glm::vec3(65.0f, 0.0f, 1.0f));
+			shadowCaster->SetPostion(glm::vec3(3.0f, 3.0f, 5.0f)); 
 			shadowCaster->LookAt(glm::vec3(0.0f));
 
 			// Create and attach a renderer for the monkey
 			ShadowCamera::Sptr shadowCam = shadowCaster->Add<ShadowCamera>();
 			shadowCam->SetProjection(glm::perspective(glm::radians(120.0f), 1.0f, 0.1f, 100.0f));
-			//shadowCam->SetShadowIntensity(10.0f);
-		}
+		}*/
+
 
 		GameObject::Sptr BeatBarVinyl = scene->CreateGameObject("Beat Bar Vinyl");
 		{
 			// Set position in the scene
-			BeatBarVinyl->SetPostion(glm::vec3(-1.880f, 0.560f, -4.23f));
+			BeatBarVinyl->SetPostion(glm::vec3(-1.41f, -1.5f, -0.76f));
 			BeatBarVinyl->SetRotation(glm::vec3(0.0f, 0.0f, 90.0f));
 			BeatBarVinyl->SetScale(glm::vec3(0.75f, 0.75f, 0.1f));
 
@@ -975,7 +995,7 @@ void Level1Scene::_CreateScene()
 		GameObject::Sptr BeatBarNeedle = scene->CreateGameObject("Beat Bar Needle");
 		{
 			// Set position in the scene
-			BeatBarNeedle->SetPostion(glm::vec3(0.f, 0.89f, -4.140f));
+			BeatBarNeedle->SetPostion(glm::vec3(0.5f, -0.81f, -0.9f));
 			BeatBarNeedle->SetRotation(glm::vec3(90.0f, 0.0f, 158.0f));
 			BeatBarNeedle->SetScale(glm::vec3(0.2f, 0.2f, 0.2f));
 
@@ -1119,104 +1139,104 @@ void Level1Scene::_CreateScene()
 			}
 		}
 
-		{//Game Over Block
-		
-			GameObject::Sptr GameOverDimBackground = scene->CreateGameObject("GameOver Dimmed Background");
-			{//Dim BG
-		
-				RectTransform::Sptr transform = GameOverDimBackground->Add<RectTransform>();
-				transform->SetPosition({ 0, 0 });
-				transform->SetRotationDeg(0);
-				transform->SetMin({ 0, 0 });
-
-				GuiPanel::Sptr panel = GameOverDimBackground->Add<GuiPanel>(0.5, 0.5, 1920, 1080);
-				panel->SetTexture(TexDimmedBG);
-				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-				panel->SetBorderRadius(0);
-				panel->IsEnabled = false;
-			}
-		
-			GameObject::Sptr GameOverText = scene->CreateGameObject("GameOver Text");
-			{//Game Over Text
-		
-				RectTransform::Sptr transform = GameOverText->Add<RectTransform>();
-				transform->SetPosition({ 0, 0 });
-				transform->SetRotationDeg(0);
-				transform->SetMin({ 0, 0 });
-		
-				GuiPanel::Sptr panel = GameOverText->Add<GuiPanel>(0.5, 0.2, 809, 249);
-				panel->SetTexture(TexGameOverText);
-				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-				panel->SetBorderRadius(0);
-				panel->IsEnabled = false;
-		
-			}
-		
-			GameObject::Sptr GameOverScore = scene->CreateGameObject("GameOver Score Breakdown");
-			{//Score breakdown
-		
-				RectTransform::Sptr transform = GameOverScore->Add<RectTransform>();
-				transform->SetPosition({ 0, 0 });
-				transform->SetRotationDeg(0);
-				transform->SetMin({ 0, 0 });
-		
-				GuiPanel::Sptr panel = GameOverScore->Add<GuiPanel>(0.4, 0.5, 504 * 0.75, 475 * 0.75);
-				panel->SetTexture(TexScoreBreakdown);
-				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-				panel->SetBorderRadius(0);
-				panel->IsEnabled = false;
-		
-			}
-		
-		
-			GameObject::Sptr GameOverQuit = scene->CreateGameObject("GameOver Quit Button");
-			{//Quit
-		
-				RectTransform::Sptr transform = GameOverQuit->Add<RectTransform>();
-				transform->SetPosition({ 0, 0 });
-				transform->SetRotationDeg(0);
-				transform->SetMin({ 0, 0 });
-		
-				GuiPanel::Sptr panel = GameOverQuit->Add<GuiPanel>(0.35, 0.8, 300, 150);
-				panel->SetTexture(TexQuitButton);
-				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-				panel->SetBorderRadius(0);
-				panel->IsEnabled = false;
-		
-			}
-		
-			GameObject::Sptr GameOverContinue = scene->CreateGameObject("GameOver Continue Button");
-			{//Continue Button
-		
-				RectTransform::Sptr transform = GameOverContinue->Add<RectTransform>();
-				transform->SetPosition({ 0, 0 });
-				transform->SetRotationDeg(0);
-				transform->SetMin({ 0, 0 });
-		
-				GuiPanel::Sptr panel = GameOverContinue->Add<GuiPanel>(0.65, 0.8, 300, 150);
-				panel->SetTexture(TexContinueButton);
-				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-				panel->SetBorderRadius(0);
-				panel->IsEnabled = false;
-		
-			}
-
-			GameObject::Sptr GameOverNavigationIcon = scene->CreateGameObject("GameOver Navigation");
-			{//Navigation Buttons
-
-				RectTransform::Sptr transform = GameOverNavigationIcon->Add<RectTransform>();
-				transform->SetPosition({ 0, 0 });
-				transform->SetRotationDeg(0);
-				transform->SetMin({ 0, 0 });
-
-				GuiPanel::Sptr panel = GameOverNavigationIcon->Add<GuiPanel>(0.9, 0.93, 400 * 0.75, 150 * 0.75);
-				panel->SetTexture(TexNavigationLeftRight);
-				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-				panel->SetBorderRadius(0);
-				panel->IsEnabled = false;
-
-			}
-		}
+		//{//Game Over Block
+		//
+		//	GameObject::Sptr GameOverDimBackground = scene->CreateGameObject("GameOver Dimmed Background");
+		//	{//Dim BG
+		//
+		//		RectTransform::Sptr transform = GameOverDimBackground->Add<RectTransform>();
+		//		transform->SetPosition({ 0, 0 });
+		//		transform->SetRotationDeg(0);
+		//		transform->SetMin({ 0, 0 });
+		//
+		//		GuiPanel::Sptr panel = GameOverDimBackground->Add<GuiPanel>(0.5, 0.5, 1920, 1080);
+		//		panel->SetTexture(TexDimmedBG);
+		//		panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+		//		panel->SetBorderRadius(0);
+		//		panel->IsEnabled = false;
+		//	}
+		//
+		//	GameObject::Sptr GameOverText = scene->CreateGameObject("GameOver Text");
+		//	{//Game Over Text
+		//
+		//		RectTransform::Sptr transform = GameOverText->Add<RectTransform>();
+		//		transform->SetPosition({ 0, 0 });
+		//		transform->SetRotationDeg(0);
+		//		transform->SetMin({ 0, 0 });
+		//
+		//		GuiPanel::Sptr panel = GameOverText->Add<GuiPanel>(0.5, 0.2, 809, 249);
+		//		panel->SetTexture(TexGameOverText);
+		//		panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+		//		panel->SetBorderRadius(0);
+		//		panel->IsEnabled = false;
+		//
+		//	}
+		//
+		//	GameObject::Sptr GameOverScore = scene->CreateGameObject("GameOver Score Breakdown");
+		//	{//Score breakdown
+		//
+		//		RectTransform::Sptr transform = GameOverScore->Add<RectTransform>();
+		//		transform->SetPosition({ 0, 0 });
+		//		transform->SetRotationDeg(0);
+		//		transform->SetMin({ 0, 0 });
+		//
+		//		GuiPanel::Sptr panel = GameOverScore->Add<GuiPanel>(0.4, 0.5, 504 * 0.75, 475 * 0.75);
+		//		panel->SetTexture(TexScoreBreakdown);
+		//		panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+		//		panel->SetBorderRadius(0);
+		//		panel->IsEnabled = false;
+		//
+		//	}
+		//
+		//
+		//	GameObject::Sptr GameOverQuit = scene->CreateGameObject("GameOver Quit Button");
+		//	{//Quit
+		//
+		//		RectTransform::Sptr transform = GameOverQuit->Add<RectTransform>();
+		//		transform->SetPosition({ 0, 0 });
+		//		transform->SetRotationDeg(0);
+		//		transform->SetMin({ 0, 0 });
+		//
+		//		GuiPanel::Sptr panel = GameOverQuit->Add<GuiPanel>(0.35, 0.8, 300, 150);
+		//		panel->SetTexture(TexQuitButton);
+		//		panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+		//		panel->SetBorderRadius(0);
+		//		panel->IsEnabled = false;
+		//
+		//	}
+		//
+		//	GameObject::Sptr GameOverContinue = scene->CreateGameObject("GameOver Continue Button");
+		//	{//Continue Button
+		//
+		//		RectTransform::Sptr transform = GameOverContinue->Add<RectTransform>();
+		//		transform->SetPosition({ 0, 0 });
+		//		transform->SetRotationDeg(0);
+		//		transform->SetMin({ 0, 0 });
+		//
+		//		GuiPanel::Sptr panel = GameOverContinue->Add<GuiPanel>(0.65, 0.8, 300, 150);
+		//		panel->SetTexture(TexContinueButton);
+		//		panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+		//		panel->SetBorderRadius(0);
+		//		panel->IsEnabled = false;
+		//
+		//	}
+		//
+		//	GameObject::Sptr GameOverNavigationIcon = scene->CreateGameObject("GameOver Navigation");
+		//	{//Navigation Buttons
+		//
+		//		RectTransform::Sptr transform = GameOverNavigationIcon->Add<RectTransform>();
+		//		transform->SetPosition({ 0, 0 });
+		//		transform->SetRotationDeg(0);
+		//		transform->SetMin({ 0, 0 });
+		//
+		//		GuiPanel::Sptr panel = GameOverNavigationIcon->Add<GuiPanel>(0.9, 0.93, 400 * 0.75, 150 * 0.75);
+		//		panel->SetTexture(TexNavigationLeftRight);
+		//		panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+		//		panel->SetBorderRadius(0);
+		//		panel->IsEnabled = false;
+		//
+		//	}
+		//}
 		
 		//{//Tutorial Blocks
 		//
@@ -1344,9 +1364,9 @@ void Level1Scene::_CreateScene()
 
 
 		// Save the asset manifest for all the resources we just loaded
-		ResourceManager::SaveManifest("scene-manifest.json");
+		ResourceManager::SaveManifest("Level1-manifest.json");
 		// Save the scene to a JSON file
-		scene->Save("scene.json");
+		scene->Save("Level1.json");
 
 		// Send the scene to the application
 		app.LoadScene(scene);

@@ -28,7 +28,13 @@ public:
 	static bool IsKeyDown(int keyCode);
 	static bool IsMouseButtonDown(int button);
 
+#ifdef _DEBUG
 	static const glm::dvec2& GetMousePos();
+#endif
+
+#ifndef _DEBUG
+	static glm::dvec2& GetMousePos();
+#endif
 	static glm::dvec2 GetMouseDelta();
 
 	static void SetCursorMode(CursorMode mode);

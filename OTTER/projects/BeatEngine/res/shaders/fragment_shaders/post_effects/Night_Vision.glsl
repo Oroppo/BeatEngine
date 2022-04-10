@@ -6,13 +6,12 @@ layout(location = 0) out vec3 outColor;
 
 uniform layout(binding = 0) sampler2D s_Image;
 
-//uniform float u_Strength;
-
-float hash(in float n) { return fract(sin(n)*43758.5453123); }
+//Hashing a random Value obfusctaed from a Sin wave
+float hash(in float n) { return fract(sin(n)*56583.342); }
 
 void main() {
+	//scramble texel
 	vec2 u = inUV * 2. - 1.;
-
 
 	vec2 n = u * vec2(u_ScreenSize.x / u_ScreenSize.y, 1.0);
 
@@ -22,8 +21,10 @@ void main() {
 	c += sin(hash(u_Time)) * 0.01;
 	
 	c += hash((hash(n.x) + n.y) * u_Time) * 0.5;
+
 	c *= smoothstep(length(n * n * n * vec2(0.075, 0.4)), 1.0, 0.4);
-    c *= smoothstep(0.001, 3.5, u_Time) * 1.5;
+
+    //c *= smoothstep(0.001, 3.5, u_Time) * 1.5;
 	
 	c = dot(c, vec3(0.2126, 0.7152, 0.0722)) * vec3(0.2, 1.5 - hash(u_Time) * 0.1,0.4);
 	

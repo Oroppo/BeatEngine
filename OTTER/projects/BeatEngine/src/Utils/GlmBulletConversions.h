@@ -7,8 +7,14 @@
 inline glm::vec3& ToGlm(btVector3& value) { return *reinterpret_cast<glm::vec3*>(&value); }
 inline const glm::vec3& ToGlm(const btVector3& value) { return *reinterpret_cast<const glm::vec3*>(&value); }
 
+#ifndef _DEBUG
+inline btVector3& ToBt(const glm::vec3& value) { return btVector3(value.x, value.y, value.z); }
+#endif
+
+#ifdef _DEBUG
 inline btVector3& ToBt(glm::vec3& value) { return *reinterpret_cast<btVector3*>(&value); }
 inline const btVector3& ToBt(const glm::vec3& value) { return *reinterpret_cast<const btVector3*>(&value); }
+#endif
 
 inline glm::quat& ToGlm(btQuaternion& value) { return *reinterpret_cast<glm::quat*>(&value); }
 inline const glm::quat& ToGlm(const btQuaternion& value) { return *reinterpret_cast<const glm::quat*>(&value); }

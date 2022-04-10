@@ -69,7 +69,6 @@
 // Layers
 #include "Layers/RenderLayer.h"
 #include "Layers/InterfaceLayer.h"
-#include "Layers/DefaultSceneLayer.h"
 #include "Layers/LogicUpdateLayer.h"
 #include "Layers/ImGuiDebugLayer.h"
 #include "Layers/InstancedRenderingTestLayer.h"
@@ -115,6 +114,9 @@ void Application::Start(int argCount, char** arguments) {
 	LOG_ASSERT(_singleton == nullptr, "Application has already been started!");
 	_singleton = new Application();
 	_singleton->_Run();
+
+
+
 }
 
 GLFWwindow* Application::GetWindow() { return _window; }
@@ -152,6 +154,7 @@ bool Application::LoadScene(const std::string& path) {
 		LoadScene(scene);
 		return scene != nullptr;
 	}
+	LOG_WARN("Tried to load Scene from path: \"{}\" but it wasn't found!\n ", path);
 	return false;
 }
 
@@ -228,28 +231,29 @@ float Application::keyboard()
 
 	return toggleKeys;
 }
-//_layers.push_back(std::make_shared<DefaultSceneLayer>());
-	//_layers.push_back(std::make_shared<PauseMenuScene>());
-	//_layers.push_back(std::make_shared<GameOverScene>());
-	//_layers.push_back(std::make_shared<Level1Scene>());
-	//_layers.push_back(std::make_shared<MainMenuScene>());
-	//_layers.push_back(std::make_shared<InstancedRenderingTestLayer>());
+
 void Application::_Run()
 {
 	// TODO: Register layers
 	_layers.push_back(std::make_shared<GLAppLayer>());
+	_layers.push_back(std::make_shared<Level1Scene>());
+	//_layers.push_back(std::make_shared<PauseMenuScene>());
+	_layers.push_back(std::make_shared<GameOverScene>());
+	//if we're in release mode render the Menus
+
 	_layers.push_back(std::make_shared<LogicUpdateLayer>());
 	_layers.push_back(std::make_shared<RenderLayer>());
 	_layers.push_back(std::make_shared<ParticleLayer>());
 	_layers.push_back(std::make_shared<PostProcessingLayer>());
 	_layers.push_back(std::make_shared<InterfaceLayer>());
-
+#ifndef _DEBUG
+	_layers.push_back(std::make_shared<MainMenuScene>());
+#endif // _DEBUG
 	// If we're in editor mode, we add all the editor layers
 	if (_isEditor) {
 		_layers.push_back(std::make_shared<ImGuiDebugLayer>());
 	}
 
-	_layers.push_back(std::make_shared<Level1Scene>());
 
 
 	// Either load the settings, or use the defaults
@@ -274,17 +278,7 @@ void Application::_Run()
 
 	// Done loading, app is now running!
 	_isRunning = true;
-	
-	//Audio Engine Init
 	AudioEngine::init();
-
-	ToneFire::FMODStudio* Studio = AudioEngine::GetContext();
-	ToneFire::StudioSound* Banks = AudioEngine::GetContextBanks();
-
-	Banks->LoadEvent("event:/Music");
-	Banks->SetEventPosition("event:/Music", FMOD_VECTOR{ -10.270f, 5.710f, -3.800f });
-	Banks->SetVolume("event:/Music", 0.8f);
-	
 
 	// Infinite loop as long as the application is running
 	while (_isRunning) {
@@ -330,15 +324,17 @@ void Application::_Run()
 			_RenderScene(); 
 			_PostRender();
 		}
+
+
 		//Update Our Audio Engine
-		if (IsFocused) {
-			Studio->Update();
-		}
+		//if (IsFocused) {
+		AudioEngine::GetContext()->Update();
+		//}
 		
 
-		if (!_currentScene->IsPlaying == true) {
-			Banks->PlayEvent("event:/Music");
-		}
+		//if (!_currentScene->IsPlaying == true) {
+		//	Banks->PlayEvent("event:/Music");
+		//}
 
 		// Store timing for next loop
 		lastFrame = thisFrame;
@@ -409,6 +405,15 @@ void Application::_RegisterClasses()
 }
 
 void Application::_Load() {
+
+#ifdef _DEBUG
+	_isEditor = true;
+#endif
+
+#ifndef _DEBUG
+	_isEditor = false;
+#endif
+
 	for (const auto& layer : _layers) {
 		if (layer->Enabled && *(layer->Overrides & AppLayerFunctions::OnAppLoad)) {
 			layer->OnAppLoad(_appSettings);
