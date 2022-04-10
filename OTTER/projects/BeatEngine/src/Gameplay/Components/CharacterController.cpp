@@ -99,7 +99,7 @@ void CharacterController::OnTriggerVolumeEntered(const std::shared_ptr<Gameplay:
         _VinylScore++;
         SFXS->PlayEvent("event:/Coin Pickup");
         // body->GetGameObject()->GetScene()->RemoveGameObject(body->GetGameObject()->SelfRef());
-        body->GetGameObject()->SetPostion(glm::vec3(0.0f, -100.0f, 0.0f));
+        body->GetGameObject()->GetParent()->SetPostion(glm::vec3(0.0f, -100.0f, 0.0f));
     }
 
 
@@ -110,7 +110,7 @@ void CharacterController::OnTriggerVolumeEntered(const std::shared_ptr<Gameplay:
         _CDScore++;
         SFXS->PlayEvent("event:/Coin Pickup");
         // body->GetGameObject()->GetScene()->RemoveGameObject(body->GetGameObject()->SelfRef());
-        body->GetGameObject()->SetPostion(glm::vec3(0.0f, -100.0f, 0.0f));
+        body->GetGameObject()->GetParent()->SetPostion(glm::vec3(0.0f, -100.0f, 0.0f));
     }
 
     std::string name = body->GetGameObject()->Name;
@@ -122,7 +122,7 @@ void CharacterController::OnTriggerVolumeEntered(const std::shared_ptr<Gameplay:
         if ((_GemJumpTimer > 0.6 * beatNumber - 0.6) && (_GemJumpTimer < 0.6 * beatNumber)) {
             _canJump = true;
             BeatGemsUsed.push_back(body);
-            body->GetGameObject()->Get<RenderComponent>()->IsEnabled = false;
+            body->GetGameObject()->GetParent()->Get<RenderComponent>()->IsEnabled = false;
             _BeatGemHits++;
             score += 500;
             SFXS->PlayEvent("event:/Coin Pickup");

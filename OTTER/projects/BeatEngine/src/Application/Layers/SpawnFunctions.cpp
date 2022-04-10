@@ -178,7 +178,6 @@ void SpawnFunctions::SpawnWallJumpBuilding(Gameplay::Scene::Sptr scene, Gameplay
 		//physics->AddCollider(BoxCollider::Create(glm::vec3(1.0f, 1.0f, 1.0f)));
 
 
-		// FIX THIS //
 		ICollider::Sptr CollectCollider = physics->AddCollider(BoxCollider::Create(glm::vec3(0.970f, 3.600f, 1.000f)));
 		CollectCollider->SetPosition(glm::vec3(0.020f, 1.600f, -0.110f));
 		CollectCollider->SetScale(glm::vec3(1, 1, 1));
@@ -345,20 +344,20 @@ void SpawnFunctions::SpawnGem(Gameplay::Scene::Sptr scene, Gameplay::MeshResourc
 
 		//Add Components
 		Gem->Add<LevelMover>();
-		//Gem->Add<RotatingBehaviour>();
+		Gem->Add<RotatingBehaviour>();
 		Gem->Add<MaterialSwap>(BeatNum);
-		Gem->Add<BeatGem>(BeatNum);
+		
 		// Create and attach a renderer for the Object
 		RenderComponent::Sptr renderer = Gem->Add<RenderComponent>();
 		renderer->SetMesh(Mesh);
 		renderer->SetMaterial(MaterialOff);
 
-		RigidBody::Sptr physics = Gem->Add<RigidBody>(RigidBodyType::Kinematic);
-		physics->AddCollider(BoxCollider::Create(glm::vec3(0.5f, 0.5f, 0.5f)))->SetPosition({ 0.0f,0.0f,3.0f });
-		physics->SetCollisionGroup(1);
+		//RigidBody::Sptr physics = Gem->Add<RigidBody>(RigidBodyType::Kinematic);
+		//physics->AddCollider(BoxCollider::Create(glm::vec3(0.5f, 0.5f, 0.5f)))->SetPosition({ 0.0f,0.0f,3.0f });
+		//physics->SetCollisionGroup(1);
 		//TriggerVolume::Sptr volume = Gem->Add<TriggerVolume>();
 		//volume->AddCollider(BoxCollider::Create(glm::vec3(0.5f, 0.5f, 0.5f)));
-
+		RigidBody::Sptr physics = Gem->Add<RigidBody>(RigidBodyType::Kinematic);
 		ParticleSystem::Sptr particles = Gem->Add<ParticleSystem>();
 
 		//For Ryan Particles. DO. Pls. MonkE.
@@ -372,6 +371,15 @@ void SpawnFunctions::SpawnGem(Gameplay::Scene::Sptr scene, Gameplay::MeshResourc
 		//RigidBody::Sptr physics = Startplatform->Add<RigidBody>(RigidBodyType::Kinematic);
 		//physics->AddCollider(BoxCollider::Create(glm::vec3(0.5f, 0.5f, 0.5f)));
 		// For Gem Colliders X = left/right Y = Up/Down Z = Towards/Away
+	}
+
+	GameObject::Sptr GemBody = scene->CreateGameObject(ObjName); {
+		GemBody->SetPostion(pos);
+		GemBody->Add<LevelMover>();
+		GemBody->AddParent(Gem);
+		RigidBody::Sptr physics = GemBody->Add<RigidBody>(RigidBodyType::Kinematic);
+		physics->AddCollider(BoxCollider::Create(glm::vec3(0.5f, 0.5f, 0.5f)))->SetPosition({ 0.0f,3.0f,0.0f });
+		GemBody->Add<BeatGem>(BeatNum);
 	}
 }
 // For spawning Vinyls
@@ -389,18 +397,17 @@ void SpawnFunctions::SpawnCollectable(Gameplay::Scene::Sptr scene, Gameplay::Mes
 		Collectable->SetScale(scale);
 
 		//Add Components
-		Collectable->Add<LevelMover>();
-		//Collectable->Add<VinylAnim>();
-		//Collectable->Add<RotatingBehaviour>();
-
+		Collectable->Add<LevelMover>();		
+		Collectable->Add<RotatingBehaviour>();
+		Collectable->Add<VinylAnim>();
 		// Create and attach a renderer for the Object
 		RenderComponent::Sptr renderer = Collectable->Add<RenderComponent>();
 		renderer->SetMesh(Mesh);
 		renderer->SetMaterial(Material);
-
+	
 		RigidBody::Sptr physics = Collectable->Add<RigidBody>(RigidBodyType::Kinematic);
-		physics->AddCollider(BoxCollider::Create(glm::vec3(0.5f, 0.5f, 0.5f)))->SetPosition({ 3.0f,0.5f,0 });
-		physics->SetCollisionGroup(1);
+	//physics->AddCollider(BoxCollider::Create(glm::vec3(0.5f, 0.5f, 0.5f)))->SetPosition({ 3.0f,0.5f,0 });
+	//physics->SetCollisionGroup(1);
 		// Add a dynamic rigid body to this object
 	
 		// For Colliders X is towards Cam, Y is up/down , Z is Left and Right
@@ -409,6 +416,15 @@ void SpawnFunctions::SpawnCollectable(Gameplay::Scene::Sptr scene, Gameplay::Mes
 	//	TriggerVolume::Sptr volume = Collectable->Add<TriggerVolume>();
 	//	volume->AddCollider(BoxCollider::Create(glm::vec3(0.5f, 0.5f, 0.5f)));
 		//volume->SetPostion(glm::vec3(0.0f, 0.5f, 0.0f));
+	
+	}
+	GameObject::Sptr VinylBody = scene->CreateGameObject(ObjName); {
+		VinylBody->Add<VinylAnim>();
+		VinylBody->SetPostion(pos);
+		VinylBody->Add<LevelMover>();
+		VinylBody->AddParent(Collectable);
+		RigidBody::Sptr physics = VinylBody->Add<RigidBody>(RigidBodyType::Kinematic);
+		physics->AddCollider(BoxCollider::Create(glm::vec3(0.5f, 0.5f, 0.5f)))->SetPosition({ 0.0f,3.0f,0.0f });
 	}
 }
 // For spawning CD Collectables
@@ -427,27 +443,26 @@ void SpawnFunctions::SpawnCD(Gameplay::Scene::Sptr scene, Gameplay::MeshResource
 
 		//Add Components
 		CD->Add<LevelMover>();
-		//CD->Add<RotatingBehaviourCD>();
+		CD->Add<RotatingBehaviourCD>();
 
 		// Create and attach a renderer for the Object
 		RenderComponent::Sptr renderer = CD->Add<RenderComponent>();
 		renderer->SetMesh(Mesh);
 		renderer->SetMaterial(Material);
-
 		RigidBody::Sptr physics = CD->Add<RigidBody>(RigidBodyType::Kinematic);
-		physics->AddCollider(BoxCollider::Create(glm::vec3(0.5f, 0.5f, 0.5f)))->SetPosition({ 3.0f,0.5f,0.0f });
-		physics->SetCollisionGroup(1);
+		//RigidBody::Sptr physics = CD->Add<RigidBody>(RigidBodyType::Kinematic);
+		//physics->AddCollider(BoxCollider::Create(glm::vec3(0.5f, 0.5f, 0.5f)))->SetPosition({ 3.0f,0.5f,0.0f });
+		//physics->SetCollisionGroup(1);
 		//TriggerVolume::Sptr volume = CD->Add<TriggerVolume>();
 		//volume->AddCollider(BoxCollider::Create(glm::vec3(0.5f, 0.5f, 0.5f)));
-		/*
-		GameObject::Sptr CDChild = scene->CreateGameObject(ObjName);
-		RenderComponent::Sptr renderer = CD->Add<RenderComponent>();
-		renderer->SetMesh(Mesh);
-		renderer->SetMaterial(Material);
-		CDChild->Add<RotatingBehaviourCD>();
-		CDChild->SetPostion(glm::vec3(0.0f,0.0f,0.0f));
-		CDChild->SetRotation(glm::vec3(0.0f, 0.0f, 0.0f));
-		*/
+	}
+
+	GameObject::Sptr CDBody = scene->CreateGameObject(ObjName); {
+		CDBody->SetPostion(pos);
+		CDBody->Add<LevelMover>();
+		CDBody->AddParent(CD);
+		RigidBody::Sptr physics = CDBody->Add<RigidBody>(RigidBodyType::Kinematic);
+		physics->AddCollider(BoxCollider::Create(glm::vec3(0.5f, 0.5f, 0.5f)))->SetPosition({ 0.0f,3.0f,0.0f });
 	}
 }
 // For spawning Wall Jump Platforms
