@@ -73,7 +73,7 @@ public:
 
 	void Update();
 	void Render();
-
+	void SetGravity(glm::vec3);
 	void Reset();
 
 	void SetMaxParticles(uint32_t value);

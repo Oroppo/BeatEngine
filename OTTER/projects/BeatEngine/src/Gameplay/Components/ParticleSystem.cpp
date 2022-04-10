@@ -190,7 +190,9 @@ void ParticleSystem::Update()
 	_currentVertexBuffer = _currentFeedbackBuffer;
 	_currentFeedbackBuffer = (_currentFeedbackBuffer + 1) & 0x01;
 }
-
+void ParticleSystem::SetGravity(glm::vec3 grav) {
+	_gravity = grav;
+}
 void ParticleSystem::Render()
 {
 	// Make sure that we've actually initialized our stuff

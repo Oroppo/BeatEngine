@@ -358,7 +358,7 @@ void SpawnFunctions::SpawnGem(Gameplay::Scene::Sptr scene, Gameplay::MeshResourc
 		//TriggerVolume::Sptr volume = Gem->Add<TriggerVolume>();
 		//volume->AddCollider(BoxCollider::Create(glm::vec3(0.5f, 0.5f, 0.5f)));
 		RigidBody::Sptr physics = Gem->Add<RigidBody>(RigidBodyType::Kinematic);
-		ParticleSystem::Sptr particles = Gem->Add<ParticleSystem>();
+		//ParticleSystem::Sptr particles = Gem->Add<ParticleSystem>();
 
 		//For Ryan Particles. DO. Pls. MonkE.
 		//particles->AddEmitter();
