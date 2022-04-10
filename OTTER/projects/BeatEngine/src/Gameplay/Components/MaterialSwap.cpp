@@ -39,12 +39,12 @@ void MaterialSwap::Swap(){
 			_renderer->SetMaterial(OffMaterial);
 		}
 		if (beatNumber != 1) {
-			if ((beatTime >= (0.6 * (beatNumber - 1)) - 0.6) && (beatTime <= 0.6 * (beatNumber - 1))) {
+			if ((beatTime >= (0.6 * (beatNumber - 1.f)) - 0.6) && (beatTime <= 0.6 * (beatNumber - 1.f))) {
 				_renderer->SetMaterial(AnticipationMaterial);
 			}
 		}
 		else if (beatNumber == 1) {
-			if ((beatTime >=( 0.6 * (beatNumber +3) - 0.6)) && (beatTime <= 0.6 * (beatNumber +3))) {
+			if ((beatTime >=( 0.6 * (beatNumber +3.f) - 0.6)) && (beatTime <= 0.6 * (beatNumber +3.f))) {
 				_renderer->SetMaterial(AnticipationMaterial);
 			}
 		}
@@ -52,6 +52,7 @@ void MaterialSwap::Swap(){
 
 void MaterialSwap ::Awake() {
 	_renderer = GetComponent<RenderComponent>();
+	beatNumber = 4;
 }
 
 void MaterialSwap ::RenderImGui() { }

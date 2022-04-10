@@ -28,8 +28,8 @@ public:
 	virtual nlohmann::json ToJson() const override;
 	static CharacterController::Sptr FromJson(const nlohmann::json& blob);
 	virtual void OnEnteredTrigger(const std::shared_ptr<Gameplay::Physics::TriggerVolume> trigger);
-	virtual void OnTriggerVolumeEntered(const std::shared_ptr<Gameplay::Physics::RigidBody> body);
-	virtual void OnTriggerVolumeLeaving(const std::shared_ptr<Gameplay::Physics::RigidBody> body);
+	virtual void OnTriggerVolumeEntered(const std::shared_ptr<Gameplay::Physics::RigidBody>& trigger);
+	virtual void OnTriggerVolumeLeaving(const std::shared_ptr<Gameplay::Physics::RigidBody>& trigger);
 	void RespawnBeatGems(const std::vector<Gameplay::Physics::RigidBody::Sptr> trigger);
 	std::vector<Gameplay::Physics::RigidBody::Sptr> GetBeatGemsUsed();
 	void AirControl(char);

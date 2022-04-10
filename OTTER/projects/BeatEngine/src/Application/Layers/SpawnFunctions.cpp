@@ -292,7 +292,7 @@ void SpawnFunctions::SpawnStartPlat(Gameplay::Scene::Sptr scene, Gameplay::MeshR
 	}
 }
 // For spawning beat gems
-void SpawnFunctions::SpawnGem(Gameplay::Scene::Sptr scene, Gameplay::MeshResource::Sptr Mesh, Gameplay::Material::Sptr MaterialOn, Gameplay::Material::Sptr MaterialOff, std::string ObjName = "DeezNuts",int BeatNum=0,
+void SpawnFunctions::SpawnGem(Gameplay::Scene::Sptr scene, Gameplay::MeshResource::Sptr Mesh, Gameplay::Material::Sptr MaterialOn, Gameplay::Material::Sptr MaterialOff, std::string ObjName = "DeezNuts",int BeatNum=4,
 	glm::vec3 pos = glm::vec3(-10.900f, 5.610f, -4.920f), glm::vec3 rot = glm::vec3(180.0f, 0.0f, 180.0f),
 	glm::vec3 scale = glm::vec3(0.350f, 0.350f, 0.350f)) {
 	// Tutorial Stuff
@@ -309,7 +309,8 @@ void SpawnFunctions::SpawnGem(Gameplay::Scene::Sptr scene, Gameplay::MeshResourc
 		Gem->Add<LevelMover>();
 		Gem->Add<RotatingBehaviour>();
 		Gem->Add<MaterialSwap>(BeatNum);
-		
+
+		Gem->Add<BeatGem>(BeatNum);
 		// Create and attach a renderer for the Object
 		RenderComponent::Sptr renderer = Gem->Add<RenderComponent>();
 		renderer->SetMesh(Mesh);
@@ -342,7 +343,7 @@ void SpawnFunctions::SpawnGem(Gameplay::Scene::Sptr scene, Gameplay::MeshResourc
 		GemBody->AddParent(Gem);
 		RigidBody::Sptr physics = GemBody->Add<RigidBody>(RigidBodyType::Kinematic);
 		physics->AddCollider(BoxCollider::Create(glm::vec3(0.5f, 0.5f, 0.5f)))->SetPosition({ 0.0f,3.0f,0.0f });
-		GemBody->Add<BeatGem>(BeatNum);
+		GemBody->Add<BeatGem>(4);
 	}
 }
 // For spawning Vinyls

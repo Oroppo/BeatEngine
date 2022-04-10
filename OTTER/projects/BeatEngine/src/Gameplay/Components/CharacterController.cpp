@@ -68,22 +68,25 @@ using namespace Gameplay::Physics;
 
 }
 
-void CharacterController::OnTriggerVolumeEntered(const RigidBody::Sptr body) {
+     void CharacterController::OnTriggerVolumeEntered(const std::shared_ptr<RigidBody>& body) {
     //i hate this 
     //std::cout << "Trigger coord = " << body->GetGameObject()->GetPosition().z << " Player coord = " << GetGameObject()->GetPosition().z << std::endl;
-    LOG_INFO("Body has entered our trigger volume: {}", body->GetGameObject()->Name);
-    if (_LastBodyCollided != body->GetGameObject()->SelfRef()) {
-        _PlatformName = body->GetGameObject()->Name;
+         if (body->GetGameObject()->GetParent()) {
+             _PlatformName = body->GetGameObject()->GetParent()->Name;
+        }
+         _PlatformName = body->GetGameObject()->Name;
+    if (_LastBodyCollided != body->GetGameObject()->SelfRef()) {   
         _LastBodyCollided = body->GetGameObject()->SelfRef();
-
-
-
         if ((_PlatformName != "Vinyl") && (_PlatformName != "CD") && (_PlatformName != "BeatGem")) {
             _isJumping = false;
             _canJump = true;
         }
     }
 
+    LOG_INFO("Body has entered our trigger volume: {}", _PlatformName);
+    if ((_PlatformName == "Vinyl") || (_PlatformName == "CD") || (_PlatformName == "BeatGem")) {
+        _CoyoteTimeUsed = true;
+    }
     if ((_PlatformName != "BeatGem") && (_PlatformName != "CD") && (_PlatformName != "Vinyl")) {
         speed = 3.0f;
         _OnPlatform = true;
@@ -114,10 +117,11 @@ void CharacterController::OnTriggerVolumeEntered(const RigidBody::Sptr body) {
 
     std::string name = body->GetGameObject()->Name;
     //beat gem logic
-    if ((name[0] == 'B') && (name[1] == 'e') && (name[2] == 'a') && (name[3] == 't') && (name[4] == 'G')) {
-        _PlatformName = "BeatGem";
+    if (_PlatformName=="BeatGem") {
         int beatNumber = body->GetGameObject()->Get<BeatGem>()->GetBeatNum();
-        body->GetGameObject()->Get<BeatGem>()->GetBeatNum();
+       //  beatNumber = 4;
+        std::cout << beatNumber << std::endl;
+        //body->GetGameObject()->Get<BeatGem>()->GetBeatNum();
         if ((_GemJumpTimer > 0.6 * beatNumber - 0.6) && (_GemJumpTimer < 0.6 * beatNumber)) {
             _canJump = true;
             BeatGemsUsed.push_back(body);
@@ -153,7 +157,7 @@ void CharacterController::OnTriggerVolumeEntered(const RigidBody::Sptr body) {
     GetGameObject()->GetScene()->FindObjectByName("HUD Score Text")->Get<GuiText>()->SetText(stringScore);
 }
 
-void CharacterController::OnTriggerVolumeLeaving(const RigidBody::Sptr body) {
+void CharacterController::OnTriggerVolumeLeaving(const std::shared_ptr<RigidBody>& body) {
     //player is no longer on platform
     _LastBodyCollided = nullptr;
     LOG_INFO("Body has left our trigger volume: {}", body->GetGameObject()->Name);
@@ -167,9 +171,7 @@ void CharacterController::OnTriggerVolumeLeaving(const RigidBody::Sptr body) {
         _canJump = true;
         _CoyoteTimeUsed = true;
     }
-    if ((_PlatformName == "Vinyl") || (_PlatformName == "CD")|| (_PlatformName == "BeatGem")) {
-        _CoyoteTimeUsed = true;
-    }
+   
     //to make player move faster on wall jumps so that they are eZ
     if ((_PlatformName == "Wall Jump") || (_PlatformName == "Small Wall Jump") || (_PlatformName == "Super Small Wall Jump")) {
         speed = 4.0f;
@@ -221,7 +223,7 @@ void CharacterController::AirControl(char Direction) {
 void CharacterController::CoyoteTime(float dt) {
     if ((_OnPlatform == false)&&(_PlatformName!="BeatGem") && (_PlatformName != "CD") && (_PlatformName != "Vinyl") &&(_CoyoteTimeUsed==false)) {
        
-        if (_CoyoteTimeTimer > 0.25f) {
+        if (_CoyoteTimeTimer > 0.15f) {
             _CoyoteTimeUsed = true;
             _canJump = false;
             _CoyoteTimeTimer = 0.0f;
@@ -234,8 +236,7 @@ void CharacterController::CoyoteTime(float dt) {
     }
 }
 void CharacterController::Update(float deltaTime) {
-
-    std::cout << _OnPlatform << std::endl;
+    std::cout << _GemJumpTimer << std::endl;
     _GemJumpTimer = GetGameObject()->GetScene()->FindObjectByName("GameManager")->Get<BeatTimer>()->GetBeatTime();
     glm::vec3 CurrentPosition = GetGameObject()->GetPosition();
     bool _A = InputEngine::IsKeyDown(GLFW_KEY_A);

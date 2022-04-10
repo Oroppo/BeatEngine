@@ -240,14 +240,14 @@ void Application::_Run()
 #endif
 
 #ifndef _DEBUG
-	_isEditor = false;
+	_isEditor = true;
 #endif
 
 	// TODO: Register layers
 	_layers.push_back(std::make_shared<GLAppLayer>());
+	_layers.push_back(std::make_shared<GameOverScene>());
 	_layers.push_back(std::make_shared<Level1Scene>());
 	//_layers.push_back(std::make_shared<PauseMenuScene>());
-	_layers.push_back(std::make_shared<GameOverScene>());
 	//if we're in release mode render the Menus
 
 	_layers.push_back(std::make_shared<LogicUpdateLayer>());
