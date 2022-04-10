@@ -233,7 +233,16 @@ float Application::keyboard()
 }
 
 void Application::_Run()
-{
+{	
+
+#ifdef _DEBUG
+	_isEditor = true;
+#endif
+
+#ifndef _DEBUG
+	_isEditor = false;
+#endif
+
 	// TODO: Register layers
 	_layers.push_back(std::make_shared<GLAppLayer>());
 	_layers.push_back(std::make_shared<Level1Scene>());
@@ -248,7 +257,8 @@ void Application::_Run()
 	_layers.push_back(std::make_shared<InterfaceLayer>());
 #ifndef _DEBUG
 	_layers.push_back(std::make_shared<MainMenuScene>());
-#endif // _DEBUG
+#endif 
+	// _DEBUG
 	// If we're in editor mode, we add all the editor layers
 	if (_isEditor) {
 		_layers.push_back(std::make_shared<ImGuiDebugLayer>());
@@ -406,13 +416,7 @@ void Application::_RegisterClasses()
 
 void Application::_Load() {
 
-#ifdef _DEBUG
-	_isEditor = true;
-#endif
 
-#ifndef _DEBUG
-	_isEditor = false;
-#endif
 
 	for (const auto& layer : _layers) {
 		if (layer->Enabled && *(layer->Overrides & AppLayerFunctions::OnAppLoad)) {
