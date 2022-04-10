@@ -25,5 +25,5 @@ public:
 	//only purpose of this class is to give the character access to the 
 	int GetBeatNum();
 protected:
-	int beatNum=4;
+	int beatNum;
 };

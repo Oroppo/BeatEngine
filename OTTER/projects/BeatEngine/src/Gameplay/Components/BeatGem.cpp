@@ -15,11 +15,14 @@ void BeatGem::RenderImGui() {
 
 nlohmann::json BeatGem::ToJson() const {
     return {
-    };
+        {"beatNum",beatNum}
+         };
 }
 BeatGem::Sptr BeatGem::FromJson(const nlohmann::json& blob) {
     BeatGem::Sptr result = std::make_shared<BeatGem>();
+    result->beatNum = blob["beatNum"];
     return result;
+      
 }
 // Constructor Initializes Values for LERP and Set Position but Only SetPosition is being used atm
 BeatGem::BeatGem()  : IComponent()
