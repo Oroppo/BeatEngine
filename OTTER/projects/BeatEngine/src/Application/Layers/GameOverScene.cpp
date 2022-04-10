@@ -133,7 +133,7 @@ void GameOverScene::_CreateScene()
 		toonLut->SetWrap(WrapMode::ClampToEdge);
 
 
-		TextureCube::Sptr testCubemap = ResourceManager::CreateAsset<TextureCube>("cubemaps/city/skybox.jpg");
+		TextureCube::Sptr testCubemap = ResourceManager::CreateAsset<TextureCube>("cubemaps/skybox/skybox.png");
 
 		ShaderProgram::Sptr      skyboxShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/skybox_vert.glsl" },
