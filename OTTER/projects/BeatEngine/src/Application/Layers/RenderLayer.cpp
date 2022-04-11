@@ -54,7 +54,6 @@ void RenderLayer::OnPreRender()
 	// Clear the framebuffer. Note that this also binds and sets the viewport
 	_ClearFramebuffer(_primaryFBO, colors, 4);
 
-
 	// Grab shorthands to the camera and shader from the scene
 	Camera::Sptr camera = app.CurrentScene()->MainCamera;
 
