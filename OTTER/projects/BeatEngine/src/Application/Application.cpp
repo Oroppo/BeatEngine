@@ -240,7 +240,7 @@ void Application::_Run()
 #endif
 
 #ifndef _DEBUG
-	_isEditor = true;
+	_isEditor = false;
 #endif
 
 	// TODO: Register layers
