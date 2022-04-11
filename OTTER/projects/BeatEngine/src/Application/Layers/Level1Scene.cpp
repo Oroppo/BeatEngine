@@ -889,17 +889,17 @@ void Level1Scene::_CreateScene()
 			RigidBody::Sptr ballphysics = DiscoBall->Add<RigidBody>(RigidBodyType::Dynamic);
 		}
 
-		GameObject::Sptr particles = scene->CreateGameObject("Particles");
+		GameObject::Sptr Orbparticles = scene->CreateGameObject("OrbParticles");
 		{
-			particles->SetPostion({ -2.0f, 0.0f, 2.0f });
+			Orbparticles->SetPostion({ -2.0f, 0.0f, 2.0f });
 
-			ParticleSystem::Sptr particleManager = particles->Add<ParticleSystem>();
+			ParticleSystem::Sptr particleManager = Orbparticles->Add<ParticleSystem>();
 			particleManager->Atlas = particleTex;
 			particleManager->SetGravity(glm::vec3(0.0f, 0.0f, 0.0f));
 			ParticleSystem::ParticleData emitter;
 			
 			emitter.Type = ParticleType::SphereEmitter;
-			emitter.TexID = 3;
+			emitter.TexID = 2;
 			emitter.Position = glm::vec3(0.0f);
 			emitter.Color = glm::vec4(0.42f, 0.05f, 0.68f, 1.0f);
 			emitter.Lifetime = 0.0f;
@@ -908,8 +908,30 @@ void Level1Scene::_CreateScene()
 			emitter.SphereEmitterData.LifeRange = { 1.0f, 4.0f };
 			emitter.SphereEmitterData.Radius = 0.05f;
 			emitter.SphereEmitterData.SizeRange = { 0.5f, 1.5f };
-			particles->AddParent(DiscoBall);
+			Orbparticles->AddParent(DiscoBall);
 			particleManager->AddEmitter(emitter);
+		}
+
+		GameObject::Sptr Rainparticles = scene->CreateGameObject("RainParticles");
+		{
+			Rainparticles->SetPostion({ -2.0f, 0.0f, 2.0f });
+
+			ParticleSystem::Sptr particleManager2 = Rainparticles->Add<ParticleSystem>();
+			particleManager2->Atlas = particleTex;
+			particleManager2->SetGravity(glm::vec3(0.0f, 0.0f, -45.0f));
+			ParticleSystem::ParticleData emitter2;
+
+			emitter2.Type = ParticleType::BoxEmitter;
+			emitter2.TexID = 3;
+			emitter2.Position = glm::vec3(0.0f,0.0f,5.0f);
+			emitter2.Color = glm::vec4(1.f, 1.f, 1.f, 1.0f);
+			emitter2.Lifetime = 0.0f;
+			emitter2.BoxEmitterData.Timer= 1.0f / 750.0f;
+			emitter2.BoxEmitterData.Velocity = glm::vec3(1.0f,2.f,-1.f);
+			emitter2.BoxEmitterData.LifeRange = { 2.5f, 3.0f };
+			emitter2.BoxEmitterData.HalfExtents = glm::vec3(-9.f,1.0f,0.5);
+			emitter2.BoxEmitterData.SizeRange = { 0.5f, 1.5f };
+			particleManager2->AddEmitter(emitter2);
 		}
 
 

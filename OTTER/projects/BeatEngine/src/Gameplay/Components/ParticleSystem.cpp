@@ -9,7 +9,7 @@
 ParticleSystem::ParticleSystem() :
 	IComponent(),
 	_hasInit(false),
-	_maxParticles(1000),
+	_maxParticles(5000),
 	_numParticles(0),
 	_particleBuffers(),
 	_feedbackBuffers(),
@@ -560,7 +560,7 @@ ParticleSystem::Sptr ParticleSystem::FromJson(const nlohmann::json& blob) {
 	if (blob.contains("emitters") && blob["emitters"].is_array()) {
 		for (const auto& data : blob["emitters"]) {
 			ParticleData emitter;
-			emitter.Type = JsonParseEnum(ParticleType, blob, "type", ParticleType::SphereEmitter);
+			emitter.Type = JsonParseEnum(ParticleType, blob, "type", ParticleType::BoxEmitter);
 			emitter.TexID = JsonGet(data, "tex_id", 0);
 			emitter.Position = JsonGet(data, "position", glm::vec3(0.0f));
 			emitter.Color = JsonGet(data, "color", glm::vec4(1.0f));
