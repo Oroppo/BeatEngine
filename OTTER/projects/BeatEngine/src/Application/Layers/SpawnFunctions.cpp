@@ -163,7 +163,7 @@ void SpawnFunctions::SpawnWallJumpSign(Gameplay::Scene::Sptr scene, Gameplay::Me
 		// Set position in the scene
 		WallJumpSign->SetPostion(pos);
 		WallJumpSign->SetRotation(rot);
-		WallJumpSign->SetScale(scale);
+		WallJumpSign->SetScale({0.070f, 0.090f, 0.150f});
 
 		WallJumpSign->Add<LevelMover>();
 

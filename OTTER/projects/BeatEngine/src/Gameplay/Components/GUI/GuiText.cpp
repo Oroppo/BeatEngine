@@ -122,7 +122,10 @@ nlohmann::json GuiText::ToJson() const {
 		{ "color", _color },
 		{ "text",  _text },
 		{ "scale", _textScale },
-		{ "font",  _font  ? _font->GetGUID().str() : "null" }
+		{ "font",  _font  ? _font->GetGUID().str() : "null" },
+		{ "perX", _percentOfScreenX},
+		{ "perY", _percentOfScreenY},
+		{ "scale", _scale},
 	};
 }
 
@@ -145,5 +148,8 @@ GuiText::Sptr GuiText::FromJson(const nlohmann::json& blob) {
 	result->_text      = JsonGet<std::wstring>(blob, "text", LR"()");
 	result->_font      = ResourceManager::Get<Font>(Guid(JsonGet<std::string>(blob, "font", "null")));
 	result->SetFont(result->_font);
+	result->_percentOfScreenX = JsonGet(blob, "perX", result->_percentOfScreenX);
+	result->_percentOfScreenY = JsonGet(blob, "perY", result->_percentOfScreenY);
+	result->_scale = JsonGet(blob, "scale", result->_scale);
 	return result;
 }

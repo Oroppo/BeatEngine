@@ -316,7 +316,7 @@ void CharacterController::Update(float deltaTime) {
         //GetGameObject()->GetScene()->FindObjectByName("GameOver Score Text")->Get<GuiText>()->IsEnabled = GetGameObject()->GetScene()->FindObjectByName("GameOver Score Text")->Get<GuiText>()->IsEnabled = true;
 
         // when the player dies set the position, score and velocity back to a default value
-        GetGameObject()->SetPostion(glm::vec3(-15.820f, 5.710f, 0.0f));
+     //   GetGameObject()->SetPostion(glm::vec3(-15.820f, 5.710f, 0.0f));
         score = 0;
         _body->SetLinearVelocity(glm::vec3(0.0f, 0.0f, 0.0f));
 

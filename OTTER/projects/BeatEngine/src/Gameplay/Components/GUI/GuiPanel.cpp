@@ -103,7 +103,11 @@ nlohmann::json GuiPanel::ToJson() const {
 	return {
 		{ "color",   _color },
 		{ "border",  _borderRadius },
-		{ "texture", _texture ? _texture->GetGUID().str() : "null" }
+		{ "texture", _texture ? _texture->GetGUID().str() : "null" },
+		{ "perX", _percentOfScreenX },
+		{ "perY", _percentOfScreenY },
+		{ "width", _width },
+		{ "height", _height }
 	};
 }
 
@@ -113,6 +117,10 @@ GuiPanel::Sptr GuiPanel::FromJson(const nlohmann::json & blob) {
 	result->_color = JsonGet(blob, "color", result->_color);
 	result->_borderRadius = JsonGet(blob, "border", 0);
 	result->_texture = ResourceManager::Get<Texture2D>(Guid(JsonGet<std::string>(blob, "texture", "null")));
+	result->_percentOfScreenX = JsonGet(blob, "perX", result->_percentOfScreenX);
+	result->_percentOfScreenY = JsonGet(blob, "perY", result->_percentOfScreenY);
+	result->_width = JsonGet(blob, "width", result->_width);
+	result->_height = JsonGet(blob, "height", result->_height);
 
 	return result;
 }

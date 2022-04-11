@@ -103,7 +103,7 @@ Application::Application() :
 	_renderOutput(nullptr)
 { }
 
-Application::~Application() = default; 
+Application::~Application() = default;
 
 Application& Application::Get() {
 	LOG_ASSERT(_singleton != nullptr, "Failed to get application! Get was called before the application was started!");
@@ -255,12 +255,13 @@ void Application::_Run()
 	_layers.push_back(std::make_shared<ParticleLayer>());
 	_layers.push_back(std::make_shared<PostProcessingLayer>());
 	_layers.push_back(std::make_shared<InterfaceLayer>());
-#ifndef _DEBUG
 	_layers.push_back(std::make_shared<MainMenuScene>());
-#endif 
+
+
 	// _DEBUG
 	// If we're in editor mode, we add all the editor layers
 	if (_isEditor) {
+
 		_layers.push_back(std::make_shared<ImGuiDebugLayer>());
 	}
 
