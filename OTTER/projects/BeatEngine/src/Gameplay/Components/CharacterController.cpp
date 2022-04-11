@@ -101,7 +101,8 @@ using namespace Gameplay::Physics;
         _VinylScore++;
         SFXS->PlayEvent("event:/Coin Pickup");
         // body->GetGameObject()->GetScene()->RemoveGameObject(body->GetGameObject()->SelfRef());
-        body->GetGameObject()->GetParent()->SetPostion(glm::vec3(0.0f, -100.0f, 0.0f));
+        body->GetGameObject()->GetParent()->Get<RenderComponent>()->IsEnabled = false;
+        body->GetGameObject()->SetPostion(glm::vec3(0.0f, -100.0f, 0.0f));
     }
 
 
@@ -112,7 +113,8 @@ using namespace Gameplay::Physics;
         _CDScore++;
         SFXS->PlayEvent("event:/Coin Pickup");
         // body->GetGameObject()->GetScene()->RemoveGameObject(body->GetGameObject()->SelfRef());
-        body->GetGameObject()->GetParent()->SetPostion(glm::vec3(0.0f, -100.0f, 0.0f));
+        body->GetGameObject()->GetParent()->Get<RenderComponent>()->IsEnabled = false;
+        body->GetGameObject()->SetPostion(glm::vec3(0.0f, -100.0f, 0.0f));
     }
 
     std::string name = body->GetGameObject()->Name;
@@ -189,15 +191,13 @@ void CharacterController::RespawnBeatGems(const std::vector<Gameplay::Physics::R
     if (BeatGemsUsed.size() > 0) {
         int LoopLength = BeatGemsUsed.size();
         for (int i = 0; i < LoopLength; i++) {
-            if (trigger[i]->GetGameObject()->Get<RenderComponent>()) {
-                trigger[i]->GetGameObject()->Get<RenderComponent>()->IsEnabled = true;
+            if (trigger[i]->GetGameObject()->GetParent()->Get<RenderComponent>()) {
+                trigger[i]->GetGameObject()->GetParent()->Get<RenderComponent>()->IsEnabled = true;
             }   
         }
         BeatGemsUsed.clear();
-    }
-   
-}
-
+         }
+       }
 void CharacterController::AirControl(char Direction) {
     if (_isJumping == true) {
     
@@ -231,7 +231,7 @@ void CharacterController::CoyoteTime(float dt) {
         
         else { 
             _CoyoteTimeTimer += dt;
-            _body->SetLinearVelocity(glm::vec3(_body->GetLinearVelocity().x, _body->GetLinearVelocity().y, 0.0f));
+            _canJump = true;
         }
     }
 }
@@ -304,8 +304,6 @@ void CharacterController::Update(float deltaTime) {
     if (GetGameObject()->GetPosition().z <= -14.5f)
     {
         SFXS->PlayEvent("event:/Death");
-        
-        //broken so disabling for now
         RespawnBeatGems(BeatGemsUsed);
 
         // Activate GameOver U.I. When the player dies!
