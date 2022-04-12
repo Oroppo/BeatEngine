@@ -78,7 +78,8 @@
 #include "Application/Layers/GameOverScene.h"
 #include "Application/Layers/PauseMenuScene.h"
 #include "Layers/PostProcessingLayer.h"
-
+#include "Application/Layers/ControlsMenuScene.h"
+#include "Application/Layers/CreditsMenuScene.h"
 //Sound
 #include "FMOD/AudioEngine.h"
 
@@ -254,6 +255,9 @@ void Application::_Run()
 	// TODO: Register layers
 	_layers.push_back(std::make_shared<GLAppLayer>());
 	_layers.push_back(std::make_shared<GameOverScene>());
+	_layers.push_back(std::make_shared<Level1Scene>());
+	_layers.push_back(std::make_shared<ControlsMenuScene>());
+	_layers.push_back(std::make_shared <CreditsMenuScene>());
 	_layers.push_back(std::make_shared<Level1Scene>());
 	//_layers.push_back(std::make_shared<PauseMenuScene>());
 	//if we're in release mode render the Menus

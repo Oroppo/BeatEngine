@@ -91,10 +91,10 @@ void InteractableMenu::Update(float deltaTime) {
             app.LoadScene("Level1.json");
             break;
         case 1:
-            app.LoadScene("ControlsMenuScene.json");
+            app.LoadScene("ControlsMenu.json");
             break;
         case 2:
-            app.LoadScene("CreditsMenuScene.json");
+            app.LoadScene("CreditsMenu.json");
             break;
         case 3:
             app.Quit();
