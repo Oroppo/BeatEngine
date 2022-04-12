@@ -116,7 +116,6 @@ void Application::Start(int argCount, char** arguments) {
 	_singleton->_Run();
 
 
-
 }
 
 GLFWwindow* Application::GetWindow() { return _window; }
@@ -143,7 +142,13 @@ void Application::Quit() {
 
 bool Application::LoadScene(const std::string& path) {
 	if (std::filesystem::exists(path)) { 
-
+		if (path == "Level1.json") {
+			AudioEngine::setCurrentMusic("event:/Music");
+		}		
+		if (path == "MainMenu.json") {
+			AudioEngine::setCurrentMusic("event:/MenuMusic");
+		}
+		//SFXS->PlayEvent("event:/MenuMusic");
 		std::string manifestPath = std::filesystem::path(path).stem().string() + "-manifest.json";
 		if (std::filesystem::exists(manifestPath)) {
 			LOG_INFO("Loading manifest from \"{}\"", manifestPath);
@@ -240,9 +245,8 @@ void Application::_Run()
 #endif
 
 #ifndef _DEBUG
-	_isEditor = true;
+	_isEditor = false;
 #endif
-
 	// TODO: Register layers
 	_layers.push_back(std::make_shared<GLAppLayer>());
 	_layers.push_back(std::make_shared<GameOverScene>());
@@ -289,7 +293,7 @@ void Application::_Run()
 	// Done loading, app is now running!
 	_isRunning = true;
 	AudioEngine::init();
-
+	AudioEngine::GetContextBanks()->PlayEvent("event:/MenuMusic");
 	// Infinite loop as long as the application is running
 	while (_isRunning) {
 		// Handle scene switching

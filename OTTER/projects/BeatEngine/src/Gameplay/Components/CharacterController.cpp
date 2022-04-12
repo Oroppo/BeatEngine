@@ -280,6 +280,7 @@ void CharacterController::Update(float deltaTime) {
         AirControl('D');
         _body->SetLinearVelocity(glm::vec3(speed*_AirSpeed, _body->GetLinearVelocity().y, _body->GetLinearVelocity().z));
         _body->GetGameObject()->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
+
     }
 
     if ((_W) && (_canJump == true)) { 
@@ -329,7 +330,7 @@ void CharacterController::Update(float deltaTime) {
         score = 0;
         _body->SetLinearVelocity(glm::vec3(0.0f, 0.0f, 0.0f));
 
-
+        
         Application& app = Application::Get();
         //Change this to GameOver.Json once it exists :^)
         app.LoadScene("GameOver.json");
