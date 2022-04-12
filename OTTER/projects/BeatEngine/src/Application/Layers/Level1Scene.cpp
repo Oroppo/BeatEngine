@@ -695,9 +695,6 @@ void Level1Scene::_CreateScene()
 
 		// Tutorial
 		SpawnFunctions::SpawnStartPlat(scene, StartPlatform, StartPlatformMaterial, "StartPlatform", glm::vec3(-15.820f, 5.610f, -9.10f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.350f, 0.350f, 0.350f));
-		//SpawnFunctions::SpawnTutorialSign(scene, TutorialSign, MoveControlsMaterial, "TutorialSign", glm::vec3(-17.480f, 12.880f, -2.050f), glm::vec3(-180.0f, -180.0f, 0.0f), glm::vec3(2.000f, 1.000f, 2.200f));
-		//SpawnFunctions::SpawnTutorialSign(scene, TutorialSign, VinylTutorialMaterial, "TutorialSign", glm::vec3(8.710f, 12.880f, 8.760f), glm::vec3(-180.0f, -180.0f, 0.0f), glm::vec3(2.000f, 1.000f, 2.200f));
-		//SpawnFunctions::SpawnTutorialSign(scene, TutorialSign, BeatGemTutorialMaterial, "TutorialSign", glm::vec3(-5.430f, 12.880f, -5.590f), glm::vec3(-180.0f, -180.0f, 0.0f), glm::vec3(2.000f, 1.000f, 2.200f));
 		SpawnFunctions::SpawnObj(scene, SmallPlatform, SmallPlatformMaterial, "Small Platform", glm::vec3(-11.640f, 5.610f, -4.150f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.350f, 0.350f, 0.350f));
 		SpawnFunctions::SpawnObj(scene, SmallPlatform, SmallPlatformMaterial, "Small Platform", glm::vec3(-8.400f, 5.610f, -2.200f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.350f, 0.350f, 0.350f));
 		SpawnFunctions::SpawnObj(scene, SmallPlatform, SmallPlatformMaterial, "Small Platform", glm::vec3(-4.600f, 5.610f, -4.040f), glm::vec3(180.0f, 0.0f, 180.0f), glm::vec3(0.350f, 0.350f, 0.350f));
@@ -723,11 +720,11 @@ void Level1Scene::_CreateScene()
 		SpawnFunctions::SpawnStartPlat(scene, StartPlatform, StartPlatformMaterial, "EndPlatform", glm::vec3(9.180f + adjustment, 5.610f, -9.10f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.350f, 0.350f, 0.350f));
 		
 		// CDs for Block 1
-		SpawnFunctions::SpawnCD(scene, CD, CDMaterial, "CD", glm::vec3(-10.220f + adjustment, 5.610f, -3.220f), glm::vec3(90.000f, 0.0f, 90.000f), glm::vec3(1.000f, 1.000f, 1.000f));
+		SpawnFunctions::SpawnCD(scene, CD, CDMaterial, "CD", glm::vec3(-10.320f + adjustment, 5.610f, -3.020f), glm::vec3(90.000f, 0.0f, 90.000f), glm::vec3(1.000f, 1.000f, 1.000f));
 		SpawnFunctions::SpawnCD(scene, CD, CDMaterial, "CD", glm::vec3(-6.970f + adjustment, 5.610f, -2.810f), glm::vec3(90.000f, 0.0f, 90.000f), glm::vec3(1.000f, 1.000f, 1.000f));
-		SpawnFunctions::SpawnCD(scene, CD, CDMaterial, "CD", glm::vec3(-3.770f + adjustment, 5.610f, -3.190f), glm::vec3(90.000f, 0.0f, 90.000f), glm::vec3(1.000f, 1.000f, 1.000f));
+		SpawnFunctions::SpawnCD(scene, CD, CDMaterial, "CD", glm::vec3(-3.880f + adjustment, 5.610f, -3.040f), glm::vec3(90.000f, 0.0f, 90.000f), glm::vec3(1.000f, 1.000f, 1.000f));
 		SpawnFunctions::SpawnCD(scene, CD, CDMaterial, "CD", glm::vec3(-0.620f + adjustment, 5.610f, -2.380f), glm::vec3(90.000f, 0.0f, 90.000f), glm::vec3(1.000f, 1.000f, 1.000f));
-		SpawnFunctions::SpawnCD(scene, CD, CDMaterial, "CD", glm::vec3(2.140f + adjustment, 5.610f, -0.770f), glm::vec3(90.000f, 0.0f, 90.000f), glm::vec3(1.000f, 1.000f, 1.000f));
+		SpawnFunctions::SpawnCD(scene, CD, CDMaterial, "CD", glm::vec3(2.310f + adjustment, 5.610f, -0.700f), glm::vec3(90.000f, 0.0f, 90.000f), glm::vec3(1.000f, 1.000f, 1.000f));
 
 		Application& app = Application::Get();
 		glm::vec2 windowSize = app.GetWindowSize();

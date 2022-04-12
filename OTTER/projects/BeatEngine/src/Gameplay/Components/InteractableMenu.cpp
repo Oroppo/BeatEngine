@@ -30,6 +30,9 @@ void InteractableMenu::Awake()
 
 nlohmann::json InteractableMenu::ToJson() const {
     return {
+        {
+            "_MenuIndex",_MenuIndex
+        }
     };
 }
 
@@ -39,6 +42,7 @@ std::vector<Gameplay::GameObject::Sptr> InteractableMenu::GetMenuItems() {
 
 InteractableMenu::Sptr InteractableMenu::FromJson(const nlohmann::json & blob) {
     InteractableMenu::Sptr result = std::make_shared<InteractableMenu>();
+    result->_MenuIndex = blob["_MenuIndex"];
     return result;
 }
 void InteractableMenu::RenderImGui() {
@@ -82,7 +86,6 @@ void InteractableMenu::Update(float deltaTime) {
 
     //MAIN MENU
     if ((InputEngine::GetKeyState(GLFW_KEY_ENTER) == ButtonState::Pressed) && (_MenuIndex == 0)) {
-
         switch (_selection) {
         case 0:
             app.LoadScene("Level1.json");
