@@ -1015,41 +1015,9 @@ void Level1Scene::_CreateScene()
 				transform->SetRotationDeg(0);
 				transform->SetMin({ 0, 0 });
 
-				GuiPanel::Sptr panel = ResumeButton->Add<GuiPanel>(0.5, 0.28, 300, 150);
+				GuiPanel::Sptr panel = ResumeButton->Add<GuiPanel>(0.5, 0.4, 300, 150);
 				panel->SetTexture(TexResumeButton);
 				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-				panel->SetBorderRadius(0);
-				panel->IsEnabled = false;
-
-			}
-
-			GameObject::Sptr OptionsButton = scene->CreateGameObject("PauseMenu Options Button");
-			{//Options Button
-
-				RectTransform::Sptr transform = OptionsButton->Add<RectTransform>();
-				transform->SetPosition({ 0, 0 });
-				transform->SetRotationDeg(0);
-				transform->SetMin({ 0, 0 });
-
-				GuiPanel::Sptr panel = OptionsButton->Add<GuiPanel>(0.5, 0.43, 300, 150);
-				panel->SetTexture(TexOptionsButton);
-				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 0.6f));
-				panel->SetBorderRadius(0);
-				panel->IsEnabled = false;
-
-			}
-
-			GameObject::Sptr ResyncButton = scene->CreateGameObject("PauseMenu Resync Button");
-			{//Resync Button
-
-				RectTransform::Sptr transform = ResyncButton->Add<RectTransform>();
-				transform->SetPosition({ 0, 0 });
-				transform->SetRotationDeg(0);
-				transform->SetMin({ 0, 0 });
-
-				GuiPanel::Sptr panel = ResyncButton->Add<GuiPanel>(0.5, 0.58, 300, 150);
-				panel->SetTexture(TexResyncButton);
-				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 0.6f));
 				panel->SetBorderRadius(0);
 				panel->IsEnabled = false;
 
@@ -1063,7 +1031,7 @@ void Level1Scene::_CreateScene()
 				transform->SetRotationDeg(0);
 				transform->SetMin({ 0, 0 });
 
-				GuiPanel::Sptr panel = QuitButton->Add<GuiPanel>(0.5, 0.73, 300, 150);
+				GuiPanel::Sptr panel = QuitButton->Add<GuiPanel>(0.5, 0.6, 300, 150);
 				panel->SetTexture(TexQuitButton);
 				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 				panel->SetBorderRadius(0);
@@ -1091,8 +1059,6 @@ void Level1Scene::_CreateScene()
 			{
 				PauseMenuParent->AddChild(PauseMenuDimBackground);
 				PauseMenuParent->AddChild(PauseMenuBackground);
-				PauseMenuParent->AddChild(OptionsButton);
-				PauseMenuParent->AddChild(ResyncButton);
 				PauseMenuParent->AddChild(ResumeButton);
 				PauseMenuParent->AddChild(QuitButton);
 				PauseMenuParent->AddChild(PauseMenuNavigationIcon);

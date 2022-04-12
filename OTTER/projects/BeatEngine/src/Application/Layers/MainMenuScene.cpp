@@ -171,13 +171,18 @@ void MainMenuScene::_CreateScene()
 		Texture3D::Sptr lut = ResourceManager::CreateAsset<Texture3D>("luts/cool.CUBE");
 		Texture2D::Sptr TexBeatLogo = ResourceManager::CreateAsset<Texture2D>("textures/GUI/BeatLogoUpdated.png");
 		Texture2D::Sptr TexPlayButton = ResourceManager::CreateAsset<Texture2D>("textures/GUI/BPlay.png");
-		Texture2D::Sptr TexOptionsButton = ResourceManager::CreateAsset<Texture2D>("textures/GUI/BOptions.png");
+		Texture2D::Sptr TexControlsButton = ResourceManager::CreateAsset<Texture2D>("textures/GUI/BControls.png");
 		Texture2D::Sptr TexMusicButton = ResourceManager::CreateAsset<Texture2D>("textures/GUI/BMusic.png");
 		Texture2D::Sptr TexCreditsButton = ResourceManager::CreateAsset<Texture2D>("textures/GUI/BCredits.png");
 		Texture2D::Sptr TexQuitButton = ResourceManager::CreateAsset<Texture2D>("textures/GUI/BQuit.png");
+		Texture2D::Sptr TexCreditsImage = ResourceManager::CreateAsset<Texture2D>("textures/GUI/CreditsImage.png");
 		Texture2D::Sptr StartTex = ResourceManager::CreateAsset<Texture2D>("textures/LStartPlatformTex.png");
 		Texture2D::Sptr TexNavigationLeftRight = ResourceManager::CreateAsset<Texture2D>("textures/GUI/NavigationLeftRight.png");
 		Texture2D::Sptr TexNavigationUpDown = ResourceManager::CreateAsset<Texture2D>("textures/GUI/NavigationUpDown.png");
+		Texture2D::Sptr TexMovementTutorial = ResourceManager::CreateAsset<Texture2D>("textures/GUI/Movement.png");
+		Texture2D::Sptr TexWallJumpTutorial = ResourceManager::CreateAsset<Texture2D>("textures/GUI/WallJump.png");
+		Texture2D::Sptr TexBeatGemTutorial = ResourceManager::CreateAsset<Texture2D>("textures/GUI/BeatGems.png");
+		Texture2D::Sptr TexVinylsTutorial = ResourceManager::CreateAsset<Texture2D>("textures/GUI/Vinyls.png");
 		Font::Sptr FontVCR = ResourceManager::CreateAsset<Font>("fonts/VCR.ttf", 16.f);
 		FontVCR->Bake();
 
@@ -243,50 +248,27 @@ void MainMenuScene::_CreateScene()
 			transform->SetRotationDeg(0);
 			transform->SetMin({ 0, 0 });
 
-			GuiPanel::Sptr panel = PlayButton->Add<GuiPanel>(0.16, 0.7, 300, 150);
+			GuiPanel::Sptr panel = PlayButton->Add<GuiPanel>(0.20, 0.7, 300, 150);
 			panel->SetTexture(TexPlayButton);
 			panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 			panel->SetBorderRadius(0);
 			panel->IsEnabled = true;
 		}
 
-
-		
-
 		//Options Button
-		GameObject::Sptr OptionsButton = scene->CreateGameObject("MainMenu Options Button");
+		GameObject::Sptr ControlsButton = scene->CreateGameObject("MainMenu Options Button");
 		{
-			RectTransform::Sptr transform = OptionsButton->Add<RectTransform>();
+			RectTransform::Sptr transform = ControlsButton->Add<RectTransform>();
 			transform->SetPosition({ 0, 0 });
 			transform->SetRotationDeg(0);
 			transform->SetMin({ 0, 0 });
 
-			GuiPanel::Sptr panel = OptionsButton->Add<GuiPanel>(0.33, 0.7, 300, 150);
-			panel->SetTexture(TexOptionsButton);
+			GuiPanel::Sptr panel = ControlsButton->Add<GuiPanel>(0.40, 0.7, 300, 150);
+			panel->SetTexture(TexControlsButton);
 			panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 0.6f));
 			panel->SetBorderRadius(0);
 			panel->IsEnabled = true;
 		}
-
-
-		
-
-		//Music Button
-		GameObject::Sptr MusicButton = scene->CreateGameObject("MainMenu Music Button");
-		{
-			RectTransform::Sptr transform = MusicButton->Add<RectTransform>();
-			transform->SetPosition({ 0, 0 });
-			transform->SetRotationDeg(0);
-			transform->SetMin({ 0, 0 });
-
-			GuiPanel::Sptr panel = MusicButton->Add<GuiPanel>(0.5, 0.7, 300, 150);
-			panel->SetTexture(TexMusicButton);
-			panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 0.6f));
-			panel->SetBorderRadius(0);
-			panel->IsEnabled = true;
-		}
-
-		
 
 		//Credits Button
 		GameObject::Sptr CreditsButton = scene->CreateGameObject("MainMenu Credits Button");
@@ -296,7 +278,7 @@ void MainMenuScene::_CreateScene()
 		transform->SetRotationDeg(0);
 		transform->SetMin({ 0, 0 });
 
-		GuiPanel::Sptr panel = CreditsButton->Add<GuiPanel>(0.67, 0.7, 300, 150);
+		GuiPanel::Sptr panel = CreditsButton->Add<GuiPanel>(0.60, 0.7, 300, 150);
 		panel->SetTexture(TexCreditsButton);
 		panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 0.6f));
 		panel->SetBorderRadius(0);
@@ -313,7 +295,7 @@ void MainMenuScene::_CreateScene()
 		transform->SetRotationDeg(0);
 		transform->SetMin({ 0, 0 });
 
-		GuiPanel::Sptr panel = QuitButton->Add<GuiPanel>(0.84, 0.7, 300, 150);
+		GuiPanel::Sptr panel = QuitButton->Add<GuiPanel>(0.80, 0.7, 300, 150);
 		panel->SetTexture(TexQuitButton);
 		panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 		panel->SetBorderRadius(0);
@@ -348,14 +330,102 @@ void MainMenuScene::_CreateScene()
 			transform->SetMin({ 0, 0 });
 		
 			MenuParent->AddChild(PlayButton);
-			MenuParent->AddChild(OptionsButton);
-			MenuParent->AddChild(MusicButton);
+			MenuParent->AddChild(ControlsButton);
 			MenuParent->AddChild(CreditsButton);
 			MenuParent->AddChild(QuitButton);
 		
 			MenuParent->Add<InteractableMenu>();
 		}
 
+
+		//CreditsImage Button
+		GameObject::Sptr CreditsImage = scene->CreateGameObject("MainMenu Quit Button");
+		{
+			RectTransform::Sptr transform = CreditsImage->Add<RectTransform>();
+			transform->SetPosition({ 0, 0 });
+			transform->SetRotationDeg(0);
+			transform->SetMin({ 0, 0 });
+
+			GuiPanel::Sptr panel = CreditsImage->Add<GuiPanel>(0.5, 0.5, 1920, 1080);
+			panel->SetTexture(TexCreditsImage);
+			panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+			panel->SetBorderRadius(0);
+			panel->IsEnabled = false;
+		}
+
+		//Tutorial Blocks
+		
+			GameObject::Sptr MovementTutorial = scene->CreateGameObject("Movement Tutorial");
+			{//Movement
+		
+				RectTransform::Sptr transform = MovementTutorial->Add<RectTransform>();
+				transform->SetPosition({ 0, 0 });
+				transform->SetRotationDeg(0);
+				transform->SetSize({ 700 * 0.75, 500 * 0.75 });
+				transform->SetMin({ 0, 0 });
+				transform->SetMax({ 700 * 0.75, 500 * 0.75 });
+		
+				GuiPanel::Sptr panel = MovementTutorial->Add<GuiPanel>(0.25, 0.25, 750, 500);
+				panel->SetTexture(TexMovementTutorial);
+				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				panel->SetBorderRadius(0);
+				panel->IsEnabled = false;
+		
+			}
+		
+			GameObject::Sptr WallJumpTutorial = scene->CreateGameObject("Wall Jump Tutorial");
+			{//Wall Jump
+		
+				RectTransform::Sptr transform = WallJumpTutorial->Add<RectTransform>();
+				transform->SetPosition({ 0, 0 });
+				transform->SetRotationDeg(0);
+				transform->SetSize({ 700 * 0.75, 500 * 0.75 });
+				transform->SetMin({ 0, 0 });
+				transform->SetMax({ 700 * 0.75, 500 * 0.75 });
+		
+				GuiPanel::Sptr panel = WallJumpTutorial->Add<GuiPanel>(0.75, 0.25, 750, 500);
+				panel->SetTexture(TexWallJumpTutorial);
+				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				panel->SetBorderRadius(0);
+				panel->IsEnabled = false;
+		
+			}
+		
+			GameObject::Sptr BeatJemTutorial = scene->CreateGameObject("Beat Gem Tutorial");
+			{//Beat Gem
+		
+				RectTransform::Sptr transform = BeatJemTutorial->Add<RectTransform>();
+				transform->SetPosition({ 0, 0 });
+				transform->SetRotationDeg(0);
+				transform->SetSize({ 700 * 0.75, 500 * 0.75 });
+				transform->SetMin({ 0, 0 });
+				transform->SetMax({ 700 * 0.75, 500 * 0.75 });
+		
+				GuiPanel::Sptr panel = BeatJemTutorial->Add<GuiPanel>(0.25, 0.75, 750, 500);
+				panel->SetTexture(TexBeatGemTutorial);
+				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				panel->SetBorderRadius(0);
+				panel->IsEnabled = false;
+		
+			}
+		
+			GameObject::Sptr VinylTutorial = scene->CreateGameObject("Vinyl Tutorial");
+			{//Vinyls
+		
+				RectTransform::Sptr transform = VinylTutorial->Add<RectTransform>();
+				transform->SetPosition({ 0, 0 });
+				transform->SetRotationDeg(0);
+				transform->SetSize({ 700 * 0.75, 500 * 0.75 });
+				transform->SetMin({ 0, 0 });
+				transform->SetMax({ 700 * 0.75, 500 * 0.75 });
+		
+				GuiPanel::Sptr panel = VinylTutorial->Add<GuiPanel>(0.75, 0.75, 750, 500);
+				panel->SetTexture(TexVinylsTutorial);
+				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				panel->SetBorderRadius(0);
+				panel->IsEnabled = false;
+		
+			}
 
 		
 
