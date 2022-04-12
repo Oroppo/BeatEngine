@@ -332,7 +332,7 @@ void CharacterController::Update(float deltaTime) {
 
         Application& app = Application::Get();
         //Change this to GameOver.Json once it exists :^)
-        app.LoadScene("MainMenu.json");
+        app.LoadScene("GameOver.json");
         RespawnBeatGems(BeatGemsUsed);
 
     }

@@ -195,8 +195,7 @@ void GameOverScene::_CreateScene()
 
 		//Game Over Block
 
-
-
+		/*
 		GameObject::Sptr background = scene->CreateGameObject("GameOver Dimmed Background");
 		{//Dim BG
 			RectTransform::Sptr transform = background->Add<RectTransform>();
@@ -210,6 +209,7 @@ void GameOverScene::_CreateScene()
 			panel->SetBorderRadius(0);
 			panel->IsEnabled = true;
 		}
+		*/
 
 		GameObject::Sptr GameOverText = scene->CreateGameObject("GameOver Text");
 		{//Game Over Text
@@ -218,7 +218,7 @@ void GameOverScene::_CreateScene()
 			transform->SetRotationDeg(0);
 			transform->SetMin({ 0, 0 });
 
-			GuiPanel::Sptr panel = GameOverText->Add<GuiPanel>(0.5, 0.2, 809, 249);
+			GuiPanel::Sptr panel = GameOverText->Add<GuiPanel>(0.5, 0.15, 809, 249);
 			panel->SetTexture(TexGameOverText);
 			panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 			panel->SetBorderRadius(0);
@@ -233,26 +233,11 @@ void GameOverScene::_CreateScene()
 			transform->SetRotationDeg(0);
 			transform->SetMin({ 0, 0 });
 
-			GuiPanel::Sptr panel = GameOverScore->Add<GuiPanel>(0.4, 0.5, 504 * 0.75, 475 * 0.75);
+			GuiPanel::Sptr panel = GameOverScore->Add<GuiPanel>(0.5, 0.4, 386, 174);
 			panel->SetTexture(TexScoreBreakdown);
 			panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 			panel->SetBorderRadius(0);
 			panel->IsEnabled = true;
-		}
-
-		GameObject::Sptr QuitButton = scene->CreateGameObject("GameOver Quit Button");
-		{//Quit
-			RectTransform::Sptr transform = QuitButton->Add<RectTransform>();
-			transform->SetPosition({ 0, 0 });
-			transform->SetRotationDeg(0);
-			transform->SetMin({ 0, 0 });
-
-			GuiPanel::Sptr panel = QuitButton->Add<GuiPanel>(0.35, 0.8, 300, 150);
-			panel->SetTexture(TexQuitButton);
-			panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-			panel->SetBorderRadius(0);
-			panel->IsEnabled = true;
-
 		}
 
 		GameObject::Sptr ContinueButton = scene->CreateGameObject("GameOver Continue Button");
@@ -262,8 +247,24 @@ void GameOverScene::_CreateScene()
 			transform->SetRotationDeg(0);
 			transform->SetMin({ 0, 0 });
 
-			GuiPanel::Sptr panel = ContinueButton->Add<GuiPanel>(0.65, 0.8, 300, 150);
+			GuiPanel::Sptr panel = ContinueButton->Add<GuiPanel>(0.35, 0.85, 300, 150);
 			panel->SetTexture(TexContinueButton);
+			panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+			panel->SetBorderRadius(0);
+			panel->IsEnabled = true;
+
+		}
+
+
+		GameObject::Sptr QuitButton = scene->CreateGameObject("GameOver Quit Button");
+		{//Quit
+			RectTransform::Sptr transform = QuitButton->Add<RectTransform>();
+			transform->SetPosition({ 0, 0 });
+			transform->SetRotationDeg(0);
+			transform->SetMin({ 0, 0 });
+
+			GuiPanel::Sptr panel = QuitButton->Add<GuiPanel>(0.65, 0.85, 300, 150);
+			panel->SetTexture(TexQuitButton);
 			panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 			panel->SetBorderRadius(0);
 			panel->IsEnabled = true;
@@ -285,7 +286,21 @@ void GameOverScene::_CreateScene()
 
 		}
 
+		GameObject::Sptr ScoreText = scene->CreateGameObject("HUD Score Text");
+		{//Score Text
 
+			RectTransform::Sptr transform = ScoreText->Add<RectTransform>();
+			transform->SetRotationDeg(0);
+			transform->SetMin({ 0, 0 });
+			transform->SetSize({ 0, 0 });
+			transform->SetMin({ 0, 0 });
+
+			GuiText::Sptr text = ScoreText->Add<GuiText>(0.5, 0.7, 5.0);
+			text->SetColor(glm::vec4(0.f));
+			text->SetFont(FontVCR);
+			text->SetText("0");
+			text->IsEnabled = true;
+		}
 		
 
 		GameObject::Sptr MenuParent = scene->CreateGameObject("INTERACTABLE MENU ITEMS");
