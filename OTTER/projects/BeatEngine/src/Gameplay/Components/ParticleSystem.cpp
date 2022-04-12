@@ -37,6 +37,7 @@ ParticleSystem::~ParticleSystem()
 
 void ParticleSystem::Update()
 {
+	if(_isActive==true){
 	// If we haven't previously initialized our data, initialize it now
 	if (!_hasInit) {
 		_updateShader->Bind();
@@ -155,6 +156,7 @@ void ParticleSystem::Update()
 
 	// If this is our first pass, or we have fresh emitter data, we use drawArrays 
 	// to get the initial state, otherwise we use transform feedback for updating
+	
 	if (!_hasInit || _needsUpload) {
 		glDrawArrays(GL_POINTS, 0, _emitters.size());
 	}
@@ -189,6 +191,10 @@ void ParticleSystem::Update()
 	// Double-buffering, swap which buffers we're operating on
 	_currentVertexBuffer = _currentFeedbackBuffer;
 	_currentFeedbackBuffer = (_currentFeedbackBuffer + 1) & 0x01;
+	}
+}
+void ParticleSystem::SetActive(bool var) {
+	_isActive = var;
 }
 void ParticleSystem::SetGravity(glm::vec3 grav) {
 	_gravity = grav;

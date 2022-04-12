@@ -75,7 +75,7 @@ public:
 	void Render();
 	void SetGravity(glm::vec3);
 	void Reset();
-
+	void SetActive(bool);
 	void SetMaxParticles(uint32_t value);
 	uint32_t GetMaxParticles() const;
 
@@ -93,7 +93,7 @@ public:
 	MAKE_TYPENAME(ParticleSystem);
 
 protected:
-
+	bool _isActive=true; 
 	bool _hasInit;
 	bool _needsUpload;
 	bool _needsResize;

@@ -11,6 +11,7 @@
 #include "FMOD/AudioEngine.h"
 #include "Gameplay/InputEngine.h"
 #include "Gameplay/Components/BeatGem.h"
+#include "Gameplay/Components/ParticleSystem.h"
 #include "Application/Application.h"
 #include "Animation/MorphAnimationManager.h"
 #include "Gameplay/Scene.h"
@@ -245,8 +246,15 @@ void CharacterController::Update(float deltaTime) {
 
     _body->GetGameObject()->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
    //animations 
+    if (_DustPoof > 0) {
+        GetGameObject()->Get<ParticleSystem>()->IsEnabled = true;
+        _DustPoof -= deltaTime;
+    }
+    else{ GetGameObject()->Get<ParticleSystem>()->IsEnabled = false;
+    }
 
     if (_isJumping == true) {
+
         _CoyoteTimeUsed = true;
         if (GetGameObject()->Get<MorphAnimationManager>()->GetCurrentAnim() != MorphAnimationManager::Jump) {
             GetGameObject()->Get<MorphAnimationManager>()->SetCurrentAnim(MorphAnimationManager::Jump);
@@ -274,7 +282,8 @@ void CharacterController::Update(float deltaTime) {
         _body->GetGameObject()->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
     }
 
-    if ((_W) && (_canJump == true)) {
+    if ((_W) && (_canJump == true)) { 
+        _DustPoof = 0.25f;
         _CoyoteTimeUsed = true;
         _isJumping = true;
         _body->SetLinearVelocity(glm::vec3(_body->GetLinearVelocity().x, _body->GetLinearVelocity().y, _impulse.z * (speed / 3)));
@@ -304,7 +313,7 @@ void CharacterController::Update(float deltaTime) {
     if (GetGameObject()->GetPosition().z <= -14.5f)
     {
         SFXS->PlayEvent("event:/Death");
-        RespawnBeatGems(BeatGemsUsed);
+        
 
         // Activate GameOver U.I. When the player dies!
         
@@ -324,7 +333,7 @@ void CharacterController::Update(float deltaTime) {
         Application& app = Application::Get();
         //Change this to GameOver.Json once it exists :^)
         app.LoadScene("MainMenu.json");
-
+        RespawnBeatGems(BeatGemsUsed);
 
     }
 }

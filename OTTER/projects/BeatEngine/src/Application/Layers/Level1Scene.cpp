@@ -848,7 +848,7 @@ void Level1Scene::_CreateScene()
 			emitter.Position = glm::vec3(0.0f);
 			emitter.Color = glm::vec4(0.42f, 0.05f, 0.68f, 1.0f);
 			emitter.Lifetime = 0.0f;
-			emitter.SphereEmitterData.Timer = 1.0f / 300.0f;
+			emitter.SphereEmitterData.Timer = 1.0f / 20.0f;
 			emitter.SphereEmitterData.Velocity = 1.5f;
 			emitter.SphereEmitterData.LifeRange = { 1.0f, 4.0f };
 			emitter.SphereEmitterData.Radius = 0.05f;
@@ -868,18 +868,42 @@ void Level1Scene::_CreateScene()
 
 			emitter2.Type = ParticleType::BoxEmitter;
 			emitter2.TexID = 3;
-			emitter2.Position = glm::vec3(0.0f,0.0f,5.0f);
+			emitter2.Position = glm::vec3(0.0f,0.0f,6.0f);
 			emitter2.Color = glm::vec4(1.f, 1.f, 1.f, 1.0f);
 			emitter2.Lifetime = 0.0f;
 			emitter2.BoxEmitterData.Timer= 1.0f / 750.0f;
-			emitter2.BoxEmitterData.Velocity = glm::vec3(1.0f,2.f,-1.f);
+			emitter2.BoxEmitterData.Velocity = glm::vec3(1.5f,2.f,-3.f);
 			emitter2.BoxEmitterData.LifeRange = { 2.5f, 3.0f };
-			emitter2.BoxEmitterData.HalfExtents = glm::vec3(-9.f,1.0f,0.5);
+			emitter2.BoxEmitterData.HalfExtents = glm::vec3(-12.f,1.0f,0.5);
 			emitter2.BoxEmitterData.SizeRange = { 0.5f, 1.5f };
 			particleManager2->AddEmitter(emitter2);
 		}
 
+		GameObject::Sptr DustParticles = scene->CreateGameObject("DustParticles");
+		{
+			DustParticles->SetPostion({ -2.0f, 0.0f, 2.0f });
 
+			ParticleSystem::Sptr particleManager = character->Add<ParticleSystem>();
+			particleManager->Atlas = particleTex;
+			particleManager->SetGravity(glm::vec3(0.0f, 0.0f, 0.0f));
+			ParticleSystem::ParticleData emitter3;
+
+			//particleManager->IsEnabled=false;
+
+			emitter3.Type = ParticleType::SphereEmitter;
+			emitter3.TexID = 2;
+			emitter3.Position = glm::vec3(0.0f);
+			emitter3.Color = glm::vec4(1.f, 1.f, 1.f, 1.0f);
+			emitter3.Lifetime = 0.0f;
+			emitter3.SphereEmitterData.Timer = 1.0f / 1000.0f;
+			emitter3.SphereEmitterData.Velocity = 0.0f;
+			emitter3.SphereEmitterData.LifeRange = { 0.25f, 0.5f };
+			emitter3.SphereEmitterData.Radius = 0.15f;
+			emitter3.SphereEmitterData.SizeRange = { 0.5f, 1.5f };
+			emitter3.BoxEmitterData.HalfExtents = glm::vec3(0.15f, 0.15f, 0.15f);
+			DustParticles->AddParent(character);
+			particleManager->AddEmitter(emitter3);
+		}
 		// Create some lights for our scene
 	/*	GameObject::Sptr lightParent = scene->CreateGameObject("Lights");
 		for (int ix = 0; ix < 50; ix++) {

@@ -35,7 +35,7 @@ public:
 	void AirControl(char);
 	void CoyoteTime(float);
 protected:
-	float _GemJumpTimer, _AirSpeed, speed = 3.0f, _CoyoteTimeTimer;
+	float _GemJumpTimer, _AirSpeed, speed = 3.0f, _CoyoteTimeTimer, _DustPoof = 0.25f;
 	bool _canJump, _isJumping, _OnPlatform,_CoyoteTimeUsed;
 	int score = 0, _VinylScore = 0, _CDScore = 0, _BeatGemHits = 0;
 	char _Direction;
