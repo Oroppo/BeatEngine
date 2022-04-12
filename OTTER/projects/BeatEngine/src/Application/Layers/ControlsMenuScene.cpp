@@ -1,4 +1,4 @@
-#include "MainMenuScene.h"
+#include "ControlsMenuScene.h"
 
 // GLM math library
 #include <GLM/glm.hpp>
@@ -87,22 +87,22 @@
 
 
 
-MainMenuScene::MainMenuScene() :
+ControlsMenuScene::ControlsMenuScene() :
 	ApplicationLayer()
 {
-	Name = "MainMenu";
+	Name = "ControlsMenu";
 	Overrides = AppLayerFunctions::OnAppLoad;
 }
 
-MainMenuScene::~MainMenuScene() = default;
+ControlsMenuScene::~ControlsMenuScene() = default;
 
-void MainMenuScene::OnAppLoad(const nlohmann::json & config) {
+void ControlsMenuScene::OnAppLoad(const nlohmann::json & config) {
 	_CreateScene();
 }
 
 
 
-void MainMenuScene::_CreateScene()
+void ControlsMenuScene::_CreateScene()
 {
 	using namespace Gameplay;
 	using namespace Gameplay::Physics;
@@ -111,7 +111,7 @@ void MainMenuScene::_CreateScene()
 
 	bool loadScene = false;
 	// For now we can use a toggle to generate our scene vs load from file
-	if (loadScene && std::filesystem::exists("MainMenu.json")) {
+	if (loadScene && std::filesystem::exists("ControlsMenu.json")) {
 
 		//NOTE This method of Scene loading is prone to breaking! 
 		//For future me, if you ever have trouble loading this way, 
@@ -119,7 +119,7 @@ void MainMenuScene::_CreateScene()
 		//Scene::Sptr scene = Scene::FromJson( /*FilenameHere*/ );
 		//app.LoadScene(scene);
 
-		app.LoadScene("MainMenu.json");
+		app.LoadScene("ControlsMenu.json");
 	}
 	else {
 		Scene::Sptr scene = std::make_shared<Scene>();
@@ -219,124 +219,110 @@ void MainMenuScene::_CreateScene()
 
 		/////////////////////////// UI //////////////////////////////
 
-	//Main Menu Block
+	
 
 
-
-		//Logo
-		GameObject::Sptr logo = scene->CreateGameObject("MainMenu Logo");
-		{
-			RectTransform::Sptr transform = logo->Add<RectTransform>();
-			transform->SetPosition({ 0, 0 });
-			transform->SetRotationDeg(0);
-			transform->SetMin({ 0, 0 });
-
-			GuiPanel::Sptr logoPanel = logo->Add<GuiPanel>(0.5, 0.3, 667, 406);
-			logoPanel->SetTexture(TexBeatLogo);
-			logoPanel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-			logoPanel->SetBorderRadius(0);
-			logoPanel->IsEnabled = true;
-		}
-
-
+		//Tutorial Blocks
 		
-
-		//Play Button
-		GameObject::Sptr PlayButton = scene->CreateGameObject("MainMenu Play Button");
-		{
-			RectTransform::Sptr transform = PlayButton->Add<RectTransform>();
-			transform->SetPosition({ 0, 0 });
-			transform->SetRotationDeg(0);
-			transform->SetMin({ 0, 0 });
-
-			GuiPanel::Sptr panel = PlayButton->Add<GuiPanel>(0.20, 0.7, 300, 150);
-			panel->SetTexture(TexPlayButton);
-			panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-			panel->SetBorderRadius(0);
-			panel->IsEnabled = true;
-		}
-
-		//Options Button
-		GameObject::Sptr ControlsButton = scene->CreateGameObject("MainMenu Options Button");
-		{
-			RectTransform::Sptr transform = ControlsButton->Add<RectTransform>();
-			transform->SetPosition({ 0, 0 });
-			transform->SetRotationDeg(0);
-			transform->SetMin({ 0, 0 });
-
-			GuiPanel::Sptr panel = ControlsButton->Add<GuiPanel>(0.40, 0.7, 300, 150);
-			panel->SetTexture(TexControlsButton);
-			panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 0.6f));
-			panel->SetBorderRadius(0);
-			panel->IsEnabled = true;
-		}
-
-		//Credits Button
-		GameObject::Sptr CreditsButton = scene->CreateGameObject("MainMenu Credits Button");
-		{
-		RectTransform::Sptr transform = CreditsButton->Add<RectTransform>();
-		transform->SetPosition({ 0, 0 });
-		transform->SetRotationDeg(0);
-		transform->SetMin({ 0, 0 });
-
-		GuiPanel::Sptr panel = CreditsButton->Add<GuiPanel>(0.60, 0.7, 300, 150);
-		panel->SetTexture(TexCreditsButton);
-		panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 0.6f));
-		panel->SetBorderRadius(0);
-		panel->IsEnabled = true;
-		}
-
+			GameObject::Sptr MovementTutorial = scene->CreateGameObject("Movement Tutorial");
+			{//Movement
 		
-
-		//Quit Button
-		GameObject::Sptr QuitButton = scene->CreateGameObject("MainMenu Quit Button");
-		{
-		RectTransform::Sptr transform = QuitButton->Add<RectTransform>();
-		transform->SetPosition({ 0, 0 });
-		transform->SetRotationDeg(0);
-		transform->SetMin({ 0, 0 });
-
-		GuiPanel::Sptr panel = QuitButton->Add<GuiPanel>(0.80, 0.7, 300, 150);
-		panel->SetTexture(TexQuitButton);
-		panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-		panel->SetBorderRadius(0);
-		panel->IsEnabled = true;
-		}
-
-		{//Navigation Buttons
-			GameObject::Sptr button = scene->CreateGameObject("MainMenu Navigation");
-
-			RectTransform::Sptr transform = button->Add<RectTransform>();
-			transform->SetPosition({ 0, 0 });
-			transform->SetRotationDeg(0);
-			transform->SetMin({ 0, 0 });
-
-			GuiPanel::Sptr panel = button->Add<GuiPanel>(0.9, 0.93, 400 * 0.75, 150 * 0.75);
-			panel->SetTexture(TexNavigationLeftRight);
-			panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-			panel->SetBorderRadius(0);
-			panel->IsEnabled = true;
-
-		}
-
-
+				RectTransform::Sptr transform = MovementTutorial->Add<RectTransform>();
+				transform->SetPosition({ 0, 0 });
+				transform->SetRotationDeg(0);
+				transform->SetSize({ 700 * 0.75, 500 * 0.75 });
+				transform->SetMin({ 0, 0 });
+				transform->SetMax({ 700 * 0.75, 500 * 0.75 });
 		
+				GuiPanel::Sptr panel = MovementTutorial->Add<GuiPanel>(0.25, 0.25, 750, 500);
+				panel->SetTexture(TexMovementTutorial);
+				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				panel->SetBorderRadius(0);
+				panel->IsEnabled = true;
+		
+			}
+		
+			GameObject::Sptr WallJumpTutorial = scene->CreateGameObject("Wall Jump Tutorial");
+			{//Wall Jump
+		
+				RectTransform::Sptr transform = WallJumpTutorial->Add<RectTransform>();
+				transform->SetPosition({ 0, 0 });
+				transform->SetRotationDeg(0);
+				transform->SetSize({ 700 * 0.75, 500 * 0.75 });
+				transform->SetMin({ 0, 0 });
+				transform->SetMax({ 700 * 0.75, 500 * 0.75 });
+		
+				GuiPanel::Sptr panel = WallJumpTutorial->Add<GuiPanel>(0.75, 0.25, 750, 500);
+				panel->SetTexture(TexWallJumpTutorial);
+				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				panel->SetBorderRadius(0);
+				panel->IsEnabled = true;
+		
+			}
+		
+			GameObject::Sptr BeatJemTutorial = scene->CreateGameObject("Beat Gem Tutorial");
+			{//Beat Gem
+		
+				RectTransform::Sptr transform = BeatJemTutorial->Add<RectTransform>();
+				transform->SetPosition({ 0, 0 });
+				transform->SetRotationDeg(0);
+				transform->SetSize({ 700 * 0.75, 500 * 0.75 });
+				transform->SetMin({ 0, 0 });
+				transform->SetMax({ 700 * 0.75, 500 * 0.75 });
+		
+				GuiPanel::Sptr panel = BeatJemTutorial->Add<GuiPanel>(0.25, 0.75, 750, 500);
+				panel->SetTexture(TexBeatGemTutorial);
+				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				panel->SetBorderRadius(0);
+				panel->IsEnabled = true;
+		
+			}
+		
+			GameObject::Sptr VinylTutorial = scene->CreateGameObject("Vinyl Tutorial");
+			{//Vinyls
+		
+				RectTransform::Sptr transform = VinylTutorial->Add<RectTransform>();
+				transform->SetPosition({ 0, 0 });
+				transform->SetRotationDeg(0);
+				transform->SetSize({ 700 * 0.75, 500 * 0.75 });
+				transform->SetMin({ 0, 0 });
+				transform->SetMax({ 700 * 0.75, 500 * 0.75 });
+		
+				GuiPanel::Sptr panel = VinylTutorial->Add<GuiPanel>(0.75, 0.75, 750, 500);
+				panel->SetTexture(TexVinylsTutorial);
+				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				panel->SetBorderRadius(0);
+				panel->IsEnabled = true;
+		
+			}
 
-		GameObject::Sptr MenuParent = scene->CreateGameObject("INTERACTABLE MENU ITEMS");
-		{		
-			//Even Parents must own a RectTransform :) 
-			RectTransform::Sptr transform = MenuParent->Add<RectTransform>();
-			transform->SetPosition({ 0, 0 });
-			transform->SetRotationDeg(0);
-			transform->SetMin({ 0, 0 });
-		
-			MenuParent->AddChild(PlayButton);
-			MenuParent->AddChild(ControlsButton);
-			MenuParent->AddChild(CreditsButton);
-			MenuParent->AddChild(QuitButton);
-		
-			MenuParent->Add<InteractableMenu>(0);
-		}
+			//Controls Back Button
+			GameObject::Sptr ControlsBackButton = scene->CreateGameObject("Controls Back Button");
+			{
+				RectTransform::Sptr transform = ControlsBackButton->Add<RectTransform>();
+				transform->SetPosition({ 0, 0 });
+				transform->SetRotationDeg(0);
+				transform->SetMin({ 0, 0 });
+
+				GuiPanel::Sptr panel = ControlsBackButton->Add<GuiPanel>(0.1, 0.9, 300, 150);
+				panel->SetTexture(TexBackButton);
+				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				panel->SetBorderRadius(0);
+				panel->IsEnabled = true;
+			}
+
+			GameObject::Sptr MenuParent = scene->CreateGameObject("INTERACTABLE MENU ITEMS");
+			{
+				//Even Parents must own a RectTransform :) 
+				RectTransform::Sptr transform = MenuParent->Add<RectTransform>();
+				transform->SetPosition({ 0, 0 });
+				transform->SetRotationDeg(0);
+				transform->SetMin({ 0, 0 });
+
+				MenuParent->AddChild(ControlsBackButton);
+
+				MenuParent->Add<InteractableMenu>(2);
+			}
 
 		
 
@@ -346,9 +332,9 @@ void MainMenuScene::_CreateScene()
 		GuiBatcher::SetDefaultBorderRadius(8);
 
 		// Save the asset manifest for all the resources we just loaded
-		ResourceManager::SaveManifest("MainMenu-manifest.json");
+		ResourceManager::SaveManifest("ControlsMenu-manifest.json");
 		// Save the scene to a JSON file
-		scene->Save("MainMenu.json");
+		scene->Save("ControlsMenu.json");
 
 		// Send the scene to the application
 		app.LoadScene(scene);

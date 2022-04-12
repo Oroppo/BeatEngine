@@ -1,4 +1,4 @@
-#include "MainMenuScene.h"
+#include "CreditsMenuScene.h"
 
 // GLM math library
 #include <GLM/glm.hpp>
@@ -87,22 +87,22 @@
 
 
 
-MainMenuScene::MainMenuScene() :
+CreditsMenuScene::CreditsMenuScene() :
 	ApplicationLayer()
 {
-	Name = "MainMenu";
+	Name = "CreditsMenu";
 	Overrides = AppLayerFunctions::OnAppLoad;
 }
 
-MainMenuScene::~MainMenuScene() = default;
+CreditsMenuScene::~CreditsMenuScene() = default;
 
-void MainMenuScene::OnAppLoad(const nlohmann::json & config) {
+void CreditsMenuScene::OnAppLoad(const nlohmann::json & config) {
 	_CreateScene();
 }
 
 
 
-void MainMenuScene::_CreateScene()
+void CreditsMenuScene::_CreateScene()
 {
 	using namespace Gameplay;
 	using namespace Gameplay::Physics;
@@ -111,7 +111,7 @@ void MainMenuScene::_CreateScene()
 
 	bool loadScene = false;
 	// For now we can use a toggle to generate our scene vs load from file
-	if (loadScene && std::filesystem::exists("MainMenu.json")) {
+	if (loadScene && std::filesystem::exists("CreditsMenu.json")) {
 
 		//NOTE This method of Scene loading is prone to breaking! 
 		//For future me, if you ever have trouble loading this way, 
@@ -119,7 +119,7 @@ void MainMenuScene::_CreateScene()
 		//Scene::Sptr scene = Scene::FromJson( /*FilenameHere*/ );
 		//app.LoadScene(scene);
 
-		app.LoadScene("MainMenu.json");
+		app.LoadScene("CreditsMenu.json");
 	}
 	else {
 		Scene::Sptr scene = std::make_shared<Scene>();
@@ -219,124 +219,51 @@ void MainMenuScene::_CreateScene()
 
 		/////////////////////////// UI //////////////////////////////
 
-	//Main Menu Block
 
-
-
-		//Logo
-		GameObject::Sptr logo = scene->CreateGameObject("MainMenu Logo");
+		//CreditsImage Button
+		GameObject::Sptr CreditsImage = scene->CreateGameObject("MainMenu Quit Button");
 		{
-			RectTransform::Sptr transform = logo->Add<RectTransform>();
+			RectTransform::Sptr transform = CreditsImage->Add<RectTransform>();
 			transform->SetPosition({ 0, 0 });
 			transform->SetRotationDeg(0);
 			transform->SetMin({ 0, 0 });
 
-			GuiPanel::Sptr logoPanel = logo->Add<GuiPanel>(0.5, 0.3, 667, 406);
-			logoPanel->SetTexture(TexBeatLogo);
-			logoPanel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-			logoPanel->SetBorderRadius(0);
-			logoPanel->IsEnabled = true;
-		}
-
-
-		
-
-		//Play Button
-		GameObject::Sptr PlayButton = scene->CreateGameObject("MainMenu Play Button");
-		{
-			RectTransform::Sptr transform = PlayButton->Add<RectTransform>();
-			transform->SetPosition({ 0, 0 });
-			transform->SetRotationDeg(0);
-			transform->SetMin({ 0, 0 });
-
-			GuiPanel::Sptr panel = PlayButton->Add<GuiPanel>(0.20, 0.7, 300, 150);
-			panel->SetTexture(TexPlayButton);
+			GuiPanel::Sptr panel = CreditsImage->Add<GuiPanel>(0.5, 0.5, 1920, 1080);
+			panel->SetTexture(TexCreditsImage);
 			panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 			panel->SetBorderRadius(0);
 			panel->IsEnabled = true;
 		}
 
-		//Options Button
-		GameObject::Sptr ControlsButton = scene->CreateGameObject("MainMenu Options Button");
-		{
-			RectTransform::Sptr transform = ControlsButton->Add<RectTransform>();
-			transform->SetPosition({ 0, 0 });
-			transform->SetRotationDeg(0);
-			transform->SetMin({ 0, 0 });
-
-			GuiPanel::Sptr panel = ControlsButton->Add<GuiPanel>(0.40, 0.7, 300, 150);
-			panel->SetTexture(TexControlsButton);
-			panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 0.6f));
-			panel->SetBorderRadius(0);
-			panel->IsEnabled = true;
-		}
-
-		//Credits Button
-		GameObject::Sptr CreditsButton = scene->CreateGameObject("MainMenu Credits Button");
-		{
-		RectTransform::Sptr transform = CreditsButton->Add<RectTransform>();
-		transform->SetPosition({ 0, 0 });
-		transform->SetRotationDeg(0);
-		transform->SetMin({ 0, 0 });
-
-		GuiPanel::Sptr panel = CreditsButton->Add<GuiPanel>(0.60, 0.7, 300, 150);
-		panel->SetTexture(TexCreditsButton);
-		panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 0.6f));
-		panel->SetBorderRadius(0);
-		panel->IsEnabled = true;
-		}
-
 		
 
-		//Quit Button
-		GameObject::Sptr QuitButton = scene->CreateGameObject("MainMenu Quit Button");
-		{
-		RectTransform::Sptr transform = QuitButton->Add<RectTransform>();
-		transform->SetPosition({ 0, 0 });
-		transform->SetRotationDeg(0);
-		transform->SetMin({ 0, 0 });
+			//Credits Back Button
+			GameObject::Sptr CreditsBackButton = scene->CreateGameObject("Creits Back Button");
+			{
+				RectTransform::Sptr transform = CreditsBackButton->Add<RectTransform>();
+				transform->SetPosition({ 0, 0 });
+				transform->SetRotationDeg(0);
+				transform->SetMin({ 0, 0 });
 
-		GuiPanel::Sptr panel = QuitButton->Add<GuiPanel>(0.80, 0.7, 300, 150);
-		panel->SetTexture(TexQuitButton);
-		panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-		panel->SetBorderRadius(0);
-		panel->IsEnabled = true;
-		}
+				GuiPanel::Sptr panel = CreditsBackButton->Add<GuiPanel>(0.1, 0.9, 300, 150);
+				panel->SetTexture(TexBackButton);
+				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				panel->SetBorderRadius(0);
+				panel->IsEnabled = true;
+			}
 
-		{//Navigation Buttons
-			GameObject::Sptr button = scene->CreateGameObject("MainMenu Navigation");
+			GameObject::Sptr MenuParent = scene->CreateGameObject("INTERACTABLE MENU ITEMS");
+			{
+				//Even Parents must own a RectTransform :) 
+				RectTransform::Sptr transform = MenuParent->Add<RectTransform>();
+				transform->SetPosition({ 0, 0 });
+				transform->SetRotationDeg(0);
+				transform->SetMin({ 0, 0 });
 
-			RectTransform::Sptr transform = button->Add<RectTransform>();
-			transform->SetPosition({ 0, 0 });
-			transform->SetRotationDeg(0);
-			transform->SetMin({ 0, 0 });
+				MenuParent->AddChild(CreditsBackButton);
 
-			GuiPanel::Sptr panel = button->Add<GuiPanel>(0.9, 0.93, 400 * 0.75, 150 * 0.75);
-			panel->SetTexture(TexNavigationLeftRight);
-			panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-			panel->SetBorderRadius(0);
-			panel->IsEnabled = true;
-
-		}
-
-
-		
-
-		GameObject::Sptr MenuParent = scene->CreateGameObject("INTERACTABLE MENU ITEMS");
-		{		
-			//Even Parents must own a RectTransform :) 
-			RectTransform::Sptr transform = MenuParent->Add<RectTransform>();
-			transform->SetPosition({ 0, 0 });
-			transform->SetRotationDeg(0);
-			transform->SetMin({ 0, 0 });
-		
-			MenuParent->AddChild(PlayButton);
-			MenuParent->AddChild(ControlsButton);
-			MenuParent->AddChild(CreditsButton);
-			MenuParent->AddChild(QuitButton);
-		
-			MenuParent->Add<InteractableMenu>(0);
-		}
+				MenuParent->Add<InteractableMenu>(3);
+			}
 
 		
 
@@ -346,9 +273,9 @@ void MainMenuScene::_CreateScene()
 		GuiBatcher::SetDefaultBorderRadius(8);
 
 		// Save the asset manifest for all the resources we just loaded
-		ResourceManager::SaveManifest("MainMenu-manifest.json");
+		ResourceManager::SaveManifest("CreditsMenu-manifest.json");
 		// Save the scene to a JSON file
-		scene->Save("MainMenu.json");
+		scene->Save("CreditsMenu.json");
 
 		// Send the scene to the application
 		app.LoadScene(scene);

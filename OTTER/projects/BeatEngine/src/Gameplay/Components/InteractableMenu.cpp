@@ -88,15 +88,12 @@ void InteractableMenu::Update(float deltaTime) {
             app.LoadScene("Level1.json");
             break;
         case 1:
-
+            app.LoadScene("ControlsMenuScene.json");
             break;
         case 2:
-
+            app.LoadScene("CreditsMenuScene.json");
             break;
         case 3:
-
-            break;
-        case 4:
             app.Quit();
             break;
         default:
@@ -112,6 +109,30 @@ void InteractableMenu::Update(float deltaTime) {
             break;
         case 1:
             app.Quit();
+            break;
+        default:
+            LOG_WARN("Menu Items out of Selection Range!");
+            break;
+        }
+    }
+
+    // CONTROLS SUB MENU
+    if ((InputEngine::GetKeyState(GLFW_KEY_ENTER) == ButtonState::Pressed) && (_MenuIndex == 2)) {
+        switch (_selection) {
+        case 0:
+            app.LoadScene("MainMenu.json");
+            break;
+        default:
+            LOG_WARN("Menu Items out of Selection Range!");
+            break;
+        }
+    }
+
+    // CREDITS SUB MENU
+    if ((InputEngine::GetKeyState(GLFW_KEY_ENTER) == ButtonState::Pressed) && (_MenuIndex == 3)) {
+        switch (_selection) {
+        case 0:
+            app.LoadScene("MainMenu.json");
             break;
         default:
             LOG_WARN("Menu Items out of Selection Range!");
