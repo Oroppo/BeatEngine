@@ -91,6 +91,7 @@
 
 
 
+
 Level1Scene::Level1Scene() :
 	ApplicationLayer()
 {
@@ -103,19 +104,22 @@ Level1Scene::~Level1Scene() = default;
 void Level1Scene::OnAppLoad(const nlohmann::json & config) {
 	_CreateScene();
 
-
-
 }
 void Level1Scene::OnUpdate() {
-
+	
 }
 void Level1Scene::OnSceneLoad() {
 	Application& app = Application::Get();
 
-	AudioEngine::setCurrentMusic("event:/Music");
-
+	//AudioEngine::setCurrentMusic("event:/Music");
 }
 
+/*
+Level1Scene& Level1Scene::Get() {
+	LOG_ASSERT(_singleton2 != nullptr, "Failed to get application! Get was called before the application was started!");
+	return *_singleton2;
+}
+*/
 
 void Level1Scene::_CreateScene()
 {
@@ -936,6 +940,15 @@ void Level1Scene::_CreateScene()
 		SlightComponent->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 		SlightComponent->SetRadius(30.0f);
 		SlightComponent->SetIntensity(30.0f);
+
+		GameObject::Sptr Slight2 = scene->CreateGameObject("Beat Bar Light");
+		Slight2->SetPostion(glm::vec3(-1.840f, -8.60f, 0.510f));
+		SingleLight->AddChild(Slight2);
+
+		Light::Sptr SlightComponent2 = Slight2->Add<Light>();
+		SlightComponent2->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+		SlightComponent2->SetRadius(3.0f);
+		SlightComponent2->SetIntensity(5.0f);
 
 	/*	GameObject::Sptr shadowCaster = scene->CreateGameObject("Shadow Light");
 		{
