@@ -5,7 +5,7 @@
 #include "Utils/Macros.h"
 #include "Application/ApplicationLayer.h"
 #include "Gameplay/Scene.h"
-
+#include "FMOD/AudioEngine.h"
 struct GLFWwindow;
 
 /**
@@ -136,7 +136,7 @@ protected:
 	Gameplay::Scene::Sptr _currentScene;
 	// The scene to switch to at the start of the next frame
 	Gameplay::Scene::Sptr _targetScene;
-
+	ToneFire::StudioSound* SFXS = AudioEngine::GetContextBanks();
 	// Stores all the layers of the application, in the order they should be invoked
 	std::vector<ApplicationLayer::Sptr> _layers;
 
