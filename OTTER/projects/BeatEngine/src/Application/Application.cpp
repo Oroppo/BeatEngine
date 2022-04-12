@@ -240,7 +240,7 @@ void Application::_Run()
 #endif
 
 #ifndef _DEBUG
-	_isEditor = false;
+	_isEditor = true;
 #endif
 
 	// TODO: Register layers
@@ -261,7 +261,6 @@ void Application::_Run()
 	// _DEBUG
 	// If we're in editor mode, we add all the editor layers
 	if (_isEditor) {
-
 		_layers.push_back(std::make_shared<ImGuiDebugLayer>());
 	}
 
@@ -334,18 +333,11 @@ void Application::_Run()
 			_PreRender();
 			_RenderScene(); 
 			_PostRender();
+			AudioEngine::GetContext()->Update();
 		}
-
-
-		//Update Our Audio Engine
-		//if (IsFocused) {
-		AudioEngine::GetContext()->Update();
-		//}
 		
 
-		//if (!_currentScene->IsPlaying == true) {
-		//	Banks->PlayEvent("event:/Music");
-		//}
+
 
 		// Store timing for next loop
 		lastFrame = thisFrame;
@@ -354,7 +346,6 @@ void Application::_Run()
 		ImGuiHelper::EndFrame();
 
 		glfwSwapBuffers(_window);
-
 	}
 
 	// Unload all our layers

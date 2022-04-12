@@ -104,7 +104,18 @@ void Level1Scene::OnAppLoad(const nlohmann::json & config) {
 	_CreateScene();
 
 
+
 }
+void Level1Scene::OnUpdate() {
+
+}
+void Level1Scene::OnSceneLoad() {
+	Application& app = Application::Get();
+
+	AudioEngine::setCurrentMusic("event:/Music");
+
+}
+
 
 void Level1Scene::_CreateScene()
 {
@@ -1282,12 +1293,11 @@ void Level1Scene::_CreateScene()
 				transform->SetSize({ 0, 0 });
 				transform->SetMin({ 0, 0 });
 		
-				GuiText::Sptr text = ScoreText->Add<GuiText>(0.13, 0.07, 3.0);
+				GuiText::Sptr text = ScoreText->Add<GuiText>(0.13, 0.1, 4.0);
 				text->SetColor(glm::vec4(0.f));
 				text->SetFont(FontVCR);
 				text->SetText("0");
 				text->IsEnabled = true;
-		
 			}
 
 		

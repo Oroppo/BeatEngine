@@ -334,6 +334,18 @@ void ToneFire::StudioSound::StopEvent(const std::string& eventName)
 		LoadEvent(eventName);
 	_bankEventInstances[eventName]->stop(FMOD_STUDIO_STOP_IMMEDIATE);
 }
+bool ToneFire::StudioSound::IsEventPlaying(const std::string& eventName)
+{
+	if (_bankEventDescriptions[eventName] == nullptr)
+		LoadEvent(eventName);
+	FMOD_STUDIO_PLAYBACK_STATE isPlaying;
+	_bankEventInstances[eventName]->getPlaybackState(&isPlaying);
+
+	if (isPlaying == FMOD_STUDIO_PLAYBACK_PLAYING) return true;
+
+	return false;
+	
+}
 
 void ToneFire::StudioSound::SetEventParameter(const std::string& eventName, const std::string& parameterName, float paramValue)
 {

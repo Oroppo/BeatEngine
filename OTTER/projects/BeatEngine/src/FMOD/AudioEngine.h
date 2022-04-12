@@ -15,6 +15,8 @@ public:
 
 	static void setPitch(const float pitch);
 
+	static void setCurrentMusic(std::string eventName);
+
 	static void SetEventParameters(const std::string eventName, const std::string parameterName, const float parameterValue);
 
 	static ToneFire::FMODStudio* GetContext();
@@ -24,5 +26,6 @@ private:
 	//Static Singletons for use throughout the project
 	inline static ToneFire::FMODStudio Studio;
 	inline static ToneFire::StudioSound Banks;
+	inline static std::string currentMusic;
 };
 

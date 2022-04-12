@@ -58,6 +58,6 @@ void ForeGroundMover::Update(float deltaTime)
 
     if (GetGameObject()->GetPosition().x >= 40.0f)
     {
-        GetGameObject()->SetPostion(glm::vec3(glm::vec3(-9.970f, 0.470f, -1.90f)));
+        GetGameObject()->SetPostion(glm::vec3(glm::vec3(-20.970f, 0.470f, -1.90f)));
     }
 }
