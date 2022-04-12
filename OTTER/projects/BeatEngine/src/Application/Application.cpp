@@ -148,6 +148,10 @@ bool Application::LoadScene(const std::string& path) {
 		if (path == "MainMenu.json") {
 			AudioEngine::setCurrentMusic("event:/MenuMusic");
 		}
+		if (path == "GameOver.json") {
+			AudioEngine::setCurrentMusic("event:/LoseMusic");
+		}
+
 		//SFXS->PlayEvent("event:/MenuMusic");
 		std::string manifestPath = std::filesystem::path(path).stem().string() + "-manifest.json";
 		if (std::filesystem::exists(manifestPath)) {
