@@ -953,7 +953,7 @@ void Level1Scene::_CreateScene()
 		{
 			// Set position in the scene
 			BeatBarVinyl->SetPostion(glm::vec3(-1.85f, -7.94f, -2.83f));
-			BeatBarVinyl->SetRotation(glm::vec3(0.0f, 0.0f, 90.0f));
+			BeatBarVinyl->SetRotation(glm::vec3(0.0f, 0.0f, 0.0f));
 			BeatBarVinyl->SetScale(glm::vec3(0.75f, 0.75f, 0.1f));
 
 			// Create and attach a renderer for the paddle
