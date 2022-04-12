@@ -246,7 +246,7 @@ void Application::_Run()
 {	
 
 #ifdef _DEBUG
-	_isEditor = true;
+	_isEditor = false;
 #endif
 
 #ifndef _DEBUG

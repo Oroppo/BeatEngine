@@ -234,7 +234,7 @@ void ControlsMenuScene::_CreateScene()
 				transform->SetMin({ 0, 0 });
 				transform->SetMax({ 700 * 0.75, 500 * 0.75 });
 		
-				GuiPanel::Sptr panel = MovementTutorial->Add<GuiPanel>(0.25, 0.25, 750, 500);
+				GuiPanel::Sptr panel = MovementTutorial->Add<GuiPanel>(0.3, 0.25, 750* 0.6, 500 * 0.6);
 				panel->SetTexture(TexMovementTutorial);
 				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 				panel->SetBorderRadius(0);
@@ -252,7 +252,7 @@ void ControlsMenuScene::_CreateScene()
 				transform->SetMin({ 0, 0 });
 				transform->SetMax({ 700 * 0.75, 500 * 0.75 });
 		
-				GuiPanel::Sptr panel = WallJumpTutorial->Add<GuiPanel>(0.75, 0.25, 750, 500);
+				GuiPanel::Sptr panel = WallJumpTutorial->Add<GuiPanel>(0.7, 0.25, 750 * 0.6, 500 * 0.6);
 				panel->SetTexture(TexWallJumpTutorial);
 				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 				panel->SetBorderRadius(0);
@@ -270,7 +270,7 @@ void ControlsMenuScene::_CreateScene()
 				transform->SetMin({ 0, 0 });
 				transform->SetMax({ 700 * 0.75, 500 * 0.75 });
 		
-				GuiPanel::Sptr panel = BeatJemTutorial->Add<GuiPanel>(0.25, 0.75, 750, 500);
+				GuiPanel::Sptr panel = BeatJemTutorial->Add<GuiPanel>(0.3, 0.75, 750 * 0.6, 500 * 0.6);
 				panel->SetTexture(TexBeatGemTutorial);
 				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 				panel->SetBorderRadius(0);
@@ -288,7 +288,7 @@ void ControlsMenuScene::_CreateScene()
 				transform->SetMin({ 0, 0 });
 				transform->SetMax({ 700 * 0.75, 500 * 0.75 });
 		
-				GuiPanel::Sptr panel = VinylTutorial->Add<GuiPanel>(0.75, 0.75, 750, 500);
+				GuiPanel::Sptr panel = VinylTutorial->Add<GuiPanel>(0.7, 0.75, 750 * 0.6, 500 * 0.6);
 				panel->SetTexture(TexVinylsTutorial);
 				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 				panel->SetBorderRadius(0);
