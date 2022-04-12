@@ -288,7 +288,7 @@ void SpawnFunctions::SpawnStartPlat(Gameplay::Scene::Sptr scene, Gameplay::MeshR
 
 		// Add a dynamic rigid body to this object
 		RigidBody::Sptr physics = Startplatform->Add<RigidBody>(RigidBodyType::Kinematic);
-		physics->AddCollider(BoxCollider::Create(glm::vec3(1.8f, 1.0f, 1.0f)))->SetPosition({ 0,5,0 });;
+		physics->AddCollider(BoxCollider::Create(glm::vec3(2.2f, 1.0f, 1.0f)))->SetPosition({ 0,5,0 });;
 	}
 }
 // For spawning beat gems
