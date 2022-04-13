@@ -1284,6 +1284,7 @@ void Level1Scene::_CreateScene()
 		//{//HUD
 
 			
+			/*
 			GameObject::Sptr ScoreBackground = scene->CreateGameObject("HUD Score Display");
 			{//Score BG
 				RectTransform::Sptr transform = ScoreBackground->Add<RectTransform>();
@@ -1299,6 +1300,7 @@ void Level1Scene::_CreateScene()
 				panel->IsEnabled = true;
 		
 			}
+			*/
 		
 			GameObject::Sptr ScoreText = scene->CreateGameObject("HUD Score Text");
 			{//Score Text
