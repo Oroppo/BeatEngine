@@ -20,7 +20,6 @@
 #include "Graphics/Font.h"
 #include "Graphics/GuiBatcher.h"
 #include "Graphics/Framebuffer.h"
-
 // Utilities
 #include "Utils/MeshBuilder.h"
 #include "Utils/MeshFactory.h"
@@ -77,13 +76,22 @@
 #include "Gameplay/Components/ParticleSystem.h"
 #include "Graphics/Textures/Texture3D.h"
 #include "Graphics/Textures/Texture1D.h"
-
+#include "Application/Layers/PostProcessingLayer.h"
 //Testing...
 #include "SpawnFunctions.h"
 //Animation
 #include "Animation/MorphAnimationManager.h"
 #include "Animation/MorphRenderComponent.h"
 
+#include "PostProcessing/ColorCorrectionEffect.h"
+#include "PostProcessing/BoxFilter3x3.h"
+#include "PostProcessing/BoxFilter5x5.h"
+#include "PostProcessing/OutlineEffect.h"
+#include "PostProcessing/DepthOfField.h"
+#include "PostProcessing/NightVisionEffect.h"
+#include "PostProcessing/CelShaderEffect.h"
+#include "PostProcessing/ChromaticAberrationEffect.h"
+#include "PostProcessing/PixellationEffect.h"
 
 
 
@@ -108,7 +116,7 @@ void MainMenuScene::_CreateScene()
 	using namespace Gameplay::Physics;
 
 	Application& app = Application::Get();
-
+	//app.GetLayer<PostProcessingLayer>()->GetEffect<NightVisionEffect>()->Enabled = true;
 	bool loadScene = false;
 	// For now we can use a toggle to generate our scene vs load from file
 	if (loadScene && std::filesystem::exists("MainMenu.json")) {
@@ -215,8 +223,7 @@ void MainMenuScene::_CreateScene()
 
 		Application& app = Application::Get();
 		glm::vec2 windowSize = app.GetWindowSize();
-
-
+			
 		/////////////////////////// UI //////////////////////////////
 
 	//Main Menu Block

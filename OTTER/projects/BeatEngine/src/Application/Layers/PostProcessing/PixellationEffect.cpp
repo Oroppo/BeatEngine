@@ -25,8 +25,6 @@ void PixellationEffect::Apply(const Framebuffer::Sptr& gBuffer)
 	_shader->Bind();
 	_shader->SetUniform("u_PixelNumber", _pixelSize);
 
-	Enabled = false;
-
 	gBuffer->BindAttachment(RenderTargetAttachment::Depth, 1);
 
 	//Can Link Buffers if we want :o
