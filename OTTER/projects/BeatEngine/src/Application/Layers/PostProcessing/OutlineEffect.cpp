@@ -8,10 +8,10 @@ OutlineEffect::OutlineEffect() :
 	_shader(nullptr),
 	_outlineColor(glm::vec4(0, 0, 0, 1)),
 	_scale(1.0f),
-	_depthThreshold(0.1f),
-	_normalThreshold(0.560f),
+	_depthThreshold(0.162f), // default is 0.1
+	_normalThreshold(0.643f), // default is 0.560
 	_depthNormalThreshold(0.4f),
-	_depthNormalThresholdScale(4)
+	_depthNormalThresholdScale(4.468) // default is 4
 {
 	Name = "Outline Effect";
 	_format = RenderTargetType::ColorRgb8;

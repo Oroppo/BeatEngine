@@ -9,7 +9,7 @@ ColorCorrectionEffect::ColorCorrectionEffect() :
 ColorCorrectionEffect::ColorCorrectionEffect(bool defaultLut) :
 	PostProcessingLayer::Effect(),
 	_shader(nullptr),
-	_strength(1.0f),
+	_strength(1.f), // default is 1
 	Lut(nullptr),
 	Lut2(nullptr),
 	Lut3(nullptr),

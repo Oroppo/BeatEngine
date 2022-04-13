@@ -425,10 +425,8 @@ void SpawnLoop::SpawnBlock() {
 
 void SpawnLoop::ToSpawn() {
 	_SpawnTimer -= 30;
-	_BlockToSpawn = rand() % 8;
+	_BlockToSpawn = rand() % 10;
 	SpawnBlock();
-
-
 }
 
 void SpawnLoop::RenderImGui(){
