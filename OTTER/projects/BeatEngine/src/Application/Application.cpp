@@ -160,6 +160,11 @@ bool Application::LoadScene(const std::string& path) {
 			GetLayer<PostProcessingLayer>()->GetEffect<OutlineEffect>()->Enabled = true;
 			AudioEngine::setCurrentMusic("event:/Music");
 		}		
+		else {
+			GetLayer<PostProcessingLayer>()->GetEffect<CelShaderEffect>()->Enabled = false;
+			GetLayer<PostProcessingLayer>()->GetEffect<ChromaticAberrationEffect>()->Enabled = false;
+			GetLayer<PostProcessingLayer>()->GetEffect<OutlineEffect>()->Enabled = false;
+		}
 		if (path == "MainMenu.json") {
 			AudioEngine::setCurrentMusic("event:/MenuMusic");
 		}
@@ -264,7 +269,7 @@ void Application::_Run()
 #endif
 
 #ifndef _DEBUG
-	_isEditor = true;
+	_isEditor = false;
 #endif
 	// TODO: Register layers
 	_layers.push_back(std::make_shared<GLAppLayer>());
