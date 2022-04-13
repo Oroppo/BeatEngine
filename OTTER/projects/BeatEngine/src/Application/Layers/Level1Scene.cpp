@@ -1090,11 +1090,11 @@ void Level1Scene::_CreateScene()
 				PauseMenuParent->AddChild(QuitButton);
 				PauseMenuParent->AddChild(PauseMenuNavigationIcon);
 
-				GuiPanel::Sptr panel = PauseMenuParent->Add<GuiPanel>();
-				panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-				panel->SetBorderRadius(0);
+				//GuiPanel::Sptr panel = PauseMenuParent->Add<GuiPanel>();
+				//panel->SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				//panel->SetBorderRadius(0);
 
-				panel->IsEnabled = false;
+				//panel->IsEnabled = false;
 			}
 		}
 

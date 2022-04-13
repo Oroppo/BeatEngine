@@ -9,7 +9,12 @@ GuiPanel::GuiPanel() :
 	_borderRadius(-1),
 	_color(glm::vec4(1.0f)),
 	_texture(nullptr),
-	_transform(nullptr)
+	_transform(nullptr),
+	_percentOfScreenX(1.0f),
+	_percentOfScreenY(1.0f)
+	//_width(width),
+	//_height(height)
+
 { }
 
 GuiPanel::GuiPanel(float perX, float perY, float width, float height) :
