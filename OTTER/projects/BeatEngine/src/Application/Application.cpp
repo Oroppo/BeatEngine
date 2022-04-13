@@ -87,6 +87,16 @@
 #include "Animation/MorphAnimationManager.h"
 #include "Animation/MorphRenderComponent.h"
 
+#include "Layers/PostProcessing/ColorCorrectionEffect.h"
+#include "Layers/PostProcessing/BoxFilter3x3.h"
+#include "Layers/PostProcessing/BoxFilter5x5.h"
+#include "Layers/PostProcessing/OutlineEffect.h"
+#include "Layers/PostProcessing/DepthOfField.h"
+#include "Layers/PostProcessing/NightVisionEffect.h"
+#include "Layers/PostProcessing/CelShaderEffect.h"
+#include "Layers/PostProcessing/ChromaticAberrationEffect.h"
+#include "Layers/PostProcessing/PixellationEffect.h"
+
 Application* Application::_singleton = nullptr;
 std::string Application::_applicationName = "Beat!";
 
@@ -143,7 +153,11 @@ void Application::Quit() {
 
 bool Application::LoadScene(const std::string& path) {
 	if (std::filesystem::exists(path)) { 
-		if (path == "Level1.json") {
+		if (path == "Level1.json") {	
+		//GetLayer<PostProcessingLayer>()->GetEffect<NightVisionEffect>()->Enabled = true;
+			GetLayer<PostProcessingLayer>()->GetEffect<CelShaderEffect>()->Enabled = true;
+			GetLayer<PostProcessingLayer>()->GetEffect<ChromaticAberrationEffect>()->Enabled = true;
+			GetLayer<PostProcessingLayer>()->GetEffect<OutlineEffect>()->Enabled = true;
 			AudioEngine::setCurrentMusic("event:/Music");
 		}		
 		if (path == "MainMenu.json") {
@@ -246,18 +260,18 @@ void Application::_Run()
 {	
 
 #ifdef _DEBUG
-	_isEditor = false;
+	_isEditor = true;
 #endif
 
 #ifndef _DEBUG
-	_isEditor = false;
+	_isEditor = true;
 #endif
 	// TODO: Register layers
 	_layers.push_back(std::make_shared<GLAppLayer>());
+
 	_layers.push_back(std::make_shared<GameOverScene>());
-	_layers.push_back(std::make_shared<Level1Scene>());
 	_layers.push_back(std::make_shared<ControlsMenuScene>());
-	_layers.push_back(std::make_shared <CreditsMenuScene>());
+	_layers.push_back(std::make_shared<CreditsMenuScene>());
 	_layers.push_back(std::make_shared<Level1Scene>());
 	//_layers.push_back(std::make_shared<PauseMenuScene>());
 	//if we're in release mode render the Menus

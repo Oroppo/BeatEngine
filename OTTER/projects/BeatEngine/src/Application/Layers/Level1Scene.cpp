@@ -77,6 +77,7 @@
 #include "Gameplay/Components/GUI/GuiText.h"
 #include "Gameplay/InputEngine.h"
 #include "Application/Application.h"
+#include "Application/Layers/PostProcessingLayer.h"
 #include "Gameplay/Components/ParticleSystem.h"
 #include "Graphics/Textures/Texture3D.h"
 #include "Graphics/Textures/Texture1D.h"
@@ -86,6 +87,16 @@
 //Animation
 #include "Animation/MorphRenderComponent.h"
 #include "Animation/MorphAnimationManager.h"
+#include "PostProcessing/ColorCorrectionEffect.h"
+#include "PostProcessing/BoxFilter3x3.h"
+#include "PostProcessing/BoxFilter5x5.h"
+#include "PostProcessing/OutlineEffect.h"
+#include "PostProcessing/DepthOfField.h"
+#include "PostProcessing/NightVisionEffect.h"
+#include "PostProcessing/CelShaderEffect.h"
+#include "PostProcessing/ChromaticAberrationEffect.h"
+#include "PostProcessing/PixellationEffect.h"
+
 
 
 
@@ -110,7 +121,7 @@ void Level1Scene::OnUpdate() {
 }
 void Level1Scene::OnSceneLoad() {
 	Application& app = Application::Get();
-
+	
 	//AudioEngine::setCurrentMusic("event:/Music");
 }
 
@@ -127,7 +138,7 @@ void Level1Scene::_CreateScene()
 	using namespace Gameplay::Physics;
 
 	Application& app = Application::Get();
-
+	
 	bool loadScene = false;
 	// For now we can use a toggle to generate our scene vs load from file
 	if (loadScene && std::filesystem::exists("Level1.json")) {
@@ -728,7 +739,6 @@ void Level1Scene::_CreateScene()
 
 		Application& app = Application::Get();
 		glm::vec2 windowSize = app.GetWindowSize();
-
 		//trust me if I could find a better way i'd have done it but rn we can't pass materials to 
 		//the Material Swap Component so we instead add Dummy Children Objects to hold the Materials instead.
 		{
