@@ -153,9 +153,8 @@ void Application::Quit() {
 
 bool Application::LoadScene(const std::string& path) {
 	if (std::filesystem::exists(path)) { 
-		if (path == "Level1.json") {
-			std::cout << "oogabooga";
-			GetLayer<PostProcessingLayer>()->GetEffect<NightVisionEffect>()->Enabled = true;
+		if (path == "Level1.json") {	
+		//GetLayer<PostProcessingLayer>()->GetEffect<NightVisionEffect>()->Enabled = true;
 			GetLayer<PostProcessingLayer>()->GetEffect<CelShaderEffect>()->Enabled = true;
 			GetLayer<PostProcessingLayer>()->GetEffect<ChromaticAberrationEffect>()->Enabled = true;
 			GetLayer<PostProcessingLayer>()->GetEffect<OutlineEffect>()->Enabled = true;
@@ -261,18 +260,18 @@ void Application::_Run()
 {	
 
 #ifdef _DEBUG
-	_isEditor = false;
+	_isEditor = true;
 #endif
 
 #ifndef _DEBUG
-	_isEditor = false;
+	_isEditor = true;
 #endif
 	// TODO: Register layers
 	_layers.push_back(std::make_shared<GLAppLayer>());
-	_layers.push_back(std::make_shared<PostProcessingLayer>());
+
 	_layers.push_back(std::make_shared<GameOverScene>());
 	_layers.push_back(std::make_shared<ControlsMenuScene>());
-	_layers.push_back(std::make_shared <CreditsMenuScene>());
+	_layers.push_back(std::make_shared<CreditsMenuScene>());
 	_layers.push_back(std::make_shared<Level1Scene>());
 	//_layers.push_back(std::make_shared<PauseMenuScene>());
 	//if we're in release mode render the Menus
@@ -280,7 +279,7 @@ void Application::_Run()
 	_layers.push_back(std::make_shared<LogicUpdateLayer>());
 	_layers.push_back(std::make_shared<RenderLayer>());
 	_layers.push_back(std::make_shared<ParticleLayer>());
-	
+	_layers.push_back(std::make_shared<PostProcessingLayer>());
 	_layers.push_back(std::make_shared<InterfaceLayer>());
 	_layers.push_back(std::make_shared<MainMenuScene>());
 
