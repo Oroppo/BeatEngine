@@ -298,7 +298,8 @@ void GameOverScene::_CreateScene()
 			GuiText::Sptr text = ScoreText->Add<GuiText>(0.5, 0.7, 5.0);
 			text->SetColor(glm::vec4(0.f));
 			text->SetFont(FontVCR);
-			text->SetText("17500");
+		
+			text->SetText("0");
 			text->IsEnabled = true;
 		}
 		

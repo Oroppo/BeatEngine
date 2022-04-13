@@ -236,6 +236,9 @@ void CharacterController::CoyoteTime(float dt) {
         }
     }
 }
+int CharacterController::GetScore() {
+    return score;
+}
 void CharacterController::Update(float deltaTime) {
     std::cout << _GemJumpTimer << std::endl;
     _GemJumpTimer = GetGameObject()->GetScene()->FindObjectByName("GameManager")->Get<BeatTimer>()->GetBeatTime();

@@ -153,7 +153,8 @@ void Application::Quit() {
 
 bool Application::LoadScene(const std::string& path) {
 	if (std::filesystem::exists(path)) { 
-		if (path == "Level1.json") {	
+		if (path == "Level1.json") {		
+		
 		//GetLayer<PostProcessingLayer>()->GetEffect<NightVisionEffect>()->Enabled = true;
 			GetLayer<PostProcessingLayer>()->GetEffect<CelShaderEffect>()->Enabled = true;
 			GetLayer<PostProcessingLayer>()->GetEffect<ChromaticAberrationEffect>()->Enabled = true;
@@ -169,6 +170,7 @@ bool Application::LoadScene(const std::string& path) {
 			AudioEngine::setCurrentMusic("event:/MenuMusic");
 		}
 		if (path == "GameOver.json") {
+			
 			AudioEngine::setCurrentMusic("event:/LoseMusic");
 		}
 
@@ -458,6 +460,9 @@ void Application::_Load() {
 
 
 void Application::_Update() {
+	if (CurrentScene()->FindObjectByName("Character/Player") != nullptr) {
+		score = CurrentScene()->FindObjectByName("Character/Player")->Get<CharacterController>()->GetScore();
+	}
 	for (const auto& layer : _layers) {
 		if (layer->Enabled && *(layer->Overrides & AppLayerFunctions::OnUpdate)) {
 			layer->OnUpdate();
@@ -569,10 +574,15 @@ void Application::_Unload() {
 	// Clean up ImGui
 	ImGuiHelper::Cleanup();
 }
-
+int Application::GetScore() {
+	return score;
+}
 void Application::_HandleSceneChange() {
 	// If we currently have a current scene, let the layers know it's being unloaded
 	if (_currentScene != nullptr) {
+		
+	
+		
 		// Note that we use a reverse iterator, so that layers are unloaded in the opposite order that they were loaded
 		for (auto it = _layers.crbegin(); it != _layers.crend(); it++) {
 			const auto& layer = *it;

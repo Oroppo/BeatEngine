@@ -659,7 +659,7 @@ void Level1Scene::_CreateScene()
 		//This is a game object built purely to manage game systems i.e. Scene Swaps
 		//Level Spawning, Score Counting, and a few miscellaneous systems
 		GameObject::Sptr GameManager = scene->CreateGameObject("GameManager");
-		{
+		{	
 			//Pos-Rot-Scale Doesn't matter
 			//RigidBody::Sptr physics = GameManager->Add<RigidBody>(RigidBodyType::Kinematic);
 			GameManager->Add<BeatTimer>();

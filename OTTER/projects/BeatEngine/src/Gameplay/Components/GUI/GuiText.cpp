@@ -1,6 +1,7 @@
 #include "Gameplay/Components/GUI/GuiText.h"
 #include <locale>
 #include <codecvt>
+#include <string>
 #include "Graphics/GuiBatcher.h"
 #include "Utils/ImGuiHelper.h"
 #include "Utils/JsonGlmHelpers.h"
@@ -130,7 +131,9 @@ nlohmann::json GuiText::ToJson() const {
 }
 
 void GuiText::Update(float deltaTime) {
-
+	if (GetGameObject()->GetScene()->FindObjectByName("Character") != nullptr) {
+		GetGameObject()->GetScene()->FindObjectByName("HUD Score Text")->Get<GuiText>()->SetText(std::to_string(Application::GetScore()));
+	}
 	//Get Window Size
 	Application& app = Application::Get();
 	glm::vec2 windowSize = app.GetWindowSize();
