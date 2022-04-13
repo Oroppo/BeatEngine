@@ -850,30 +850,30 @@ void Level1Scene::_CreateScene()
 			RigidBody::Sptr ballphysics = DiscoBall->Add<RigidBody>(RigidBodyType::Dynamic);
 		}
 
-		//GameObject::Sptr Orbparticles = scene->CreateGameObject("OrbParticles");
-		//{
-		//	Orbparticles->SetPostion({ -2.0f, 0.0f, 2.0f });
-		//
-		//	ParticleSystem::Sptr particleManager = Orbparticles->Add<ParticleSystem>();
-		//	particleManager->Atlas = particleTex;
-		//	particleManager->SetGravity(glm::vec3(0.0f, 0.0f, 0.0f));
-		//	ParticleSystem::ParticleData emitter;
-		//
-		//	//particleManager->IsEnabled=false;
-		//
-		//	emitter.Type = ParticleType::SphereEmitter;
-		//	emitter.TexID = 2;
-		//	emitter.Position = glm::vec3(0.0f);
-		//	emitter.Color = glm::vec4(0.42f, 0.05f, 0.68f, 1.0f);
-		//	emitter.Lifetime = 0.0f;
-		//	emitter.SphereEmitterData.Timer = 1.0f / 20.0f;
-		//	emitter.SphereEmitterData.Velocity = 1.5f;
-		//	emitter.SphereEmitterData.LifeRange = { 1.0f, 4.0f };
-		//	emitter.SphereEmitterData.Radius = 0.05f;
-		//	emitter.SphereEmitterData.SizeRange = { 0.5f, 1.5f };
-		//	Orbparticles->AddParent(DiscoBall);
-		//	particleManager->AddEmitter(emitter);
-		//}
+		GameObject::Sptr Orbparticles = scene->CreateGameObject("OrbParticles");
+		{
+			Orbparticles->SetPostion({ -2.0f, 0.0f, 2.0f });
+
+			ParticleSystem::Sptr particleManager = Orbparticles->Add<ParticleSystem>();
+			particleManager->Atlas = particleTex;
+			particleManager->SetGravity(glm::vec3(0.0f, 0.0f, 0.0f));
+			ParticleSystem::ParticleData emitter;
+
+			//particleManager->IsEnabled=false;
+
+			emitter.Type = ParticleType::SphereEmitter;
+			emitter.TexID = 2;
+			emitter.Position = glm::vec3(0.0f);
+			emitter.Color = glm::vec4(0.42f, 0.05f, 0.68f, 1.0f);
+			emitter.Lifetime = 0.0f;
+			emitter.SphereEmitterData.Timer = 1.0f / 20.0f;
+			emitter.SphereEmitterData.Velocity = 1.5f;
+			emitter.SphereEmitterData.LifeRange = { 1.0f, 4.0f };
+			emitter.SphereEmitterData.Radius = 0.05f;
+			emitter.SphereEmitterData.SizeRange = { 0.5f, 1.5f };
+			Orbparticles->AddParent(DiscoBall);
+			//particleManager->AddEmitter(emitter);
+		}
 
 		GameObject::Sptr Rainparticles = scene->CreateGameObject("RainParticles");
 		{

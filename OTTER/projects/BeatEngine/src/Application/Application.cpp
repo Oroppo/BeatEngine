@@ -160,6 +160,7 @@ bool Application::LoadScene(const std::string& path) {
 			GetLayer<PostProcessingLayer>()->GetEffect<ChromaticAberrationEffect>()->Enabled = true;
 			GetLayer<PostProcessingLayer>()->GetEffect<OutlineEffect>()->Enabled = true;
 			AudioEngine::setCurrentMusic("event:/Music");
+			AudioEngine::GetContextBanks()->PlayEvent("event:/Dance");
 		}		
 		else {
 			GetLayer<PostProcessingLayer>()->GetEffect<CelShaderEffect>()->Enabled = false;

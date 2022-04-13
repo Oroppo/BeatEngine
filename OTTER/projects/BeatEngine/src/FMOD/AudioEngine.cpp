@@ -14,6 +14,7 @@ void AudioEngine::init()
 	AudioEngine::GetContextBanks()->LoadEvent("event:/WinMusic");
 	AudioEngine::GetContextBanks()->LoadEvent("event:/Ambience");
 	AudioEngine::GetContextBanks()->LoadEvent("event:/CountIn");
+	AudioEngine::GetContextBanks()->LoadEvent("event:/Dance");
 	AudioEngine::GetContextBanks()->LoadEvent("event:/Coin Pickup");
 	AudioEngine::GetContextBanks()->LoadEvent("event:/Jump");
 	AudioEngine::GetContextBanks()->LoadEvent("event:/Death");
