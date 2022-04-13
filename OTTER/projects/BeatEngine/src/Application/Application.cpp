@@ -263,11 +263,11 @@ float Application::keyboard()
 
 void Application::_Run()
 {	
-
+	// Non Dev Mode
 #ifdef _DEBUG
 	_isEditor = true;
 #endif
-
+	// Dev Mode
 #ifndef _DEBUG
 	_isEditor = false;
 #endif
