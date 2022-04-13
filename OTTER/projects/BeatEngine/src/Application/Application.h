@@ -107,13 +107,13 @@ public:
 	 * Saves the application settings to a file in %APPDATA% 
 	 */
 	void SaveSettings();
-
+	static int GetScore();
 protected:
 	// The GL driver layer is a special friend that can access our protected members (mainly window info)
 	friend class GLAppLayer;
-
+	
 	Application();
-
+	inline static int score = 0;
 	// The GLFW window that the application will render to and receive events from
 	GLFWwindow* _window;
 	// The title of the above window, will appear when not in fullscreen mode

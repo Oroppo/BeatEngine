@@ -83,7 +83,7 @@ private:
 	float _percentOfScreenX;
 	float _percentOfScreenY;
 	float _scale;
-
+	std::string _score;
 
 protected:
 	std::wstring    _text;

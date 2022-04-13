@@ -24,7 +24,7 @@ public:
 public:
 	virtual void RenderImGui() override;
 	MAKE_TYPENAME(CharacterController);
-
+	int GetScore();
 	virtual nlohmann::json ToJson() const override;
 	static CharacterController::Sptr FromJson(const nlohmann::json& blob);
 	virtual void OnEnteredTrigger(const std::shared_ptr<Gameplay::Physics::TriggerVolume> trigger);
